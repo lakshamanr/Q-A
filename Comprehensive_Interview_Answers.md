@@ -2451,10 +2451,607 @@ public class ComparisonExamples
 
 ---
 
-I'll continue with the remaining questions systematically. Due to the massive size (570+ questions), would you like me to:
+### Q16: What are nullable value types? Explain the null-coalescing operator.
 
-1. Continue writing all answers in this single file (will be very large)
-2. Create the complete document now and save it (recommended)
+**Nullable Value Types:**
+- Allow value types to be null
+- Syntax: `T?` or `Nullable<T>`
+- Has `HasValue` and `Value` properties
+- Used when absence of value needs to be represented
+- Common in database scenarios (NULL columns)
 
-Let me create the complete comprehensive document:
+**Null-Coalescing Operators:**
+- `??` - returns left if not null, otherwise right
+- `??=` - assigns right if left is null (C# 8+)
+- `?.` - null-conditional operator
+- `?[]` - null-conditional element access
+
+**Example:**
+```csharp
+// ============ NULLABLE VALUE TYPES ============
+
+public class NullableExamples
+{
+    public void BasicNullable()
+    {
+        // Regular int cannot be null
+        // int regular = null;  // ERROR
+
+        // Nullable int can be null
+        int? nullable = null;  // OK
+        Nullable<int> nullable2 = null;  // Same thing
+
+        // Check if has value
+        if (nullable.HasValue)
+        {
+            Console.WriteLine($"Value: {nullable.Value}");
+        }
+        else
+        {
+            Console.WriteLine("No value");
+        }
+
+        // Assign value
+        nullable = 42;
+        Console.WriteLine($"Has value: {nullable.HasValue}");  // True
+        Console.WriteLine($"Value: {nullable.Value}");  // 42
+
+        // Access Value when null throws exception
+        nullable = null;
+        try
+        {
+            int value = nullable.Value;  // InvalidOperationException
+        }
+        catch (InvalidOperationException ex)
+        {
+            Console.WriteLine("Cannot access Value when null");
+        }
+
+        // Safe access methods
+        int safe1 = nullable.GetValueOrDefault();  // 0 (default)
+        int safe2 = nullable.GetValueOrDefault(99);  // 99 (custom default)
+    }
+
+    // ============ NULL-COALESCING OPERATOR (??) ============
+
+    public void NullCoalescingOperator()
+    {
+        int? maybeInt = null;
+
+        // ?? operator - provide default
+        int result = maybeInt ?? 0;  // 0
+        Console.WriteLine(result);
+
+        maybeInt = 42;
+        result = maybeInt ?? 0;  // 42
+        Console.WriteLine(result);
+
+        // Chain multiple ??
+        int? first = null;
+        int? second = null;
+        int? third = 99;
+
+        int value = first ?? second ?? third ?? 0;  // 99
+        Console.WriteLine(value);
+
+        // With reference types
+        string? text = null;
+        string result2 = text ?? "default";  // "default"
+
+        text = "hello";
+        result2 = text ?? "default";  // "hello"
+
+        // Complex expressions
+        string name = GetUserName() ?? GetDefaultName() ?? "Anonymous";
+    }
+
+    // ============ NULL-COALESCING ASSIGNMENT (??=) ============
+
+    public void NullCoalescingAssignment()
+    {
+        List<string>? items = null;
+
+        // Assign if null
+        items ??= new List<string>();  // Creates new list
+        items ??= new List<string>();  // Does nothing (already has value)
+
+        // Equivalent to:
+        items = items ?? new List<string>();
+
+        // Lazy initialization
+        private List<string>? _cache;
+        public List<string> Cache => _cache ??= LoadCache();
+
+        // Multiple properties
+        int? count = null;
+        count ??= 0;  // Assign 0 if null
+        count ??= 10;  // Does nothing (count is 0, not null)
+    }
+
+    // ============ NULL-CONDITIONAL OPERATOR (?.) ============
+
+    public void NullConditionalOperator()
+    {
+        Person? person = null;
+
+        // Without null-conditional
+        string? name1 = person != null ? person.Name : null;
+
+        // With null-conditional
+        string? name2 = person?.Name;  // null if person is null
+
+        // Chaining
+        string? city = person?.Address?.City;
+
+        // With method calls
+        int? length = person?.Name?.Length;
+
+        // Array/indexer access
+        string? firstChar = person?.Name?[0].ToString();
+
+        // Event invocation
+        EventHandler? handler = SomeEvent;
+        handler?.Invoke(this, EventArgs.Empty);
+
+        // Combining operators
+        string displayName = person?.Name ?? "Unknown";
+        int nameLength = person?.Name?.Length ?? 0;
+    }
+
+    // ============ REAL-WORLD EXAMPLES ============
+
+    public class DatabaseExample
+    {
+        public class User
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public int? Age { get; set; }  // Nullable - might not be provided
+            public DateTime? LastLogin { get; set; }  // Nullable - new users
+            public decimal? Balance { get; set; }  // Nullable - account might not exist
+        }
+
+        public void HandleDatabaseNulls()
+        {
+            var user = GetUserFromDatabase(123);
+
+            // Safe handling of nullable properties
+            int age = user.Age ?? 18;  // Default to 18 if not provided
+
+            string lastLogin = user.LastLogin?.ToString("yyyy-MM-dd")
+                ?? "Never logged in";
+
+            decimal balance = user.Balance ?? 0m;
+
+            // Conditional logic
+            if (user.Age.HasValue && user.Age.Value < 18)
+            {
+                Console.WriteLine("Minor");
+            }
+
+            // Pattern matching (C# 7+)
+            string ageCategory = user.Age switch
+            {
+                null => "Age not provided",
+                < 18 => "Minor",
+                >= 18 and < 65 => "Adult",
+                >= 65 => "Senior",
+                _ => "Unknown"
+            };
+        }
+    }
+
+    // ============ NULLABLE REFERENCE TYPES (C# 8+) ============
+
+    #nullable enable  // Enable nullable reference types
+
+    public class NullableReferenceExample
+    {
+        // Non-nullable reference type
+        public string Name { get; set; } = string.Empty;
+
+        // Nullable reference type
+        public string? MiddleName { get; set; }
+
+        public void Process(string nonNull, string? maybeNull)
+        {
+            // Compiler warning if non-null is potentially null
+            // string result = maybeNull;  // Warning!
+
+            // Must check or use null-forgiving operator
+            string result1 = maybeNull ?? "default";  // Safe
+
+            if (maybeNull != null)
+            {
+                string result2 = maybeNull;  // No warning after null check
+            }
+
+            // Null-forgiving operator (!) - use with caution
+            string result3 = maybeNull!;  // Tells compiler "trust me, not null"
+        }
+    }
+
+    #nullable restore
+
+    // ============ COMPARISON OPERATORS ============
+
+    public void ComparisonWithNullable()
+    {
+        int? a = null;
+        int? b = 5;
+        int? c = 5;
+
+        // Comparison with null
+        Console.WriteLine(a == null);  // True
+        Console.WriteLine(b == null);  // False
+
+        // Comparison between nullables
+        Console.WriteLine(a == b);  // False
+        Console.WriteLine(b == c);  // True
+
+        // Lifted operators - any null operand results in null
+        int? sum = a + b;  // null (not 5!)
+        int? product = b * c;  // 25
+
+        bool? comparison = a < b;  // null
+        bool? isEqual = a == b;  // false (special case)
+
+        // With null-coalescing
+        int safeSum = (a ?? 0) + (b ?? 0);  // 5
+    }
+
+    // ============ LINQ WITH NULLABLE ============
+
+    public void LinqWithNullable()
+    {
+        var products = new List<Product>
+        {
+            new() { Name = "A", Price = 10, Discount = null },
+            new() { Name = "B", Price = 20, Discount = 5 },
+            new() { Name = "C", Price = 30, Discount = null }
+        };
+
+        // Sum with nullable
+        decimal? totalDiscount = products.Sum(p => p.Discount);  // 5
+
+        // Average with nullable
+        decimal? avgDiscount = products
+            .Where(p => p.Discount.HasValue)
+            .Average(p => p.Discount);  // 5
+
+        // Filter by nullable
+        var withDiscounts = products
+            .Where(p => p.Discount.HasValue)
+            .ToList();
+
+        var withoutDiscounts = products
+            .Where(p => !p.Discount.HasValue)
+            .ToList();
+
+        // Calculate final price
+        var finalPrices = products
+            .Select(p => new
+            {
+                p.Name,
+                OriginalPrice = p.Price,
+                Discount = p.Discount ?? 0,
+                FinalPrice = p.Price - (p.Discount ?? 0)
+            });
+    }
+}
+
+public class Product
+{
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public decimal? Discount { get; set; }  // Optional
+}
+```
+
+**Key Points:**
+- `T?` is shorthand for `Nullable<T>`
+- Only works with value types (int, bool, DateTime, etc.)
+- `??` operator prevents null reference exceptions
+- `?.` operator chains safely through null checks
+- C# 8+ extends nullability to reference types
+
+---
+
+### Q17: What is the difference between String and StringBuilder?
+
+**String:**
+- Immutable (cannot be changed)
+- Each modification creates new string object
+- Thread-safe (immutability)
+- Stored in string intern pool (optional)
+- Best for few modifications
+
+**StringBuilder:**
+- Mutable (can be changed)
+- Modifies same object
+- Not thread-safe
+- Better performance for multiple modifications
+- Resizable buffer
+
+**Example:**
+```csharp
+// ============ STRING IMMUTABILITY ============
+
+public class StringImmutability
+{
+    public void DemonstrateImmutability()
+    {
+        string original = "Hello";
+        string modified = original.ToUpper();
+
+        Console.WriteLine($"Original: {original}");  // "Hello" (unchanged!)
+        Console.WriteLine($"Modified: {modified}");  // "HELLO" (new string)
+
+        // Each operation creates new string
+        string result = "Hello";
+        result = result + " World";  // New string created
+        result = result + "!";        // Another new string
+        result = result.Replace("World", "Universe");  // Yet another
+
+        // Memory visualization:
+        // [Hello] [Hello World] [Hello World!] [Hello Universe!]
+        // All exist in memory (garbage collected later)
+    }
+
+    // Performance problem with strings
+    public void StringConcatenationProblem()
+    {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+
+        string result = "";
+        for (int i = 0; i < 10000; i++)
+        {
+            result += i.ToString();  // Creates 10,000 new string objects!
+        }
+
+        sw.Stop();
+        Console.WriteLine($"String: {sw.ElapsedMilliseconds}ms");
+        // Typical: 200-500ms (O(n²) complexity)
+    }
+}
+
+// ============ STRINGBUILDER EFFICIENCY ============
+
+public class StringBuilderExamples
+{
+    public void StringBuilderConcatenation()
+    {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 10000; i++)
+        {
+            sb.Append(i.ToString());  // Modifies same object
+        }
+        string result = sb.ToString();
+
+        sw.Stop();
+        Console.WriteLine($"StringBuilder: {sw.ElapsedMilliseconds}ms");
+        // Typical: 2-5ms (O(n) complexity)
+    }
+
+    public void StringBuilderOperations()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        // Append
+        sb.Append("Hello");
+        sb.Append(" ");
+        sb.Append("World");
+
+        // Append with formatting
+        sb.AppendFormat("Number: {0}", 42);
+
+        // AppendLine
+        sb.AppendLine("First line");
+        sb.AppendLine("Second line");
+
+        // Insert
+        sb.Insert(0, "Start: ");
+
+        // Remove
+        sb.Remove(0, 7);  // Remove "Start: "
+
+        // Replace
+        sb.Replace("World", "Universe");
+
+        // Clear
+        sb.Clear();
+
+        // Capacity management
+        StringBuilder sb2 = new StringBuilder(capacity: 100);
+        Console.WriteLine($"Capacity: {sb2.Capacity}");
+
+        // Convert to string
+        string final = sb.ToString();
+    }
+
+    // ============ REAL-WORLD EXAMPLES ============
+
+    public string BuildHtmlTable(List<User> users)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine("<table>");
+        sb.AppendLine("  <tr>");
+        sb.AppendLine("    <th>ID</th><th>Name</th><th>Email</th>");
+        sb.AppendLine("  </tr>");
+
+        foreach (var user in users)
+        {
+            sb.AppendLine("  <tr>");
+            sb.AppendFormat("    <td>{0}</td>", user.Id).AppendLine();
+            sb.AppendFormat("    <td>{0}</td>", user.Name).AppendLine();
+            sb.AppendFormat("    <td>{0}</td>", user.Email).AppendLine();
+            sb.AppendLine("  </tr>");
+        }
+
+        sb.AppendLine("</table>");
+
+        return sb.ToString();
+    }
+
+    public string GenerateSqlInsert(List<Product> products)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine("INSERT INTO Products (Name, Price, Category) VALUES");
+
+        for (int i = 0; i < products.Count; i++)
+        {
+            var p = products[i];
+            sb.AppendFormat("('{0}', {1}, '{2}')",
+                p.Name.Replace("'", "''"),  // SQL injection prevention
+                p.Price,
+                p.Category);
+
+            if (i < products.Count - 1)
+                sb.AppendLine(",");
+            else
+                sb.AppendLine(";");
+        }
+
+        return sb.ToString();
+    }
+
+    // Build log message
+    public string BuildLogMessage(Exception ex)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR");
+        sb.AppendLine($"Message: {ex.Message}");
+        sb.AppendLine($"Type: {ex.GetType().Name}");
+        sb.AppendLine($"Stack Trace:");
+        sb.AppendLine(ex.StackTrace);
+
+        if (ex.InnerException != null)
+        {
+            sb.AppendLine("Inner Exception:");
+            sb.AppendLine(BuildLogMessage(ex.InnerException));
+        }
+
+        return sb.ToString();
+    }
+
+    // Build CSV
+    public string BuildCsv<T>(List<T> data)
+    {
+        var sb = new StringBuilder();
+        var properties = typeof(T).GetProperties();
+
+        // Header
+        sb.AppendLine(string.Join(",", properties.Select(p => p.Name)));
+
+        // Data rows
+        foreach (var item in data)
+        {
+            var values = properties.Select(p =>
+            {
+                var value = p.GetValue(item)?.ToString() ?? "";
+                return value.Contains(",") ? $"\"{value}\"" : value;
+            });
+            sb.AppendLine(string.Join(",", values));
+        }
+
+        return sb.ToString();
+    }
+}
+
+// ============ PERFORMANCE COMPARISON ============
+
+public class PerformanceComparison
+{
+    public void ComparePerformance(int iterations)
+    {
+        // String concatenation
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        string strResult = "";
+        for (int i = 0; i < iterations; i++)
+        {
+            strResult += "a";
+        }
+        sw.Stop();
+        long stringTime = sw.ElapsedMilliseconds;
+
+        // StringBuilder
+        sw.Restart();
+        var sb = new StringBuilder();
+        for (int i = 0; i < iterations; i++)
+        {
+            sb.Append("a");
+        }
+        string sbResult = sb.ToString();
+        sw.Stop();
+        long sbTime = sw.ElapsedMilliseconds;
+
+        // String.Join (good alternative for arrays)
+        sw.Restart();
+        var array = new string[iterations];
+        for (int i = 0; i < iterations; i++)
+        {
+            array[i] = "a";
+        }
+        string joinResult = string.Join("", array);
+        sw.Stop();
+        long joinTime = sw.ElapsedMilliseconds;
+
+        Console.WriteLine($"String: {stringTime}ms");
+        Console.WriteLine($"StringBuilder: {sbTime}ms");
+        Console.WriteLine($"String.Join: {joinTime}ms");
+        Console.WriteLine($"StringBuilder is {stringTime / sbTime}x faster");
+    }
+}
+```
+
+**Comparison Table:**
+| Feature | String | StringBuilder |
+|---------|---------|---------------|
+| Mutability | Immutable | Mutable |
+| Performance (many changes) | Slow | Fast |
+| Memory | Creates many objects | Reuses buffer |
+| Thread-safe | Yes | No |
+| Syntax | Simple | More verbose |
+| Best for | Few operations | Many operations |
+
+**When to Use:**
+- **String:** <5 concatenations, constant strings, thread-safety needed
+- **StringBuilder:** Loops, multiple modifications, building large strings
+- **String.Join():** Joining array/collection elements
+
+**Best Practices:**
+```csharp
+// GOOD - few operations
+string name = firstName + " " + lastName;
+
+// GOOD - string interpolation (few operations)
+string message = $"Hello {name}, you have {count} messages";
+
+// BAD - loop with string concatenation
+string result = "";
+foreach (var item in items)
+{
+    result += item.ToString();  // Creates new string each time
+}
+
+// GOOD - loop with StringBuilder
+var sb = new StringBuilder();
+foreach (var item in items)
+{
+    sb.Append(item.ToString());  // Modifies buffer
+}
+string result = sb.ToString();
+
+// BEST - String.Join for collections
+string result = string.Join("", items.Select(i => i.ToString()));
+```
+
+---
+
+(Continuing with Q18-Q50...)
 
