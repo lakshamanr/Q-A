@@ -3053,5 +3053,835 @@ string result = string.Join("", items.Select(i => i.ToString()));
 
 ---
 
-(Continuing with Q18-Q50...)
+### Q18: Explain string interning in .NET.
+
+**String Interning:**
+- Process where identical string literals share same memory location
+- .NET maintains an internal string pool (intern pool)
+- Reduces memory usage for duplicate strings
+- Improves performance for string comparisons
+- Automatic for compile-time constants
+- Manual via `String.Intern()` method
+
+**Example:**
+```csharp
+public class StringInterningExamples
+{
+    public void BasicIntern
+
+ing()
+    {
+        // Compile-time literals are automatically interned
+        string s1 = "hello";
+        string s2 = "hello";
+        string s3 = "hello";
+
+        // All reference same object in intern pool
+        Console.WriteLine(object.ReferenceEquals(s1, s2));  // True
+        Console.WriteLine(object.ReferenceEquals(s2, s3));  // True
+
+        // Runtime string concatenation - NOT interned
+        string s4 = "hel" + "lo";  // Compiler optimizes to "hello" - interned
+        string s5 = string.Concat("hel", "lo");  // Runtime - NOT interned
+
+        Console.WriteLine(object.ReferenceEquals(s1, s4));  // True (compiler optimization)
+        Console.WriteLine(object.ReferenceEquals(s1, s5));  // False (runtime creation)
+
+        // Manual interning
+        string s6 = String.Intern(s5);
+        Console.WriteLine(object.ReferenceEquals(s1, s6));  // True (now interned)
+    }
+
+    public void ManualInterning()
+    {
+        // Check if string is already interned
+        string s1 = "test";
+        string s2 = String.IsInterned("test");  // Returns "test" from pool
+
+        Console.WriteLine(s2 != null);  // True (found in pool)
+        Console.WriteLine(object.ReferenceEquals(s1, s2));  // True
+
+        // Not interned
+        string s3 = new string("new".ToCharArray());
+        string s4 = String.IsInterned(s3);
+
+        Console.WriteLine(s4 == null);  // True (not in pool)
+
+        // Manually intern
+        string s5 = String.Intern(s3);
+        string s6 = String.IsInterned(s3);
+
+        Console.WriteLine(object.ReferenceEquals(s5, s6));  // True
+    }
+
+    // Performance comparison
+    public void PerformanceComparison()
+    {
+        string[] strings = new string[10000];
+
+        // Without interning - multiple string objects
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        for (int i = 0; i < strings.Length; i++)
+        {
+            strings[i] = $"value_{i % 100}";  // Only 100 unique values
+        }
+        sw.Stop();
+        Console.WriteLine($"Without interning: {sw.ElapsedMilliseconds}ms");
+
+        // With interning - reuse string objects
+        sw.Restart();
+        for (int i = 0; i < strings.Length; i++)
+        {
+            strings[i] = String.Intern($"value_{i % 100}");
+        }
+        sw.Stop();
+        Console.WriteLine($"With interning: {sw.ElapsedMilliseconds}ms");
+
+        // Memory usage also reduced with interning
+    }
+
+    // Real-world example
+    public class ConfigurationManager
+    {
+        private Dictionary<string, string> _settings = new();
+
+        public void LoadSettings(string[] lines)
+        {
+            foreach (var line in lines)
+            {
+                var parts = line.Split('=');
+                if (parts.Length == 2)
+                {
+                    // Intern keys - often repeated
+                    string key = String.Intern(parts[0].Trim());
+                    string value = parts[1].Trim();
+
+                    _settings[key] = value;
+                }
+            }
+        }
+
+        // Many lookups with same keys benefit from interning
+        public string GetSetting(string key)
+        {
+            // Intern the lookup key for faster comparison
+            key = String.Intern(key);
+            return _settings.TryGetValue(key, out var value) ? value : null;
+        }
+    }
+}
+```
+
+**When to Use:**
+- ✅ Repeated string literals (configuration keys, enum values)
+- ✅ String dictionary keys with many duplicates
+- ✅ Parsing/processing with repeated tokens
+- ❌ Unique strings (wastes intern pool space)
+- ❌ Large strings (increases pool size)
+- ❌ Short-lived strings (permanent in pool until AppDomain unload)
+
+**Important Notes:**
+- Interned strings live until AppDomain unloads
+- Can cause memory leaks if overused
+- Thread-safe (intern pool is thread-safe)
+- Equality checks faster (reference comparison)
+
+---
+
+### Q19: What are generics? Why are they important?
+
+**Generics:**
+- Type parameters for classes, methods, interfaces, delegates
+- Define placeholder types (T, TKey, TValue, etc.)
+- Compile-time type safety
+- Code reuse without boxing/casting
+- Better performance than non-generic collections
+
+**Why Important:**
+- **Type Safety:** Compile-time checking prevents runtime errors
+- **Performance:** No boxing for value types
+- **Code Reuse:** Write once, use with any type
+- **IntelliSense:** Better IDE support
+- **Eliminates Casting:** No need for explicit casts
+
+**Example:**
+```csharp
+// ============ GENERIC CLASSES ============
+
+// Generic class definition
+public class Box<T>
+{
+    private T _value;
+
+    public Box(T value)
+    {
+        _value = value;
+    }
+
+    public T GetValue()
+    {
+        return _value;
+    }
+
+    public void SetValue(T value)
+    {
+        _value = value;
+    }
+}
+
+// Usage
+var intBox = new Box<int>(42);
+int value = intBox.GetValue();  // No casting needed
+
+var stringBox = new Box<string>("Hello");
+string text = stringBox.GetValue();  // Type-safe
+
+// ============ GENERIC METHODS ============
+
+public class Utils
+{
+    // Generic method
+    public static void Swap<T>(ref T a, ref T b)
+    {
+        T temp = a;
+        a = b;
+        b = temp;
+    }
+
+    // Generic method with constraints
+    public static T Max<T>(T a, T b) where T : IComparable<T>
+    {
+        return a.CompareTo(b) > 0 ? a : b;
+    }
+
+    // Multiple type parameters
+    public static TResult Convert<TInput, TResult>(
+        TInput input,
+        Func<TInput, TResult> converter)
+    {
+        return converter(input);
+    }
+}
+
+// Usage
+int x = 5, y = 10;
+Utils.Swap(ref x, ref y);  // Type inferred
+Console.WriteLine($"x={x}, y={y}");  // x=10, y=5
+
+int max = Utils.Max(5, 10);  // 10
+string maxStr = Utils.Max("apple", "banana");  // "banana"
+
+string result = Utils.Convert<int, string>(42, n => n.ToString());
+
+// ============ GENERIC CONSTRAINTS ============
+
+// where T : struct (value type)
+public class ValueContainer<T> where T : struct
+{
+    public T Value { get; set; }
+}
+// ValueContainer<int> valid
+// ValueContainer<string> ERROR - string is reference type
+
+// where T : class (reference type)
+public class ReferenceContainer<T> where T : class
+{
+    public T? Value { get; set; }
+}
+// ReferenceContainer<string> valid
+// ReferenceContainer<int> ERROR - int is value type
+
+// where T : new() (has parameterless constructor)
+public class Factory<T> where T : new()
+{
+    public T Create()
+    {
+        return new T();  // Can instantiate
+    }
+}
+
+// where T : BaseClass (inherits from BaseClass)
+public class Repository<T> where T : Entity
+{
+    public void Save(T entity)
+    {
+        // Can access Entity properties/methods
+        Console.WriteLine($"Saving entity: {entity.Id}");
+    }
+}
+
+// where T : IInterface (implements interface)
+public class Comparer<T> where T : IComparable<T>
+{
+    public T GetMax(T a, T b)
+    {
+        return a.CompareTo(b) > 0 ? a : b;
+    }
+}
+
+// Multiple constraints
+public class AdvancedContainer<T>
+    where T : class, IDisposable, new()
+{
+    private T _instance;
+
+    public AdvancedContainer()
+    {
+        _instance = new T();  // new() constraint
+    }
+
+    public void Cleanup()
+    {
+        _instance?.Dispose();  // IDisposable constraint
+    }
+}
+
+// ============ GENERIC INTERFACES ============
+
+public interface IRepository<T>
+{
+    void Add(T item);
+    T GetById(int id);
+    IEnumerable<T> GetAll();
+    void Update(T item);
+    void Delete(int id);
+}
+
+public class UserRepository : IRepository<User>
+{
+    private List<User> _users = new();
+
+    public void Add(User item) => _users.Add(item);
+
+    public User GetById(int id) =>
+        _users.FirstOrDefault(u => u.Id == id);
+
+    public IEnumerable<User> GetAll() => _users;
+
+    public void Update(User item)
+    {
+        var existing = GetById(item.Id);
+        if (existing != null)
+        {
+            // Update properties
+        }
+    }
+
+    public void Delete(int id) =>
+        _users.RemoveAll(u => u.Id == id);
+}
+
+// ============ GENERIC DELEGATES ============
+
+// Func, Action, Predicate are built-in generic delegates
+
+// Custom generic delegate
+public delegate TResult Transformer<TInput, TResult>(TInput input);
+
+// Usage
+Transformer<int, string> intToString = n => n.ToString();
+string result = intToString(42);  // "42"
+
+Transformer<string, int> stringToLength = s => s.Length;
+int length = stringToLength("Hello");  // 5
+
+// ============ COLLECTIONS (WHY GENERICS MATTER) ============
+
+public class CollectionComparison
+{
+    // Old way - ArrayList (non-generic)
+    public void NonGenericCollection()
+    {
+        ArrayList list = new ArrayList();
+
+        list.Add(1);      // Boxing occurs
+        list.Add(2);      // Boxing occurs
+        list.Add("text"); // Can add different types!
+
+        int sum = 0;
+        foreach (object item in list)
+        {
+            // Runtime error possible!
+            if (item is int)
+            {
+                sum += (int)item;  // Unboxing + casting
+            }
+        }
+    }
+
+    // New way - List<T> (generic)
+    public void GenericCollection()
+    {
+        List<int> list = new List<int>();
+
+        list.Add(1);      // No boxing
+        list.Add(2);      // No boxing
+        // list.Add("text");  // Compile-time ERROR!
+
+        int sum = 0;
+        foreach (int item in list)  // No casting needed
+        {
+            sum += item;  // Direct access
+        }
+
+        // IntelliSense knows it's List<int>
+        int first = list[0];  // Type-safe
+    }
+}
+
+// ============ GENERIC STACK IMPLEMENTATION ============
+
+public class Stack<T>
+{
+    private T[] _items;
+    private int _count;
+
+    public Stack(int capacity = 10)
+    {
+        _items = new T[capacity];
+        _count = 0;
+    }
+
+    public void Push(T item)
+    {
+        if (_count == _items.Length)
+        {
+            Array.Resize(ref _items, _items.Length * 2);
+        }
+        _items[_count++] = item;
+    }
+
+    public T Pop()
+    {
+        if (_count == 0)
+            throw new InvalidOperationException("Stack is empty");
+
+        return _items[--_count];
+    }
+
+    public T Peek()
+    {
+        if (_count == 0)
+            throw new InvalidOperationException("Stack is empty");
+
+        return _items[_count - 1];
+    }
+
+    public int Count => _count;
+
+    public bool IsEmpty => _count == 0;
+}
+
+// Usage - works with any type
+var intStack = new Stack<int>();
+intStack.Push(1);
+intStack.Push(2);
+int value = intStack.Pop();  // 2
+
+var stringStack = new Stack<string>();
+stringStack.Push("Hello");
+stringStack.Push("World");
+string text = stringStack.Pop();  // "World"
+
+// ============ GENERIC BUILDER PATTERN ============
+
+public class QueryBuilder<T>
+{
+    private IQueryable<T> _query;
+
+    public QueryBuilder(IQueryable<T> source)
+    {
+        _query = source;
+    }
+
+    public QueryBuilder<T> Where(Expression<Func<T, bool>> predicate)
+    {
+        _query = _query.Where(predicate);
+        return this;
+    }
+
+    public QueryBuilder<T> OrderBy<TKey>(
+        Expression<Func<T, TKey>> keySelector)
+    {
+        _query = _query.OrderBy(keySelector);
+        return this;
+    }
+
+    public QueryBuilder<T> Take(int count)
+    {
+        _query = _query.Take(count);
+        return this;
+    }
+
+    public List<T> ToList()
+    {
+        return _query.ToList();
+    }
+}
+
+// Usage
+var users = new QueryBuilder<User>(dbContext.Users)
+    .Where(u => u.Age > 18)
+    .OrderBy(u => u.Name)
+    .Take(10)
+    .ToList();
+```
+
+**Performance Comparison:**
+```csharp
+// Non-generic: ArrayList
+ArrayList nonGeneric = new ArrayList();
+for (int i = 0; i < 1000000; i++)
+{
+    nonGeneric.Add(i);  // Boxing: 10-20x slower
+}
+
+// Generic: List<int>
+List<int> generic = new List<int>();
+for (int i = 0; i < 1000000; i++)
+{
+    generic.Add(i);  // No boxing: Fast
+}
+
+// Memory: Generic uses ~50% less memory for value types
+```
+
+**Benefits Summary:**
+1. **Type Safety:** Errors caught at compile-time
+2. **Performance:** 10-100x faster for value types
+3. **No Casting:** Cleaner, more readable code
+4. **Code Reuse:** One implementation for all types
+5. **Better Tooling:** IntelliSense, refactoring support
+
+---
+
+### Q20: Explain covariance and contravariance in C#.
+
+**Variance:**
+- Ability to use more derived (covariance) or less derived (contravariance) type than originally specified
+- Applies to generic interfaces and delegates
+- Uses `out` (covariance) and `in` (contravariance) keywords
+- Enables polymorphism with generics
+
+**Covariance (out):**
+- Return types can be more derived
+- Read-only scenarios
+- Keyword: `out T`
+- Example: `IEnumerable<out T>`
+
+**Contravariance (in):**
+- Parameter types can be less derived
+- Write-only scenarios
+- Keyword: `in T`
+- Example: `IComparer<in T>`
+
+**Example:**
+```csharp
+// ============ CLASS HIERARCHY ============
+
+public class Animal
+{
+    public string Name { get; set; }
+}
+
+public class Dog : Animal
+{
+    public void Bark() => Console.WriteLine("Woof!");
+}
+
+public class Cat : Animal
+{
+    public void Meow() => Console.WriteLine("Meow!");
+}
+
+// ============ COVARIANCE (out) ============
+
+// Covariant interface - can only return T, not accept it
+public interface IProducer<out T>
+{
+    T Produce();
+    // void Consume(T item);  // ERROR - can't use as parameter with 'out'
+}
+
+public class AnimalShelter : IProducer<Animal>
+{
+    public Animal Produce() => new Animal { Name = "Generic Animal" };
+}
+
+public class DogShelter : IProducer<Dog>
+{
+    public Dog Produce() => new Dog { Name = "Buddy" };
+}
+
+public class CoVarianceExample
+{
+    public void DemonstrateCovariance()
+    {
+        // Covariance: Can assign IProducer<Dog> to IProducer<Animal>
+        // Because Dog IS-A Animal (more derived to less derived)
+        IProducer<Dog> dogProducer = new DogShelter();
+        IProducer<Animal> animalProducer = dogProducer;  // Covariant assignment
+
+        Animal animal = animalProducer.Produce();  // Returns Dog
+        Console.WriteLine(animal.Name);
+
+        // Real-world: IEnumerable<out T>
+        IEnumerable<Dog> dogs = new List<Dog>
+        {
+            new Dog { Name = "Buddy" },
+            new Dog { Name = "Max" }
+        };
+
+        // Covariance: IEnumerable<Dog> can be treated as IEnumerable<Animal>
+        IEnumerable<Animal> animals = dogs;  // Valid!
+
+        foreach (Animal a in animals)
+        {
+            Console.WriteLine(a.Name);
+        }
+
+        // Why it's safe: We're only READING (producing) values
+        // Can't modify the collection through IEnumerable
+    }
+
+    // Method accepting covariant interface
+    public void ProcessAnimals(IEnumerable<Animal> animals)
+    {
+        foreach (var animal in animals)
+        {
+            Console.WriteLine(animal.Name);
+        }
+    }
+
+    public void UseCovariance()
+    {
+        List<Dog> dogs = new List<Dog> { new Dog(), new Dog() };
+
+        // Can pass List<Dog> where IEnumerable<Animal> expected
+        ProcessAnimals(dogs);  // Covariance!
+    }
+}
+
+// ============ CONTRAVARIANCE (in) ============
+
+// Contravariant interface - can only accept T, not return it
+public interface IConsumer<in T>
+{
+    void Consume(T item);
+    // T Produce();  // ERROR - can't return T with 'in'
+}
+
+public class AnimalFeeder : IConsumer<Animal>
+{
+    public void Consume(Animal animal)
+    {
+        Console.WriteLine($"Feeding {animal.Name}");
+    }
+}
+
+public class ContraVarianceExample
+{
+    public void DemonstrateContravariance()
+    {
+        // Contravariance: Can assign IConsumer<Animal> to IConsumer<Dog>
+        // Because Animal IS LESS derived than Dog (less derived to more derived)
+        IConsumer<Animal> animalConsumer = new AnimalFeeder();
+        IConsumer<Dog> dogConsumer = animalConsumer;  // Contravariant assignment
+
+        dogConsumer.Consume(new Dog { Name = "Buddy" });  // Works!
+
+        // Why it's safe: AnimalFeeder can handle ANY animal (including Dogs)
+        // Since Dog IS-A Animal, it's safe to pass Dog to Animal handler
+
+        // Real-world: IComparer<in T>
+        IComparer<Animal> animalComparer = Comparer<Animal>.Create(
+            (a1, a2) => string.Compare(a1.Name, a2.Name));
+
+        // Contravariance: IComparer<Animal> can be used as IComparer<Dog>
+        IComparer<Dog> dogComparer = animalComparer;  // Valid!
+
+        var dogs = new List<Dog>
+        {
+            new Dog { Name = "Zeus" },
+            new Dog { Name = "Apollo" }
+        };
+
+        dogs.Sort(dogComparer);  // Uses Animal comparer for Dogs
+    }
+
+    // Method with contravariant delegate
+    public void ProcessDog(Action<Dog> dogAction)
+    {
+        var dog = new Dog { Name = "Max" };
+        dogAction(dog);
+    }
+
+    public void UseContravariance()
+    {
+        // Action<Animal> can be used where Action<Dog> expected
+        Action<Animal> animalAction = animal =>
+            Console.WriteLine($"Processing: {animal.Name}");
+
+        ProcessDog(animalAction);  // Contravariance!
+    }
+}
+
+// ============ BUILT-IN EXAMPLES ============
+
+public class BuiltInVariance
+{
+    public void IEnumerableCovariance()
+    {
+        // IEnumerable<out T> is covariant
+        IEnumerable<string> strings = new List<string> { "a", "b", "c" };
+        IEnumerable<object> objects = strings;  // Covariant!
+
+        foreach (object obj in objects)
+        {
+            Console.WriteLine(obj);
+        }
+    }
+
+    public void FuncCovariance()
+    {
+        // Func<out TResult> is covariant on return type
+        Func<Dog> dogFactory = () => new Dog { Name = "Buddy" };
+        Func<Animal> animalFactory = dogFactory;  // Covariant!
+
+        Animal animal = animalFactory();
+        Console.WriteLine(animal.Name);
+    }
+
+    public void ActionContravariance()
+    {
+        // Action<in T> is contravariant on parameter
+        Action<Animal> animalAction = animal =>
+            Console.WriteLine($"Animal: {animal.Name}");
+
+        Action<Dog> dogAction = animalAction;  // Contravariant!
+
+        dogAction(new Dog { Name = "Max" });
+    }
+
+    public void IComparerContravariance()
+    {
+        // IComparer<in T> is contravariant
+        IComparer<object> objectComparer = Comparer<object>.Create(
+            (o1, o2) => o1.ToString().CompareTo(o2.ToString()));
+
+        IComparer<string> stringComparer = objectComparer;  // Contravariant!
+
+        var strings = new List<string> { "z", "a", "m" };
+        strings.Sort(stringComparer);
+    }
+}
+
+// ============ CUSTOM VARIANCE EXAMPLE ============
+
+// Covariant interface
+public interface IRepository<out T>
+{
+    T GetById(int id);
+    IEnumerable<T> GetAll();
+    // void Add(T item);  // ERROR - can't have T as input with 'out'
+}
+
+// Contravariant interface
+public interface IValidator<in T>
+{
+    bool IsValid(T item);
+    // T Create();  // ERROR - can't return T with 'in'
+}
+
+// Both covariant and contravariant
+public interface IConverter<in TInput, out TOutput>
+{
+    TOutput Convert(TInput input);
+}
+
+public class StringToIntConverter : IConverter<string, int>
+{
+    public int Convert(string input) => int.Parse(input);
+}
+
+public class VarianceUsage
+{
+    public void UseCustomVariance()
+    {
+        // Contravariance on input
+        IValidator<Animal> animalValidator = new AnimalValidator();
+        IValidator<Dog> dogValidator = animalValidator;  // Contravariant!
+
+        dogValidator.IsValid(new Dog());
+
+        // Covariance on output
+        IRepository<Dog> dogRepo = new DogRepository();
+        IRepository<Animal> animalRepo = dogRepo;  // Covariant!
+
+        Animal animal = animalRepo.GetById(1);
+
+        // Both
+        IConverter<string, int> stringToInt = new StringToIntConverter();
+
+        // Contravariant input: object -> string
+        IConverter<object, int> objectToInt = stringToInt;
+        int result1 = objectToInt.Convert("42");
+
+        // Covariant output: int -> object
+        IConverter<string, object> stringToObject = stringToInt;
+        object result2 = stringToObject.Convert("42");
+    }
+}
+
+public class AnimalValidator : IValidator<Animal>
+{
+    public bool IsValid(Animal item) => !string.IsNullOrEmpty(item.Name);
+}
+
+public class DogRepository : IRepository<Dog>
+{
+    private List<Dog> _dogs = new List<Dog>
+    {
+        new Dog { Name = "Buddy" },
+        new Dog { Name = "Max" }
+    };
+
+    public Dog GetById(int id) => _dogs.FirstOrDefault();
+
+    public IEnumerable<Dog> GetAll() => _dogs;
+}
+
+// ============ MEMORY TRICK ============
+
+/*
+Covariance (out):
+- "OUT" of the generic - returning/producing
+- More derived → Less derived (Dog → Animal)
+- Read-only scenarios
+- Think: "Output goes UP the hierarchy"
+
+Contravariance (in):
+- "IN" to the generic - accepting/consuming
+- Less derived → More derived (Animal → Dog)
+- Write-only scenarios
+- Think: "Input goes DOWN the hierarchy"
+
+Example:
+IEnumerable<out T> - only OUTPUTS T → Covariant
+IComparer<in T> - only INPUTS T → Contravariant
+*/
+```
+
+**Key Rules:**
+- **Covariance (out):** Safe for return types (producing values)
+- **Contravariance (in):** Safe for parameter types (consuming values)
+- **Invariance:** When T is both input and output (List<T>, IList<T>)
+
+**Common Built-in Examples:**
+- Covariant: `IEnumerable<out T>`, `IQueryable<out T>`, `Func<out TResult>`
+- Contravariant: `IComparer<in T>`, `Action<in T>`, `IEqualityComparer<in T>`
+
+---
+
+(Continuing with Q21-Q50...)
 
