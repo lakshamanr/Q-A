@@ -1075,4 +1075,609 @@ public class LogActionAttribute : Attribute, IActionFilter
 
 ---
 
-(Continuing with Q53-Q60...)
+### Q53: Explain routing in ASP.NET MVC. What is attribute routing?
+
+**Routing:**
+- Maps URLs to controllers and actions
+- Defines URL patterns for application
+- Two types: Convention-based and Attribute routing
+- Routes evaluated in order of registration
+- Can have route constraints and default values
+
+**Attribute Routing:**
+- Routes defined via attributes on controllers/actions
+- More flexible and explicit
+- Better for RESTful APIs
+- Supports route constraints and parameters
+- Preferred in ASP.NET Core
+
+**Example:**
+```csharp
+// ============ CONVENTION-BASED ROUTING ============
+
+// Program.cs (ASP.NET Core)
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+
+// Default route (convention-based)
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Examples:
+// /Products/Index → ProductsController.Index()
+// /Products/Details/5 → ProductsController.Details(5)
+// / → HomeController.Index() (defaults)
+
+// Custom route with constraints
+app.MapControllerRoute(
+    name: "product",
+    pattern: "Product/{id:int}",
+    defaults: new { controller = "Products", action = "Details" });
+
+// Multiple routes
+app.MapControllerRoute(
+    name: "blog",
+    pattern: "Blog/{year:int}/{month:int}/{day:int}",
+    defaults: new { controller = "Blog", action = "Index" });
+
+app.MapControllerRoute(
+    name: "archive",
+    pattern: "Archive/{year:int}/{month:int?}",
+    defaults: new { controller = "Blog", action = "Archive" });
+
+app.Run();
+
+// ============ ATTRIBUTE ROUTING ============
+
+[Route("api/[controller]")]
+[ApiController]
+public class ProductsController : ControllerBase
+{
+    // GET: api/products
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        return Ok(new[] { "Product1", "Product2" });
+    }
+
+    // GET: api/products/5
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
+    {
+        return Ok($"Product {id}");
+    }
+
+    // GET: api/products/5/reviews
+    [HttpGet("{id}/reviews")]
+    public IActionResult GetReviews(int id)
+    {
+        return Ok($"Reviews for product {id}");
+    }
+
+    // POST: api/products
+    [HttpPost]
+    public IActionResult Create([FromBody] Product product)
+    {
+        return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+    }
+
+    // PUT: api/products/5
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, [FromBody] Product product)
+    {
+        return NoContent();
+    }
+
+    // DELETE: api/products/5
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        return NoContent();
+    }
+
+    // GET: api/products/search?query=laptop&category=electronics
+    [HttpGet("search")]
+    public IActionResult Search([FromQuery] string query, [FromQuery] string category)
+    {
+        return Ok($"Searching for '{query}' in '{category}'");
+    }
+
+    // GET: api/products/featured
+    [HttpGet("featured")]
+    public IActionResult GetFeatured()
+    {
+        return Ok("Featured products");
+    }
+}
+
+// ============ ROUTE CONSTRAINTS ============
+
+[Route("api/orders")]
+public class OrdersController : ControllerBase
+{
+    // Integer constraint
+    [HttpGet("{id:int}")]
+    public IActionResult GetOrder(int id)
+    {
+        return Ok($"Order {id}");
+    }
+
+    // Guid constraint
+    [HttpGet("{orderId:guid}")]
+    public IActionResult GetOrderByGuid(Guid orderId)
+    {
+        return Ok($"Order {orderId}");
+    }
+
+    // Min/Max constraints
+    [HttpGet("{id:int:min(1):max(1000)}")]
+    public IActionResult GetOrderInRange(int id)
+    {
+        return Ok($"Order {id}");
+    }
+
+    // Length constraint
+    [HttpGet("{code:length(5)}")]
+    public IActionResult GetByCode(string code)
+    {
+        return Ok($"Order code: {code}");
+    }
+
+    // Regex constraint
+    [HttpGet("{zipcode:regex(^\\d{{5}}$)}")]
+    public IActionResult GetByZipCode(string zipcode)
+    {
+        return Ok($"Zip code: {zipcode}");
+    }
+
+    // Range constraint
+    [HttpGet("{year:int:range(2000,2030)}")]
+    public IActionResult GetOrdersByYear(int year)
+    {
+        return Ok($"Orders from {year}");
+    }
+}
+
+// ============ ROUTE PREFIXES AND NAMES ============
+
+[Route("api/v1/[controller]")]
+public class CustomersController : ControllerBase
+{
+    // Combined routes: api/v1/customers
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        return Ok("All customers");
+    }
+
+    // Named route for URL generation
+    [HttpGet("{id}", Name = "GetCustomer")]
+    public IActionResult GetById(int id)
+    {
+        return Ok($"Customer {id}");
+    }
+
+    // Use named route to generate URL
+    [HttpPost]
+    public IActionResult Create([FromBody] Customer customer)
+    {
+        var url = Url.Link("GetCustomer", new { id = customer.Id });
+        return Created(url, customer);
+    }
+
+    // Multiple HTTP methods on same route
+    [HttpGet("count")]
+    [HttpPost("count")]
+    public IActionResult GetCount()
+    {
+        return Ok(new { Count = 100 });
+    }
+}
+
+// ============ ROUTE PARAMETERS ============
+
+[Route("api/blog")]
+public class BlogController : ControllerBase
+{
+    // Required parameter
+    [HttpGet("posts/{id}")]
+    public IActionResult GetPost(int id)
+    {
+        return Ok($"Post {id}");
+    }
+
+    // Optional parameter
+    [HttpGet("posts/{id?}")]
+    public IActionResult GetPostOptional(int? id)
+    {
+        if (id.HasValue)
+            return Ok($"Post {id}");
+        return Ok("All posts");
+    }
+
+    // Multiple parameters
+    [HttpGet("{year}/{month}/{slug}")]
+    public IActionResult GetPostByDate(int year, int month, string slug)
+    {
+        return Ok($"{year}/{month}/{slug}");
+    }
+
+    // Catch-all parameter
+    [HttpGet("posts/{*path}")]
+    public IActionResult GetByCatchAll(string path)
+    {
+        return Ok($"Path: {path}");
+        // Matches: /api/blog/posts/2024/01/my-post
+        // path = "2024/01/my-post"
+    }
+}
+
+// ============ MVC CONTROLLER WITH ATTRIBUTE ROUTING ============
+
+[Route("products")]
+public class ProductsMvcController : Controller
+{
+    // GET: /products
+    [HttpGet("")]
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    // GET: /products/5
+    [HttpGet("{id}")]
+    public IActionResult Details(int id)
+    {
+        return View();
+    }
+
+    // GET: /products/create
+    [HttpGet("create")]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    // POST: /products/create
+    [HttpPost("create")]
+    [ValidateAntiForgeryToken]
+    public IActionResult Create(Product product)
+    {
+        if (!ModelState.IsValid)
+            return View(product);
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // GET: /products/5/edit
+    [HttpGet("{id}/edit")]
+    public IActionResult Edit(int id)
+    {
+        return View();
+    }
+
+    // POST: /products/5/edit
+    [HttpPost("{id}/edit")]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(int id, Product product)
+    {
+        if (!ModelState.IsValid)
+            return View(product);
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // GET: /products/category/electronics
+    [HttpGet("category/{categoryName}")]
+    public IActionResult ByCategory(string categoryName)
+    {
+        return View();
+    }
+}
+
+// ============ ROUTE CONSTRAINTS TYPES ============
+
+public class RouteConstraintExamples
+{
+    /*
+     * BUILT-IN CONSTRAINTS:
+     *
+     * Type Constraints:
+     * - int: {id:int}
+     * - bool: {active:bool}
+     * - datetime: {date:datetime}
+     * - decimal: {price:decimal}
+     * - double: {value:double}
+     * - float: {value:float}
+     * - guid: {id:guid}
+     * - long: {id:long}
+     *
+     * Range Constraints:
+     * - min(value): {age:min(18)}
+     * - max(value): {age:max(100)}
+     * - range(min,max): {age:range(18,100)}
+     *
+     * Length Constraints:
+     * - length(value): {code:length(5)}
+     * - minlength(value): {name:minlength(3)}
+     * - maxlength(value): {name:maxlength(50)}
+     *
+     * String Constraints:
+     * - alpha: {name:alpha}
+     * - regex(pattern): {zip:regex(^\d{5}$)}
+     *
+     * Combination:
+     * - {id:int:min(1):max(1000)}
+     * - {code:alpha:length(5)}
+     */
+}
+
+// ============ CUSTOM ROUTE CONSTRAINT ============
+
+public class EvenNumberConstraint : IRouteConstraint
+{
+    public bool Match(
+        HttpContext httpContext,
+        IRouter route,
+        string routeKey,
+        RouteValueDictionary values,
+        RouteDirection routeDirection)
+    {
+        if (values.TryGetValue(routeKey, out var value))
+        {
+            if (int.TryParse(value.ToString(), out int number))
+            {
+                return number % 2 == 0;
+            }
+        }
+        return false;
+    }
+}
+
+// Register custom constraint
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddRouting(options =>
+        {
+            options.ConstraintMap.Add("even", typeof(EvenNumberConstraint));
+        });
+
+        services.AddControllersWithViews();
+    }
+}
+
+// Use custom constraint
+[Route("api/values")]
+public class ValuesController : ControllerBase
+{
+    [HttpGet("{id:even}")]
+    public IActionResult GetEvenId(int id)
+    {
+        return Ok($"Even ID: {id}");
+    }
+}
+
+// ============ ROUTE ORDERING ============
+
+[Route("api/products")]
+public class ProductRoutingController : ControllerBase
+{
+    // Order 0 (executes first)
+    [HttpGet("featured")]
+    [Route("featured", Order = 0)]
+    public IActionResult Featured()
+    {
+        return Ok("Featured products");
+    }
+
+    // Order 1
+    [HttpGet("{id:int}")]
+    [Route("{id:int}", Order = 1)]
+    public IActionResult GetById(int id)
+    {
+        return Ok($"Product {id}");
+    }
+
+    // Order 2 (executes last)
+    [HttpGet("{slug}")]
+    [Route("{slug}", Order = 2)]
+    public IActionResult GetBySlug(string slug)
+    {
+        return Ok($"Product slug: {slug}");
+    }
+
+    /*
+     * URL: /api/products/featured
+     * Matches: Featured() (Order 0)
+     *
+     * URL: /api/products/123
+     * Matches: GetById(123) (Order 1)
+     *
+     * URL: /api/products/my-product
+     * Matches: GetBySlug("my-product") (Order 2)
+     */
+}
+
+// ============ AREAS WITH ROUTING ============
+
+[Area("Admin")]
+[Route("admin/[controller]")]
+public class DashboardController : Controller
+{
+    // GET: /admin/dashboard
+    [HttpGet("")]
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    // GET: /admin/dashboard/stats
+    [HttpGet("stats")]
+    public IActionResult Stats()
+    {
+        return View();
+    }
+}
+
+// Configure area routes
+app.MapControllerRoute(
+    name: "admin",
+    pattern: "admin/{controller=Dashboard}/{action=Index}/{id?}",
+    defaults: new { area = "Admin" });
+
+// ============ ROUTE VALUES AND URL GENERATION ============
+
+public class UrlGenerationController : Controller
+{
+    public IActionResult Examples()
+    {
+        // Generate URL from action name
+        var url1 = Url.Action("Details", "Products", new { id = 5 });
+        // Result: /Products/Details/5
+
+        // Generate URL from named route
+        var url2 = Url.RouteUrl("GetCustomer", new { id = 10 });
+        // Result: /api/v1/customers/10
+
+        // Generate absolute URL
+        var url3 = Url.Action("Index", "Home", null, Request.Scheme);
+        // Result: https://example.com/Home/Index
+
+        // Generate URL in Razor view
+        // <a asp-controller="Products" asp-action="Details" asp-route-id="5">Details</a>
+
+        return View();
+    }
+
+    public IActionResult RedirectExamples()
+    {
+        // Redirect to action
+        return RedirectToAction("Index", "Home");
+
+        // Redirect to action with parameters
+        return RedirectToAction("Details", "Products", new { id = 5 });
+
+        // Redirect to route
+        return RedirectToRoute("GetCustomer", new { id = 10 });
+
+        // Redirect to URL
+        return Redirect("/products/featured");
+
+        // Permanent redirect
+        return RedirectToActionPermanent("Index", "Home");
+    }
+}
+
+// ============ REAL-WORLD ROUTING EXAMPLE ============
+
+// E-commerce API routes
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiController]
+[ApiVersion("1.0")]
+public class EcommerceProductsController : ControllerBase
+{
+    // GET: api/v1/products
+    [HttpGet]
+    public IActionResult GetProducts([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        return Ok(new { Page = page, PageSize = pageSize });
+    }
+
+    // GET: api/v1/products/5
+    [HttpGet("{id:int}")]
+    public IActionResult GetProduct(int id)
+    {
+        return Ok(new { Id = id });
+    }
+
+    // GET: api/v1/products/sku/ABC123
+    [HttpGet("sku/{sku}")]
+    public IActionResult GetBySku(string sku)
+    {
+        return Ok(new { Sku = sku });
+    }
+
+    // GET: api/v1/products/categories/electronics/items
+    [HttpGet("categories/{category}/items")]
+    public IActionResult GetByCategory(string category)
+    {
+        return Ok(new { Category = category });
+    }
+
+    // GET: api/v1/products/search?q=laptop&min=500&max=1000
+    [HttpGet("search")]
+    public IActionResult Search(
+        [FromQuery(Name = "q")] string query,
+        [FromQuery] decimal? min,
+        [FromQuery] decimal? max)
+    {
+        return Ok(new { Query = query, Min = min, Max = max });
+    }
+
+    // POST: api/v1/products
+    [HttpPost]
+    public IActionResult Create([FromBody] Product product)
+    {
+        return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+    }
+
+    // PATCH: api/v1/products/5/price
+    [HttpPatch("{id:int}/price")]
+    public IActionResult UpdatePrice(int id, [FromBody] decimal newPrice)
+    {
+        return NoContent();
+    }
+}
+
+// ============ SUPPORTING CLASSES ============
+
+public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+}
+
+public class Customer
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
+```
+
+**Comparison: Convention-based vs Attribute Routing:**
+
+| Feature | Convention-based | Attribute Routing |
+|---------|-----------------|-------------------|
+| Definition | Centralized in Program.cs | On controllers/actions |
+| Flexibility | Less flexible | Very flexible |
+| Maintainability | Can become complex | Self-documenting |
+| RESTful APIs | Less suitable | Ideal |
+| URL patterns | Global templates | Explicit per action |
+| Best for | Traditional MVC | Web APIs |
+
+**Route Constraint Types:**
+- **Type**: `int`, `bool`, `datetime`, `guid`, `decimal`
+- **Range**: `min(n)`, `max(n)`, `range(min,max)`
+- **Length**: `length(n)`, `minlength(n)`, `maxlength(n)`
+- **Pattern**: `alpha`, `regex(pattern)`
+- **Custom**: Implement `IRouteConstraint`
+
+**Best Practices:**
+- ✅ Use **attribute routing** for APIs
+- ✅ Use **route constraints** for type safety
+- ✅ Use **named routes** for URL generation
+- ✅ Keep routes simple and predictable
+- ✅ Version your APIs (`api/v1/...`)
+- ✅ Use HTTP verbs correctly (GET, POST, PUT, DELETE)
+- ❌ Don't mix convention and attribute routing unnecessarily
+- ❌ Don't create overlapping routes
+
+---
+
+(Continuing with Q54-Q60...)
