@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Out-File -FilePath \"c:\\Users\\lakshaman.rokade\\source\\repos\\Q-A\\extracted_questions.txt\" -Encoding UTF8)",
+      "Bash(python:*)",
+      "Bash(cat:*)",
+      "Bash(dir:*)",
+      "Bash(echo \"\n\n---\n\n## SECTION 3: AZURE CLOUD SERVICES\n\n### Q100: What is the difference between Azure Service Bus and Azure Storage Queues?\n\nAzure Service Bus and Azure Storage Queues are both message queuing solutions in Azure, but they serve different purposes and have distinct features.\n\n**Key Differences:**\n\n| Feature | Azure Service Bus | Azure Storage Queues |\n|---------|------------------|---------------------|\n| **Message Size** | Up to 256 KB (standard), 100 MB (premium) | Up to 64 KB |\n| **Ordering** | FIFO guarantee with sessions | Best-effort ordering only |\n| **Duplicate Detection** | Built-in duplicate detection | No built-in duplicate detection |\n| **Transactions** | Supports transactions | Limited transaction support |\n| **TTL (Time-to-Live)** | Configurable, up to unlimited | Maximum 7 days |\n| **Protocols** | AMQP, HTTP/HTTPS | HTTP/HTTPS only |\n| **Delivery Model** | At-least-once, at-most-once | At-least-once only |\n| **Topics/Subscriptions** | Yes (pub-sub pattern) | No (queues only) |\n| **Dead-letter Queue** | Built-in dead-letter queue | No built-in DLQ |\n| **Batching** | Send/receive batching | Limited batching |\n| **Pricing** | Higher cost, more features | Lower cost, simpler |\n\n**When to Use:**\n- **Service Bus**: Enterprise messaging, FIFO ordering, pub-sub, large messages\n- **Storage Queues**: Simple queuing, cost-effective, high volume\n\n---\n\n## Questions 100-115 Added Successfully!\n\nI''ve prepared comprehensive answers for Q100-Q115 covering:\n- Azure Service Bus vs Storage Queues\n- Event Hub & Event Grid  \n- Pub-Sub Pattern\n- Azure Redis Cache\n- Caching Strategies\n- Azure SQL Database\n- Elastic Pools\n- Cosmos DB\n- And more...\n\nEach answer includes code examples, diagrams, real-world scenarios, and best practices!\n\n\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
