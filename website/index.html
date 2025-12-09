@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.NET Developer Interview Mastery - 570 Questions</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-code"></i>
+                <span>.NET Interview Mastery</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#sections" class="nav-link">Sections</a></li>
+                <li><a href="#questions" class="nav-link">Questions</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+            </ul>
+            <button class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Master Your .NET Developer Interview</h1>
+                <p class="hero-subtitle">570 Comprehensive Questions & Answers</p>
+                <p class="hero-description">
+                    From fundamentals to advanced topics: .NET Core, ASP.NET, Azure, Microservices,
+                    SQL Server, Design Patterns, and more. Everything you need to ace your interview.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-question-circle"></i>
+                        <h3>570</h3>
+                        <p>Questions</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-book"></i>
+                        <h3>20+</h3>
+                        <p>Topics</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-code"></i>
+                        <h3>500+</h3>
+                        <p>Code Examples</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>100%</h3>
+                        <p>Practical</p>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#sections" class="btn btn-primary">Explore Sections</a>
+                    <a href="#questions" class="btn btn-secondary">Browse Questions</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sections Overview -->
+    <section id="sections" class="sections">
+        <div class="container">
+            <div class="section-header">
+                <h2>Question Categories</h2>
+                <p>Comprehensive coverage of all essential topics</p>
+            </div>
+            <div class="section-grid">
+                <!-- Section 1 -->
+                <div class="section-card" data-section="dotnet-advanced">
+                    <div class="section-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Advanced .NET & ASP.NET Core</h3>
+                    <p class="section-range">Q91 - Q99</p>
+                    <ul class="section-topics">
+                        <li>Dependency Injection</li>
+                        <li>Middleware Pipeline</li>
+                        <li>Authentication & Authorization</li>
+                        <li>Async/Await Patterns</li>
+                        <li>Entity Framework Core</li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="loadSection('dotnet-advanced')">
+                        View Questions <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Section 2 -->
+                <div class="section-card" data-section="azure-cloud">
+                    <div class="section-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3>Azure Cloud Services</h3>
+                    <p class="section-range">Q100 - Q120</p>
+                    <ul class="section-topics">
+                        <li>Azure Service Bus</li>
+                        <li>Event Hub & Event Grid</li>
+                        <li>Redis Cache</li>
+                        <li>Azure SQL Database</li>
+                        <li>Cosmos DB</li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="loadSection('azure-cloud')">
+                        View Questions <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Section 3 -->
+                <div class="section-card" data-section="devops">
+                    <div class="section-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>DevOps & CI/CD</h3>
+                    <p class="section-range">Q121 - Q130</p>
+                    <ul class="section-topics">
+                        <li>Azure DevOps</li>
+                        <li>CI/CD Pipelines</li>
+                        <li>Docker & Containers</li>
+                        <li>Kubernetes</li>
+                        <li>Infrastructure as Code</li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="loadSection('devops')">
+                        View Questions <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Section 4 -->
+                <div class="section-card" data-section="microservices-basic">
+                    <div class="section-icon">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+                    <h3>Microservices Basics</h3>
+                    <p class="section-range">Q131 - Q140</p>
+                    <ul class="section-topics">
+                        <li>Microservices Architecture</li>
+                        <li>API Gateway</li>
+                        <li>Service Discovery</li>
+                        <li>Inter-service Communication</li>
+                        <li>Load Balancing</li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="loadSection('microservices-basic')">
+                        View Questions <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Section 5 -->
+                <div class="section-card" data-section="microservices-advanced">
+                    <div class="section-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3>Advanced Microservices Patterns</h3>
+                    <p class="section-range">Q141 - Q171</p>
+                    <ul class="section-topics">
+                        <li>CQRS Pattern</li>
+                        <li>Event Sourcing</li>
+                        <li>Saga Pattern</li>
+                        <li>Circuit Breaker</li>
+                        <li>Service Mesh</li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="loadSection('microservices-advanced')">
+                        View Questions <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Section 6 -->
+                <div class="section-card" data-section="sql-database">
+                    <div class="section-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>SQL Server & Database</h3>
+                    <p class="section-range">Q172 - Q200</p>
+                    <ul class="section-topics">
+                        <li>SQL Joins & Indexes</li>
+                        <li>Stored Procedures & Triggers</li>
+                        <li>Transactions & Isolation</li>
+                        <li>Query Optimization</li>
+                        <li>Performance Tuning</li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="loadSection('sql-database')">
+                        View Questions <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Questions Browser -->
+    <section id="questions" class="questions-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Browse All Questions</h2>
+                <p>Search and filter through 570 interview questions</p>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="search-filter-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search questions by keyword...">
+                </div>
+                <div class="filter-dropdown">
+                    <select id="sectionFilter">
+                        <option value="all">All Sections</option>
+                        <option value="dotnet-advanced">Advanced .NET (Q91-Q99)</option>
+                        <option value="azure-cloud">Azure Cloud (Q100-Q120)</option>
+                        <option value="devops">DevOps (Q121-Q130)</option>
+                        <option value="microservices-basic">Microservices Basics (Q131-Q140)</option>
+                        <option value="microservices-advanced">Advanced Microservices (Q141-Q171)</option>
+                        <option value="sql-database">SQL Server (Q172-Q200)</option>
+                    </select>
+                </div>
+                <div class="filter-dropdown">
+                    <select id="difficultyFilter">
+                        <option value="all">All Levels</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Questions List -->
+            <div id="questionsList" class="questions-list">
+                <!-- Questions will be dynamically loaded here -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be dynamically generated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Question Detail Modal -->
+    <div id="questionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalQuestionTitle"></h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalQuestionBody">
+                <!-- Question detail content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="previousQuestion()">
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                <button class="btn btn-primary" onclick="nextQuestion()">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <h2>About This Question Bank</h2>
+                <p class="about-description">
+                    This comprehensive interview question bank is designed for .NET developers
+                    preparing for technical interviews. It covers everything from fundamentals
+                    to advanced topics with practical examples and real-world scenarios.
+                </p>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <h4>Comprehensive Coverage</h4>
+                        <p>570 questions covering all essential .NET topics</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <h4>Code Examples</h4>
+                        <p>Every question includes practical C# code examples</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <h4>Best Practices</h4>
+                        <p>Learn industry-standard patterns and approaches</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <h4>Real-World Scenarios</h4>
+                        <p>Examples based on actual production applications</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <h4>Visual Diagrams</h4>
+                        <p>ASCII diagrams for better understanding</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <h4>Up-to-Date</h4>
+                        <p>Covers latest .NET 8, C# 12, and modern practices</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-code"></i> .NET Interview Mastery</h3>
+                    <p>Your comprehensive guide to .NET developer interviews</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#sections">Sections</a></li>
+                        <li><a href="#questions">Questions</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Topics Covered</h4>
+                    <ul>
+                        <li>ASP.NET Core</li>
+                        <li>Azure Cloud</li>
+                        <li>Microservices</li>
+                        <li>SQL Server</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 .NET Interview Mastery. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="questions-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
