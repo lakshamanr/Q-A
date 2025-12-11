@@ -1,0 +1,459 @@
+@model InterviewQuestionBank.Models.Question
+
+@{
+    ViewData["Title"] = "Create Question";
+}
+
+<style>
+    .editor-container {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        min-height: 400px;
+    }
+    
+    .editor-toolbar {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px;
+        border-radius: 0.25rem 0.25rem 0 0;
+    }
+    
+    .editor-toolbar button {
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+    
+    #contentEditor {
+        padding: 15px;
+        min-height: 350px;
+        max-height: 500px;
+        overflow-y: auto;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.6;
+        background-color: #fff;
+        border: none;
+        border-radius: 0 0 0.25rem 0.25rem;
+    }
+    
+    #contentEditor:focus {
+        outline: 2px solid #007bff;
+        outline-offset: -2px;
+    }
+    
+    .preview-container {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        padding: 15px;
+        min-height: 400px;
+        background-color: #f8f9fa;
+    }
+    
+    .tab-content {
+        margin-top: 15px;
+    }
+    
+    .nav-tabs .nav-link.active {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+    
+    .category-option {
+        display: none;
+    }
+    
+    .new-category-fields {
+        display: none;
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 0.25rem;
+    }
+    
+    code {
+        background-color: #f4f4f4;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    pre {
+        background-color: #f4f4f4;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+    
+    .form-card {
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card form-card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-plus-circle me-2"></i>Create New Question
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post" id="questionForm">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <!-- Question Number -->
+                                <div class="mb-3">
+                                    <label asp-for="QuestionNumber" class="form-label">
+                                        <i class="fas fa-hashtag me-1"></i>Question Number <span class="text-muted">(Optional)</span>
+                                    </label>
+                                    <input asp-for="QuestionNumber" class="form-control" placeholder="Leave blank for auto-generation" />
+                                    <small class="form-text text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>Leave blank to auto-generate the next available number in the selected category
+                                    </small>
+                                    <span asp-validation-for="QuestionNumber" class="text-danger"></span>
+                                </div>
+
+                                <!-- Title -->
+                                <div class="mb-3">
+                                    <label asp-for="Title" class="form-label">
+                                        <i class="fas fa-heading me-1"></i>Question Title <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="Title" class="form-control" placeholder="Enter question title" required />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+
+                                <!-- Category Selection -->
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-folder me-1"></i>Category <span class="text-danger">*</span>
+                                    </label>
+                                    <select asp-for="CategoryId" class="form-select" id="categorySelect">
+                                        <option value="">-- Select Category --</option>
+                                        @foreach (var category in ViewBag.Categories)
+                                        {
+                                            <option value="@category.Id">@category.Name</option>
+                                        }
+                                        <option value="0">+ Create New Category</option>
+                                    </select>
+                                    <span asp-validation-for="CategoryId" class="text-danger d-block" id="categoryError"></span>
+                                </div>
+
+                                <!-- New Category Fields -->
+                                <div id="newCategoryFields" class="new-category-fields">
+                                    <h6 class="text-primary mb-3">
+                                        <i class="fas fa-folder-plus me-2"></i>New Category Details
+                                    </h6>
+                                    <div class="mb-3">
+                                        <label for="newCategoryName" class="form-label">Category Name</label>
+                                        <input type="text" name="newCategoryName" id="newCategoryName" class="form-control" placeholder="e.g., React.js" />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="newCategoryIcon" class="form-label">FontAwesome Icon</label>
+                                            <input type="text" name="newCategoryIcon" id="newCategoryIcon" class="form-control" placeholder="e.g., fa-react" />
+                                            <small class="form-text text-muted">Visit <a href="https://fontawesome.com/icons" target="_blank">FontAwesome</a></small>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="newCategoryColor" class="form-label">Color Code</label>
+                                            <input type="color" name="newCategoryColor" id="newCategoryColor" class="form-control" value="#6c757d" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Difficulty Level -->
+                                <div class="mb-3">
+                                    <label asp-for="Difficulty" class="form-label">
+                                        <i class="fas fa-signal me-1"></i>Difficulty Level
+                                    </label>
+                                    <select asp-for="Difficulty" class="form-select">
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate" selected>Intermediate</option>
+                                        <option value="Advanced">Advanced</option>
+                                    </select>
+                                    <span asp-validation-for="Difficulty" class="text-danger"></span>
+                                </div>
+
+                                <!-- Tags -->
+                                <div class="mb-3">
+                                    <label asp-for="Tags" class="form-label">
+                                        <i class="fas fa-tags me-1"></i>Tags
+                                    </label>
+                                    <input asp-for="Tags" class="form-control" placeholder="e.g., async, await, performance" />
+                                    <small class="form-text text-muted">Comma-separated tags</small>
+                                    <span asp-validation-for="Tags" class="text-danger"></span>
+                                </div>
+
+                                <!-- Published Status -->
+                                <div class="mb-3 form-check">
+                                    <input asp-for="IsPublished" class="form-check-input" type="checkbox" checked />
+                                    <label asp-for="IsPublished" class="form-check-label">
+                                        Publish immediately
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Right Column - Content Editor -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-file-code me-1"></i>Answer Content <span class="text-danger">*</span>
+                                    </label>
+                                    
+                                    <!-- Editor Tabs -->
+                                    <ul class="nav nav-tabs" id="editorTabs" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="html-tab" data-bs-toggle="tab" data-bs-target="#html-editor" type="button" role="tab">
+                                                <i class="fas fa-code me-1"></i>HTML Editor
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview-pane" type="button" role="tab" onclick="updatePreview()">
+                                                <i class="fas fa-eye me-1"></i>Preview
+                                            </button>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content" id="editorTabContent">
+                                        <!-- HTML Editor Tab -->
+                                        <div class="tab-pane fade show active" id="html-editor" role="tabpanel">
+                                            <div class="editor-container">
+                                                <!-- Editor Toolbar -->
+                                                <div class="editor-toolbar">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('bold')" title="Bold">
+                                                        <i class="fas fa-bold"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('italic')" title="Italic">
+                                                        <i class="fas fa-italic"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('underline')" title="Underline">
+                                                        <i class="fas fa-underline"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertHeading()" title="Heading">
+                                                        <i class="fas fa-heading"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertList('ul')" title="Bullet List">
+                                                        <i class="fas fa-list-ul"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertList('ol')" title="Numbered List">
+                                                        <i class="fas fa-list-ol"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertCode()" title="Code Block">
+                                                        <i class="fas fa-code"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertLink()" title="Insert Link">
+                                                        <i class="fas fa-link"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertTable()" title="Insert Table">
+                                                        <i class="fas fa-table"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearEditor()" title="Clear All">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+
+                                                <!-- Contenteditable Editor -->
+                                                <div id="contentEditor" contenteditable="true">
+                                                    <p>Start typing your answer here...</p>
+                                                    <p>You can use the toolbar above or directly type/paste HTML content.</p>
+                                                </div>
+                                            </div>
+                                            <small class="form-text text-muted mt-2 d-block">
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                You can directly paste HTML or use the toolbar to format your content
+                                            </small>
+                                        </div>
+
+                                        <!-- Preview Tab -->
+                                        <div class="tab-pane fade" id="preview-pane" role="tabpanel">
+                                            <div class="preview-container" id="previewContent">
+                                                <p class="text-muted">Preview will appear here...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hidden fields to store content -->
+                                    <input type="hidden" asp-for="ContentHtml" id="contentHtmlInput" />
+                                    <input type="hidden" asp-for="Content" id="contentInput" />
+                                    <span asp-validation-for="Content" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <hr />
+                                <div class="d-flex justify-content-between">
+                                    <a asp-action="Index" class="btn btn-secondary">
+                                        <i class="fas fa-times me-1"></i>Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-save me-1"></i>Create Question
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Category selection handler
+        document.getElementById('categorySelect').addEventListener('change', function() {
+            const newCategoryFields = document.getElementById('newCategoryFields');
+            if (this.value === '0') {
+                newCategoryFields.style.display = 'block';
+                document.getElementById('newCategoryName').required = true;
+            } else {
+                newCategoryFields.style.display = 'none';
+                document.getElementById('newCategoryName').required = false;
+            }
+        });
+
+        // Format text functions
+        function formatText(command) {
+            document.execCommand(command, false, null);
+            document.getElementById('contentEditor').focus();
+        }
+
+        function insertHeading() {
+            const text = prompt('Enter heading text:');
+            if (text) {
+                document.execCommand('formatBlock', false, '<h3>');
+                document.execCommand('insertText', false, text);
+            }
+        }
+
+        function insertList(type) {
+            const command = type === 'ul' ? 'insertUnorderedList' : 'insertOrderedList';
+            document.execCommand(command, false, null);
+        }
+
+        function insertCode() {
+            const code = prompt('Enter code:');
+            if (code) {
+                const pre = document.createElement('pre');
+                const codeElement = document.createElement('code');
+                codeElement.textContent = code;
+                pre.appendChild(codeElement);
+                
+                const editor = document.getElementById('contentEditor');
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0) {
+                    const range = selection.getRangeAt(0);
+                    range.deleteContents();
+                    range.insertNode(pre);
+                }
+            }
+        }
+
+        function insertLink() {
+            const url = prompt('Enter URL:');
+            if (url) {
+                const text = prompt('Enter link text:') || url;
+                document.execCommand('createLink', false, url);
+            }
+        }
+
+        function insertTable() {
+            const rows = prompt('Number of rows:', '3');
+            const cols = prompt('Number of columns:', '3');
+            
+            if (rows && cols) {
+                let tableHTML = '<table class="table table-bordered mt-3 mb-3"><tbody>';
+                for (let i = 0; i < rows; i++) {
+                    tableHTML += '<tr>';
+                    for (let j = 0; j < cols; j++) {
+                        tableHTML += i === 0 ? '<th>Header</th>' : '<td>Cell</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody></table>';
+                
+                document.execCommand('insertHTML', false, tableHTML);
+            }
+        }
+
+        function clearEditor() {
+            if (confirm('Are you sure you want to clear all content?')) {
+                document.getElementById('contentEditor').innerHTML = '<p>Start typing your answer here...</p>';
+            }
+        }
+
+        function updatePreview() {
+            const editorContent = document.getElementById('contentEditor').innerHTML;
+            document.getElementById('previewContent').innerHTML = editorContent;
+        }
+
+        // Form submission handler
+        document.getElementById('questionForm').addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Validate category
+            const categorySelect = document.getElementById('categorySelect');
+            const newCategoryName = document.getElementById('newCategoryName');
+            if (categorySelect.value === '' || (categorySelect.value === '0' && !newCategoryName.value.trim())) {
+                alert('Please select a category or create a new one');
+                categorySelect.focus();
+                e.preventDefault();
+                return false;
+            }
+            
+            // Get and validate content
+            const editorContent = document.getElementById('contentEditor').innerHTML;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = editorContent;
+            const plainText = (tempDiv.textContent || tempDiv.innerText || '').trim();
+            
+            // Check if content is empty or just default text
+            const defaultText = 'Start typing your answer here...You can use the toolbar above or directly type/paste HTML content.';
+            if (!plainText || plainText === defaultText || plainText === 'Start typing your answer here...' || editorContent.trim() === '<p><br></p>' || editorContent.trim() === '') {
+                alert('Please enter answer content');
+                document.getElementById('contentEditor').focus();
+                e.preventDefault();
+                return false;
+            }
+            
+            // Store HTML content
+            document.getElementById('contentHtmlInput').value = editorContent;
+            
+            // Store plain text content
+            document.getElementById('contentInput').value = plainText;
+            
+            // Mark form as submitted for cleanup
+            this.submitted = true;
+        });
+
+        // Auto-save to localStorage
+        const editor = document.getElementById('contentEditor');
+        editor.addEventListener('input', function() {
+            localStorage.setItem('questionDraft', this.innerHTML);
+        });
+
+        // Restore from localStorage on page load
+        window.addEventListener('load', function() {
+            const draft = localStorage.getItem('questionDraft');
+            if (draft && confirm('Restore previous draft?')) {
+                document.getElementById('contentEditor').innerHTML = draft;
+            }
+        });
+
+        // Clear draft on successful submission
+        window.addEventListener('beforeunload', function() {
+            if (document.getElementById('questionForm').submitted) {
+                localStorage.removeItem('questionDraft');
+            }
+        });
+    </script>
+}

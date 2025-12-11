@@ -161,7 +161,7 @@ namespace InterviewQuestionBank.Data.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("QuestionNumber")
+                    b.Property<int?>("QuestionNumber")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Tags")

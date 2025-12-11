@@ -44,10 +44,10 @@ namespace InterviewQuestionBank.Controllers
                 query = query.Where(q =>
                     q.Title.Contains(searchTerm) ||
                     q.Content.Contains(searchTerm) ||
-                    q.QuestionNumber.ToString().Contains(searchTerm));
+                    (q.QuestionNumber.HasValue && q.QuestionNumber.Value.ToString().Contains(searchTerm)));
             }
 
-            query = query.OrderBy(q => q.QuestionNumber);
+            query = query.OrderBy(q => q.QuestionNumber ?? 0);
 
             var totalQuestions = await query.CountAsync();
             var questions = await query
@@ -118,7 +118,7 @@ namespace InterviewQuestionBank.Controllers
             var query = _context.Questions
                 .Include(q => q.Category)
                 .Where(q => q.CategoryId == id && q.IsPublished)
-                .OrderBy(q => q.QuestionNumber);
+                .OrderBy(q => q.QuestionNumber ?? 0);
 
             var totalQuestions = await query.CountAsync();
             var questions = await query
@@ -135,6 +135,7 @@ namespace InterviewQuestionBank.Controllers
 
         // POST: Questions/ToggleFavorite
         [HttpPost]
+        [Route("Questions/ToggleFavorite/{questionId}")]
         [Authorize]
         public async Task<IActionResult> ToggleFavorite(int questionId)
         {
@@ -168,6 +169,7 @@ namespace InterviewQuestionBank.Controllers
 
         // POST: Questions/ToggleCompleted
         [HttpPost]
+        [Route("Questions/ToggleCompleted/{questionId}")]
         [Authorize]
         public async Task<IActionResult> ToggleCompleted(int questionId)
         {
@@ -238,6 +240,103 @@ namespace InterviewQuestionBank.Controllers
             ViewBag.ProgressPercentage = Math.Round(progressPercentage, 1);
 
             return View(progress);
+        }
+
+        // GET: Questions/Create
+        [Authorize]
+        public async Task<IActionResult> Create()
+        {
+            ViewBag.Categories = await _context.Categories.OrderBy(c => c.DisplayOrder).ToListAsync();
+            return View();
+        }
+
+        // POST: Questions/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Create(Question question, string newCategoryName, string newCategoryIcon, string newCategoryColor)
+        {
+            // Validate category selection
+            if (question.CategoryId == 0 && string.IsNullOrWhiteSpace(newCategoryName))
+            {
+                ModelState.AddModelError("CategoryId", "Please select a category or create a new one");
+            }
+
+            // Validate content
+            if (string.IsNullOrWhiteSpace(question.ContentHtml) && string.IsNullOrWhiteSpace(question.Content))
+            {
+                ModelState.AddModelError("Content", "Answer content is required");
+            }
+
+            if (ModelState.IsValid)
+            {
+              
+            }
+            // Check if creating new category
+            if (question.CategoryId == 0 && !string.IsNullOrWhiteSpace(newCategoryName))
+            {
+                // Check if category already exists
+                var existingCategory = await _context.Categories
+                    .FirstOrDefaultAsync(c => c.Name.ToLower() == newCategoryName.ToLower());
+
+                if (existingCategory != null)
+                {
+                    question.CategoryId = existingCategory.Id;
+                }
+                else
+                {
+                    // Create new category
+                    var maxDisplayOrder = await _context.Categories.MaxAsync(c => (int?)c.DisplayOrder) ?? 0;
+                    var maxRangeEnd = await _context.Categories.MaxAsync(c => (int?)c.QuestionRangeEnd) ?? 0;
+
+                    var newCategory = new Category
+                    {
+                        Name = newCategoryName.Trim(),
+                        Icon = string.IsNullOrWhiteSpace(newCategoryIcon) ? "fa-question-circle" : newCategoryIcon.Trim(),
+                        ColorCode = string.IsNullOrWhiteSpace(newCategoryColor) ? "#6c757d" : newCategoryColor.Trim(),
+                        DisplayOrder = maxDisplayOrder + 1,
+                        QuestionRangeStart = maxRangeEnd + 1,
+                        QuestionRangeEnd = maxRangeEnd + 100,
+                        Description = $"Questions related to {newCategoryName}"
+                    };
+
+                    _context.Categories.Add(newCategory);
+                    await _context.SaveChangesAsync();
+                    question.CategoryId = newCategory.Id;
+                }
+            }
+
+            // Auto-generate question number if not provided
+            if (!question.QuestionNumber.HasValue || question.QuestionNumber.Value == 0)
+            {
+                var maxQuestionNumber = await _context.Questions
+                    .Where(q => q.CategoryId == question.CategoryId)
+                    .MaxAsync(q => q.QuestionNumber) ?? 0;
+                question.QuestionNumber = maxQuestionNumber + 1;
+            }
+
+            // Convert markdown to HTML if ContentHtml is not provided
+            if (string.IsNullOrWhiteSpace(question.ContentHtml) && !string.IsNullOrWhiteSpace(question.Content))
+            {
+                var pipeline = new MarkdownPipelineBuilder()
+                    .UseAdvancedExtensions()
+                    .Build();
+                question.ContentHtml = Markdown.ToHtml(question.Content, pipeline);
+            }
+            else if (!string.IsNullOrWhiteSpace(question.ContentHtml))
+            {
+                // If HTML is provided directly, use it as is
+                question.Content = System.Text.RegularExpressions.Regex.Replace(question.ContentHtml, "<.*?>", string.Empty);
+            }
+
+            question.CreatedDate = DateTime.UtcNow;
+            _context.Questions.Add(question);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Question created successfully!";
+            return RedirectToAction(nameof(Details), new { id = question.Id });
+            ViewBag.Categories = await _context.Categories.OrderBy(c => c.DisplayOrder).ToListAsync();
+            return View(question);
         }
     }
 }

@@ -5,7 +5,7 @@
 // Initialize all features when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initSmoothScroll();
-    initCardAnimations();
+    // initCardAnimations(); // Disabled - causing opacity issues
     initProgressTracking();
     initSearchEnhancements();
     initKeyboardShortcuts();

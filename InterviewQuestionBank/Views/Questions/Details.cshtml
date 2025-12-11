@@ -1,6 +1,6 @@
 @model InterviewQuestionBank.Models.Question
 @{
-    ViewData["Title"] = $"Q{Model.QuestionNumber}: {Model.Title}";
+    ViewData["Title"] = $"{Model.Title}";
 }
 
 <div class="container">
@@ -18,7 +18,11 @@
                 <div>
                     <h3 class="mb-2">
                         <i class="fas @Model.Category.Icon me-2"></i>
-                        Q@Model.QuestionNumber: @Model.Title
+                        @if (Model.QuestionNumber.HasValue)
+                        {
+                            <text>Question @Model.QuestionNumber: </text>
+                        }
+                        @Model.Title
                     </h3>
                     <div>
                         <span class="badge bg-light text-dark me-2">
@@ -50,7 +54,14 @@
         <div class="card-body">
             <!-- Question Content (Markdown Rendered) -->
             <div class="question-content">
-                @Html.Raw(Model.ContentHtml)
+                @if (!string.IsNullOrEmpty(Model.ContentHtml))
+                {
+                    @Html.Raw(Model.ContentHtml)
+                }
+                else
+                {
+                    <p class="text-muted">No content available for this question.</p>
+                }
             </div>
         </div>
         <div class="card-footer bg-light">
@@ -134,15 +145,21 @@
 
         // Toggle Favorite
         function toggleFavorite(questionId) {
-            fetch('/Questions/ToggleFavorite', {
+            fetch(`/Questions/ToggleFavorite/${questionId}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ questionId: questionId })
+                credentials: 'same-origin'
             })
-            .then(response => response.json())
+            .then(async response => {
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Server response:', response.status, errorText);
+                    throw new Error(`Error ${response.status}: ${errorText || 'Failed to toggle favorite'}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     const icon = document.getElementById('favoriteIcon');
@@ -158,20 +175,29 @@
                     }
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error toggling favorite:', error);
+                alert(error.message || 'An error occurred while toggling favorite');
+            });
         }
 
         // Toggle Completed
         function toggleCompleted(questionId) {
-            fetch('/Questions/ToggleCompleted', {
+            fetch(`/Questions/ToggleCompleted/${questionId}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ questionId: questionId })
+                credentials: 'same-origin'
             })
-            .then(response => response.json())
+            .then(async response => {
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Server response:', response.status, errorText);
+                    throw new Error(`Error ${response.status}: ${errorText || 'Failed to toggle completion'}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     const icon = document.getElementById('completedIcon');
@@ -187,7 +213,10 @@
                     }
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error toggling completion:', error);
+                alert(error.message || 'An error occurred while toggling completion');
+            });
         }
     </script>
 

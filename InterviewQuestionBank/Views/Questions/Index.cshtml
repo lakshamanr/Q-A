@@ -6,11 +6,19 @@
 
 <div class="container py-4">
     <div class="row mb-4">
-        <div class="col-md-12">
+        <div class="col-md-9">
             <h2 class="fw-bold text-primary">
                 <i class="fas fa-list me-2"></i>Browse Interview Questions
             </h2>
             <p class="text-secondary">Search and filter through comprehensive interview questions</p>
+        </div>
+        <div class="col-md-3 text-end">
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-action="Create" class="btn btn-success btn-lg">
+                    <i class="fas fa-plus-circle me-2"></i>Create Question
+                </a>
+            }
         </div>
     </div>
 
@@ -58,15 +66,18 @@
         <div class="row g-4">
             @foreach (var question in Model)
             {
-                <div class="col-12 fade-in">
+                <div class="col-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div class="flex-grow-1">
                                     <div class="d-flex align-items-center mb-3 flex-wrap gap-2">
-                                        <span class="badge badge-primary">Q@question.QuestionNumber</span>
+                                        @if (question.QuestionNumber.HasValue)
+                                        {
+                                            <span class="badge badge-primary">Question @question.QuestionNumber</span>
+                                        }
                                         <span class="badge badge-@(question.Difficulty.ToString().ToLower())">@question.Difficulty</span>
-                                        <span class="badge badge-primary">
+                                        <span class="badge" style="background-color: @question.Category.ColorCode; color: white;">
                                             <i class="fas @question.Category.Icon me-1"></i>@question.Category.Name
                                         </span>
                                     </div>

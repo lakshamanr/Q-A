@@ -13,7 +13,7 @@ namespace InterviewQuestionBank.Models
     {
         public int Id { get; set; }
 
-        public int QuestionNumber { get; set; }
+        public int? QuestionNumber { get; set; }
 
         [Required]
         [StringLength(500)]
