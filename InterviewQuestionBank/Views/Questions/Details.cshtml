@@ -1,0 +1,268 @@
+@model InterviewQuestionBank.Models.Question
+@{
+    ViewData["Title"] = $"Q{Model.QuestionNumber}: {Model.Title}";
+}
+
+<div class="container">
+    <!-- Back Button -->
+    <div class="mb-3">
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-arrow-left me-1"></i>Back to Questions
+        </a>
+    </div>
+
+    <!-- Question Header -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header" style="background-color: @Model.Category.ColorCode; color: white;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-2">
+                        <i class="fas @Model.Category.Icon me-2"></i>
+                        Q@Model.QuestionNumber: @Model.Title
+                    </h3>
+                    <div>
+                        <span class="badge bg-light text-dark me-2">
+                            <i class="fas fa-folder me-1"></i>@Model.Category.Name
+                        </span>
+                        <span class="badge @GetDifficultyBadgeClass(Model.Difficulty)">
+                            @Model.Difficulty
+                        </span>
+                        <span class="badge bg-light text-dark ms-2">
+                            <i class="fas fa-eye me-1"></i>@Model.ViewCount views
+                        </span>
+                    </div>
+                </div>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div>
+                        <button type="button" class="btn btn-light btn-sm me-2" onclick="toggleFavorite(@Model.Id)">
+                            <i class="@(ViewBag.IsFavorite ? "fas" : "far") fa-star" id="favoriteIcon"></i>
+                            <span id="favoriteText">@(ViewBag.IsFavorite ? "Favorited" : "Favorite")</span>
+                        </button>
+                        <button type="button" class="btn btn-light btn-sm" onclick="toggleCompleted(@Model.Id)">
+                            <i class="@(ViewBag.IsCompleted ? "fas" : "far") fa-check-circle" id="completedIcon"></i>
+                            <span id="completedText">@(ViewBag.IsCompleted ? "Completed" : "Mark Complete")</span>
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Question Content (Markdown Rendered) -->
+            <div class="question-content">
+                @Html.Raw(Model.ContentHtml)
+            </div>
+        </div>
+        <div class="card-footer bg-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <small class="text-muted">
+                        <i class="fas fa-calendar me-1"></i>
+                        Created: @Model.CreatedDate.ToString("MMMM dd, yyyy")
+                    </small>
+                </div>
+                <div class="col-md-6 text-end">
+                    @if (!string.IsNullOrEmpty(Model.Tags))
+                    {
+                        <small class="text-muted">
+                            <i class="fas fa-tags me-1"></i>
+                            @foreach (var tag in Model.Tags.Split(','))
+                            {
+                                <span class="badge bg-secondary me-1">@tag.Trim()</span>
+                            }
+                        </small>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation to Previous/Next Questions -->
+    <div class="d-flex justify-content-between mb-4">
+        <a asp-action="Details" asp-route-id="@(Model.Id - 1)" class="btn btn-outline-primary">
+            <i class="fas fa-chevron-left me-1"></i>Previous Question
+        </a>
+        <a asp-controller="Questions" asp-action="Category" asp-route-id="@Model.CategoryId" class="btn btn-outline-secondary">
+            <i class="fas fa-list me-1"></i>View All in Category
+        </a>
+        <a asp-action="Details" asp-route-id="@(Model.Id + 1)" class="btn btn-outline-primary">
+            Next Question<i class="fas fa-chevron-right ms-1"></i>
+        </a>
+    </div>
+
+    <!-- Related Questions -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">
+                <i class="fas fa-layer-group me-2"></i>More Questions in @Model.Category.Name
+            </h5>
+        </div>
+        <div class="card-body">
+            <a asp-action="Category" asp-route-id="@Model.CategoryId" class="btn btn-primary">
+                <i class="fas fa-arrow-right me-1"></i>View All (@Model.Category.Questions.Count questions)
+            </a>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetDifficultyBadgeClass(InterviewQuestionBank.Models.DifficultyLevel difficulty)
+    {
+        return difficulty switch
+        {
+            InterviewQuestionBank.Models.DifficultyLevel.Beginner => "bg-success",
+            InterviewQuestionBank.Models.DifficultyLevel.Intermediate => "bg-warning text-dark",
+            InterviewQuestionBank.Models.DifficultyLevel.Advanced => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+}
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+
+    <script>
+        // Highlight code blocks
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+
+        // Toggle Favorite
+        function toggleFavorite(questionId) {
+            fetch('/Questions/ToggleFavorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                },
+                body: JSON.stringify({ questionId: questionId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const icon = document.getElementById('favoriteIcon');
+                    const text = document.getElementById('favoriteText');
+                    if (data.isFavorite) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                        text.textContent = 'Favorited';
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                        text.textContent = 'Favorite';
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Toggle Completed
+        function toggleCompleted(questionId) {
+            fetch('/Questions/ToggleCompleted', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                },
+                body: JSON.stringify({ questionId: questionId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const icon = document.getElementById('completedIcon');
+                    const text = document.getElementById('completedText');
+                    if (data.isCompleted) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                        text.textContent = 'Completed';
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                        text.textContent = 'Mark Complete';
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+
+    <style>
+        .question-content {
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .question-content h2 {
+            color: #2c3e50;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.5rem;
+        }
+
+        .question-content h3 {
+            color: #34495e;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .question-content pre {
+            background-color: #1e1e1e;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .question-content code {
+            background-color: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #e83e8c;
+        }
+
+        .question-content pre code {
+            background-color: transparent;
+            padding: 0;
+            color: #abb2bf;
+        }
+
+        .question-content table {
+            width: 100%;
+            margin: 1rem 0;
+            border-collapse: collapse;
+        }
+
+        .question-content table th,
+        .question-content table td {
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        .question-content table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .question-content ul, .question-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .question-content blockquote {
+            border-left: 4px solid #0d6efd;
+            padding-left: 1rem;
+            margin-left: 0;
+            color: #6c757d;
+            font-style: italic;
+        }
+    </style>
+}

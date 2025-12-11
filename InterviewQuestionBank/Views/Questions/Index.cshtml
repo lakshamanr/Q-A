@@ -1,0 +1,190 @@
+@model List<InterviewQuestionBank.Models.Question>
+@{
+    ViewData["Title"] = "Browse Questions";
+    var categories = ViewBag.Categories as List<InterviewQuestionBank.Models.Category>;
+}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2 class="fw-bold">
+                <i class="fas fa-list me-2"></i>Browse Interview Questions
+            </h2>
+            <p class="text-muted">Search and filter through comprehensive interview questions</p>
+        </div>
+    </div>
+
+    <!-- Search and Filter Bar -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form asp-action="Index" method="get">
+                <div class="row g-3">
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" name="searchTerm" class="form-control" placeholder="Search questions..." value="@ViewBag.SearchTerm">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="categoryId" class="form-select">
+                            <option value="">All Categories</option>
+                            @if (categories != null)
+                            {
+                                @foreach (var cat in categories)
+                                {
+                                    <option value="@cat.Id" selected="@(ViewBag.CategoryId == cat.Id)">@cat.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="difficulty" class="form-select">
+                            <option value="">All Levels</option>
+                            <option value="Beginner" selected="@(ViewBag.Difficulty == "Beginner")">Beginner</option>
+                            <option value="Intermediate" selected="@(ViewBag.Difficulty == "Intermediate")">Intermediate</option>
+                            <option value="Advanced" selected="@(ViewBag.Difficulty == "Advanced")">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-filter me-1"></i>Filter
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Questions List -->
+    @if (Model.Any())
+    {
+        <div class="row g-3">
+            @foreach (var question in Model)
+            {
+                <div class="col-12">
+                    <div class="card shadow-sm hover-lift border-start border-4" style="border-color: @question.Category.ColorCode !important;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge bg-primary me-2">Q@question.QuestionNumber</span>
+                                        <span class="badge @GetDifficultyBadgeClass(question.Difficulty) me-2">@question.Difficulty</span>
+                                        <span class="badge" style="background-color: @question.Category.ColorCode;">
+                                            <i class="fas @question.Category.Icon me-1"></i>@question.Category.Name
+                                        </span>
+                                    </div>
+                                    <h5 class="card-title mb-2">
+                                        <a asp-action="Details" asp-route-id="@question.Id" class="text-decoration-none text-dark">
+                                            @question.Title
+                                        </a>
+                                    </h5>
+                                    <p class="card-text text-muted small mb-2">
+                                        @GetPreview(question.Content, 150)
+                                    </p>
+                                    <div class="d-flex align-items-center text-muted small">
+                                        <span class="me-3">
+                                            <i class="fas fa-eye me-1"></i>@question.ViewCount views
+                                        </span>
+                                        <span>
+                                            <i class="fas fa-calendar me-1"></i>@question.CreatedDate.ToString("MMM dd, yyyy")
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="ms-3">
+                                    <a asp-action="Details" asp-route-id="@question.Id" class="btn btn-outline-primary btn-sm">
+                                        View <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Pagination -->
+        @if (ViewBag.TotalPages > 1)
+        {
+            <nav aria-label="Question pagination" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" asp-action="Index"
+                           asp-route-page="@(ViewBag.CurrentPage - 1)"
+                           asp-route-categoryId="@ViewBag.CategoryId"
+                           asp-route-difficulty="@ViewBag.Difficulty"
+                           asp-route-searchTerm="@ViewBag.SearchTerm">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                            <a class="page-link" asp-action="Index"
+                               asp-route-page="@i"
+                               asp-route-categoryId="@ViewBag.CategoryId"
+                               asp-route-difficulty="@ViewBag.Difficulty"
+                               asp-route-searchTerm="@ViewBag.SearchTerm">
+                                @i
+                            </a>
+                        </li>
+                    }
+
+                    <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                        <a class="page-link" asp-action="Index"
+                           asp-route-page="@(ViewBag.CurrentPage + 1)"
+                           asp-route-categoryId="@ViewBag.CategoryId"
+                           asp-route-difficulty="@ViewBag.Difficulty"
+                           asp-route-searchTerm="@ViewBag.SearchTerm">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info text-center" role="alert">
+            <i class="fas fa-info-circle fa-2x mb-3"></i>
+            <h4>No questions found</h4>
+            <p class="mb-0">Try adjusting your search or filter criteria.</p>
+        </div>
+    }
+</div>
+
+@functions {
+    string GetDifficultyBadgeClass(InterviewQuestionBank.Models.DifficultyLevel difficulty)
+    {
+        return difficulty switch
+        {
+            InterviewQuestionBank.Models.DifficultyLevel.Beginner => "bg-success",
+            InterviewQuestionBank.Models.DifficultyLevel.Intermediate => "bg-warning",
+            InterviewQuestionBank.Models.DifficultyLevel.Advanced => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetPreview(string content, int maxLength)
+    {
+        if (string.IsNullOrEmpty(content))
+            return "";
+
+        var preview = content.Length > maxLength ? content.Substring(0, maxLength) + "..." : content;
+        // Remove markdown formatting for preview
+        preview = System.Text.RegularExpressions.Regex.Replace(preview, @"\*\*|__|##|```|\[|\]|\(|\)", "");
+        return preview;
+    }
+}
+
+@section Scripts {
+    <style>
+        .hover-lift {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .hover-lift:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+        }
+    </style>
+}

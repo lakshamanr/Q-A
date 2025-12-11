@@ -1,8 +1,141 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<InterviewQuestionBank.Models.Category>
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Hero Section -->
+<div class="bg-primary text-white py-5 mb-5 rounded">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">
+            <i class="fas fa-code me-3"></i>Master Your .NET Interview
+        </h1>
+        <p class="lead mb-4">570 Comprehensive Questions & Answers</p>
+        <p class="mb-4">From fundamentals to advanced topics: .NET Core, ASP.NET, Azure, Microservices, SQL Server, and more.</p>
+
+        <!-- Stats -->
+        <div class="row g-4 mt-4">
+            <div class="col-md-3">
+                <div class="bg-white bg-opacity-10 rounded p-3">
+                    <i class="fas fa-question-circle fa-2x mb-2"></i>
+                    <h3 class="fw-bold">@ViewBag.TotalQuestions</h3>
+                    <p class="mb-0">Questions</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-white bg-opacity-10 rounded p-3">
+                    <i class="fas fa-book fa-2x mb-2"></i>
+                    <h3 class="fw-bold">@ViewBag.TotalCategories</h3>
+                    <p class="mb-0">Topics</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-white bg-opacity-10 rounded p-3">
+                    <i class="fas fa-eye fa-2x mb-2"></i>
+                    <h3 class="fw-bold">@ViewBag.TotalViews</h3>
+                    <p class="mb-0">Views</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-white bg-opacity-10 rounded p-3">
+                    <i class="fas fa-chart-line fa-2x mb-2"></i>
+                    <h3 class="fw-bold">100%</h3>
+                    <p class="mb-0">Practical</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a asp-controller="Questions" asp-action="Index" class="btn btn-light btn-lg me-2">
+                <i class="fas fa-search me-2"></i>Browse Questions
+            </a>
+            @if (User.Identity?.IsAuthenticated != true)
+            {
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>Get Started
+                </a>
+            }
+        </div>
+    </div>
 </div>
+
+<!-- Categories Section -->
+<div class="container">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Question Categories</h2>
+        <p class="text-muted">Comprehensive coverage of all essential topics</p>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var category in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 hover-lift">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="category-icon rounded p-3 me-3" style="background-color: @category.ColorCode;">
+                                <i class="fas @category.Icon fa-2x text-white"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title mb-1">@category.Name</h5>
+                                <small class="text-muted">Q@category.QuestionRangeStart - Q@category.QuestionRangeEnd</small>
+                            </div>
+                        </div>
+                        <p class="card-text text-muted">@category.Description</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="badge bg-primary">@category.Questions.Count Questions</span>
+                            <a asp-controller="Questions" asp-action="Category" asp-route-id="@category.Id" class="btn btn-sm btn-outline-primary">
+                                View <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container mt-5 py-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="text-center">
+                <i class="fas fa-code fa-3x text-primary mb-3"></i>
+                <h4>Code Examples</h4>
+                <p class="text-muted">Every question includes practical C# code examples</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center">
+                <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                <h4>Best Practices</h4>
+                <p class="text-muted">Learn industry-standard patterns and approaches</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center">
+                <i class="fas fa-chart-line fa-3x text-info mb-3"></i>
+                <h4>Track Progress</h4>
+                <p class="text-muted">Monitor your learning journey and achievements</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+}

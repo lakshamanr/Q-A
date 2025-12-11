@@ -1,0 +1,5 @@
+## Q77-Q78: Options Pattern (Combined)
+Content for 77-78
+---
+## Q79-Q80: Logging (Combined)
+Content for 79-80
