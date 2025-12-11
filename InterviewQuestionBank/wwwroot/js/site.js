@@ -5,12 +5,13 @@
 // Initialize all features when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initSmoothScroll();
-    initCardAnimations();
+    initModernAnimations();
     initProgressTracking();
     initSearchEnhancements();
     initKeyboardShortcuts();
     initTooltips();
     addCopyButtons();
+    initNavbarScroll();
 });
 
 // ========================================
@@ -426,4 +427,54 @@ pre:hover .copy-code-btn {
 `;
 document.head.appendChild(toastStyles);
 
-console.log('Interview Question Bank - Interactive features loaded successfully!');
+// ========================================
+//   MODERN ANIMATIONS
+// ========================================
+function initModernAnimations() {
+    // Fade-in observer for cards
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all cards
+    document.querySelectorAll('.question-card, .card').forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = `all 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s`;
+        observer.observe(card);
+    });
+}
+
+// ========================================
+//   NAVBAR SCROLL EFFECT
+// ========================================
+function initNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+        
+        lastScroll = currentScroll;
+    });
+}
+
+console.log('Interview Question Bank - Modern UI features loaded successfully!');

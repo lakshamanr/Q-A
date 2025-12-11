@@ -127,8 +127,9 @@ if (args.Contains("--list-questions"))
     logger.LogInformation("\n=== Question Numbers Analysis ===\n");
 
     var allQuestionNumbers = await context.Questions
-        .OrderBy(q => q.QuestionNumber)
-        .Select(q => q.QuestionNumber)
+        .Where(q => q.QuestionNumber.HasValue)
+        .OrderBy(q => q.QuestionNumber!.Value)
+        .Select(q => q.QuestionNumber!.Value)
         .ToListAsync();
 
     logger.LogInformation($"Total Questions in Database: {allQuestionNumbers.Count}");

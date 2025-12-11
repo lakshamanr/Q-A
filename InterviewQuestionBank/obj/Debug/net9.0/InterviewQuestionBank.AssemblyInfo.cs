@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InterviewQuestionBank")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a4debdc997b8cdb2785421c238679dcca352ddac")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3392e12a5919527cb2ed63c834c6260884849792")]
 [assembly: System.Reflection.AssemblyProductAttribute("InterviewQuestionBank")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InterviewQuestionBank")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

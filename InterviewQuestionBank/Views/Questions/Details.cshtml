@@ -1,47 +1,74 @@
 @model InterviewQuestionBank.Models.Question
 @{
-    ViewData["Title"] = $"Q{Model.QuestionNumber}: {Model.Title}";
+    ViewData["Title"] = $"{Model.Title}";
 }
 
-<div class="container">
-    <!-- Back Button -->
-    <div class="mb-3">
-        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-arrow-left me-1"></i>Back to Questions
-        </a>
-    </div>
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb" style="background: transparent; padding: 0;">
+            <li class="breadcrumb-item"><a asp-action="Index" style="color: var(--brand-primary);">All Questions</a></li>
+            <li class="breadcrumb-item active">@Model.Category.Name</li>
+        </ol>
+    </nav>
 
-    <!-- Question Header -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header" style="background-color: @Model.Category.ColorCode; color: white;">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h3 class="mb-2">
-                        <i class="fas @Model.Category.Icon me-2"></i>
-                        Q@Model.QuestionNumber: @Model.Title
-                    </h3>
-                    <div>
-                        <span class="badge bg-light text-dark me-2">
+    <!-- Question Header Card -->
+    <div class="card mb-4" style="border: none; overflow: hidden;">
+        <div class="card-header" style="background: var(--gradient-brand); color: white; padding: 2rem;">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    @if (Model.QuestionNumber.HasValue)
+                    {
+                        <div class="mb-2">
+                            <span class="badge" style="background: rgba(255,255,255,0.2); color: white; font-size: 0.875rem;">
+                                <i class="fas fa-hashtag"></i> Question @Model.QuestionNumber
+                            </span>
+                        </div>
+                    }
+                    <h1 class="mb-3" style="font-size: 2rem; font-weight: 700; line-height: 1.3;">
+                        <i class="fas @Model.Category.Icon me-2"></i>@Model.Title
+                    </h1>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">
                             <i class="fas fa-folder me-1"></i>@Model.Category.Name
                         </span>
-                        <span class="badge @GetDifficultyBadgeClass(Model.Difficulty)">
-                            @Model.Difficulty
-                        </span>
-                        <span class="badge bg-light text-dark ms-2">
-                            <i class="fas fa-eye me-1"></i>@Model.ViewCount views
+                        @switch (Model.Difficulty)
+                        {
+                            case InterviewQuestionBank.Models.DifficultyLevel.Beginner:
+                                <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">
+                                    <i class="fas fa-seedling me-1"></i>Beginner
+                                </span>
+                                break;
+                            case InterviewQuestionBank.Models.DifficultyLevel.Intermediate:
+                                <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">
+                                    <i class="fas fa-bolt me-1"></i>Intermediate
+                                </span>
+                                break;
+                            case InterviewQuestionBank.Models.DifficultyLevel.Advanced:
+                                <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">
+                                    <i class="fas fa-fire me-1"></i>Advanced
+                                </span>
+                                break;
+                        }
+                        <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">
+                            <i class="far fa-clock me-1"></i>5 min read
                         </span>
                     </div>
                 </div>
                 @if (User.Identity?.IsAuthenticated == true)
                 {
-                    <div>
-                        <button type="button" class="btn btn-light btn-sm me-2" onclick="toggleFavorite(@Model.Id)">
-                            <i class="@(ViewBag.IsFavorite ? "fas" : "far") fa-star" id="favoriteIcon"></i>
-                            <span id="favoriteText">@(ViewBag.IsFavorite ? "Favorited" : "Favorite")</span>
+                    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                        <button type="button" class="btn btn-lg me-2 @(ViewBag.IsFavorite ? "active" : "")" 
+                                style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white;"
+                                onclick="toggleFavorite(@Model.Id)">
+                            <i class="@(ViewBag.IsFavorite ? "fas" : "far") fa-heart" id="favoriteIcon"></i>
+                            <span id="favoriteText" class="ms-2">@(ViewBag.IsFavorite ? "Favorited" : "Favorite")</span>
                         </button>
-                        <button type="button" class="btn btn-light btn-sm" onclick="toggleCompleted(@Model.Id)">
+                        <button type="button" class="btn btn-lg @(ViewBag.IsCompleted ? "active" : "")"
+                                style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white;"
+                                onclick="toggleCompleted(@Model.Id)">
                             <i class="@(ViewBag.IsCompleted ? "fas" : "far") fa-check-circle" id="completedIcon"></i>
-                            <span id="completedText">@(ViewBag.IsCompleted ? "Completed" : "Mark Complete")</span>
+                            <span id="completedText" class="ms-2">@(ViewBag.IsCompleted ? "Completed" : "Complete")</span>
                         </button>
                     </div>
                 }
@@ -50,7 +77,14 @@
         <div class="card-body">
             <!-- Question Content (Markdown Rendered) -->
             <div class="question-content">
-                @Html.Raw(Model.ContentHtml)
+                @if (!string.IsNullOrEmpty(Model.ContentHtml))
+                {
+                    @Html.Raw(Model.ContentHtml)
+                }
+                else
+                {
+                    <p class="text-muted">No content available for this question.</p>
+                }
             </div>
         </div>
         <div class="card-footer bg-light">
@@ -134,15 +168,21 @@
 
         // Toggle Favorite
         function toggleFavorite(questionId) {
-            fetch('/Questions/ToggleFavorite', {
+            fetch(`/Questions/ToggleFavorite/${questionId}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ questionId: questionId })
+                credentials: 'same-origin'
             })
-            .then(response => response.json())
+            .then(async response => {
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Server response:', response.status, errorText);
+                    throw new Error(`Error ${response.status}: ${errorText || 'Failed to toggle favorite'}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     const icon = document.getElementById('favoriteIcon');
@@ -158,20 +198,29 @@
                     }
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error toggling favorite:', error);
+                alert(error.message || 'An error occurred while toggling favorite');
+            });
         }
 
         // Toggle Completed
         function toggleCompleted(questionId) {
-            fetch('/Questions/ToggleCompleted', {
+            fetch(`/Questions/ToggleCompleted/${questionId}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ questionId: questionId })
+                credentials: 'same-origin'
             })
-            .then(response => response.json())
+            .then(async response => {
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Server response:', response.status, errorText);
+                    throw new Error(`Error ${response.status}: ${errorText || 'Failed to toggle completion'}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     const icon = document.getElementById('completedIcon');
@@ -187,7 +236,10 @@
                     }
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error toggling completion:', error);
+                alert(error.message || 'An error occurred while toggling completion');
+            });
         }
     </script>
 
