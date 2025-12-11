@@ -4,26 +4,23 @@
     var categories = ViewBag.Categories as List<InterviewQuestionBank.Models.Category>;
 }
 
-<div class="container">
+<div class="container py-4">
     <div class="row mb-4">
         <div class="col-md-12">
-            <h2 class="fw-bold">
+            <h2 class="fw-bold text-primary">
                 <i class="fas fa-list me-2"></i>Browse Interview Questions
             </h2>
-            <p class="text-muted">Search and filter through comprehensive interview questions</p>
+            <p class="text-secondary">Search and filter through comprehensive interview questions</p>
         </div>
     </div>
 
     <!-- Search and Filter Bar -->
-    <div class="card shadow-sm mb-4">
+    <div class="card mb-4">
         <div class="card-body">
             <form asp-action="Index" method="get">
                 <div class="row g-3">
                     <div class="col-md-5">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-search"></i></span>
-                            <input type="text" name="searchTerm" class="form-control" placeholder="Search questions..." value="@ViewBag.SearchTerm">
-                        </div>
+                        <input type="text" name="searchTerm" class="search-input" placeholder="Search questions..." value="@ViewBag.SearchTerm">
                     </div>
                     <div class="col-md-3">
                         <select name="categoryId" class="form-select">
@@ -58,30 +55,30 @@
     <!-- Questions List -->
     @if (Model.Any())
     {
-        <div class="row g-3">
+        <div class="row g-4">
             @foreach (var question in Model)
             {
-                <div class="col-12">
-                    <div class="card shadow-sm hover-lift border-start border-4" style="border-color: @question.Category.ColorCode !important;">
+                <div class="col-12 fade-in">
+                    <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div class="flex-grow-1">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <span class="badge bg-primary me-2">Q@question.QuestionNumber</span>
-                                        <span class="badge @GetDifficultyBadgeClass(question.Difficulty) me-2">@question.Difficulty</span>
-                                        <span class="badge" style="background-color: @question.Category.ColorCode;">
+                                    <div class="d-flex align-items-center mb-3 flex-wrap gap-2">
+                                        <span class="badge badge-primary">Q@question.QuestionNumber</span>
+                                        <span class="badge badge-@(question.Difficulty.ToString().ToLower())">@question.Difficulty</span>
+                                        <span class="badge badge-primary">
                                             <i class="fas @question.Category.Icon me-1"></i>@question.Category.Name
                                         </span>
                                     </div>
                                     <h5 class="card-title mb-2">
-                                        <a asp-action="Details" asp-route-id="@question.Id" class="text-decoration-none text-dark">
+                                        <a asp-action="Details" asp-route-id="@question.Id" class="text-decoration-none" style="color: var(--text-primary);">
                                             @question.Title
                                         </a>
                                     </h5>
-                                    <p class="card-text text-muted small mb-2">
+                                    <p class="card-text small mb-3" style="color: var(--text-secondary);">
                                         @GetPreview(question.Content, 150)
                                     </p>
-                                    <div class="d-flex align-items-center text-muted small">
+                                    <div class="d-flex align-items-center small" style="color: var(--text-muted);">
                                         <span class="me-3">
                                             <i class="fas fa-eye me-1"></i>@question.ViewCount views
                                         </span>

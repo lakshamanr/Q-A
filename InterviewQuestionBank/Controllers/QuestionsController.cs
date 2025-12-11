@@ -8,6 +8,7 @@ using System.Security.Claims;
 
 namespace InterviewQuestionBank.Controllers
 {
+    [Authorize]
     public class QuestionsController : Controller
     {
         private readonly ApplicationDbContext _context;
