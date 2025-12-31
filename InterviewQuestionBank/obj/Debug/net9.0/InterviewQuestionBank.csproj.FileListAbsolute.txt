@@ -326,6 +326,7 @@ C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\bin\Debug\net9.
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\bin\Debug\net9.0\InterviewQuestionBank.pdb
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\InterviewQuestionBank.genruntimeconfig.cache
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\ref\InterviewQuestionBank.dll
-C:\Users\lakshaman.rokade\Source\Repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\9w55fe1et8-ow7mb49jil.gz
-C:\Users\lakshaman.rokade\Source\Repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\cmyadlas60-6m4ss8pwlv.gz
 C:\Users\lakshaman.rokade\Source\Repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\lakshaman.rokade\Source\Repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\3vgi646set-jc0uolo5rt.gz
+C:\Users\lakshaman.rokade\Source\Repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\9w55fe1et8-m1t0mjw6vt.gz
+C:\Users\lakshaman.rokade\Source\Repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\cmyadlas60-ewcbpor6m1.gz
