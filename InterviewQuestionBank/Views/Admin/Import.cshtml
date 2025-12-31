@@ -1,0 +1,129 @@
+@{
+    ViewData["Title"] = "Import Questions";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4"><i class="fas fa-file-import"></i> Import Questions from Markdown</h1>
+
+    @if (TempData["ImportResult"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i> @TempData["ImportResult"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ImportError"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle"></i> @TempData["ImportError"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-info-circle"></i> Import Information</h5>
+                </div>
+                <div class="card-body">
+                    <h6>What this does:</h6>
+                    <ul>
+                        <li>Scans the parent directory for markdown (.md) files</li>
+                        <li>Parses question content from markdown format</li>
+                        <li>Imports questions into the database</li>
+                        <li>Automatically categorizes questions based on question numbers</li>
+                        <li>Skips duplicate questions (by question number)</li>
+                        <li>Determines difficulty level based on content keywords</li>
+                    </ul>
+
+                    <h6 class="mt-3">Expected Files:</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="small">
+                                <li>Comprehensive_Interview_Answers.md</li>
+                                <li>Q21_Q25_C#.md through Q44_Q50_C#.md</li>
+                                <li>Q51_Q60_mvc_batch.md through Q81_Q90_mvc_batch.md</li>
+                                <li>Q91_Q99_DotNet_Advanced.md</li>
+                                <li>Q100_Q115_Azure_Cloud.md</li>
+                                <li>Q121_Q140_DevOps_Microservices.md</li>
+                                <li>Q141_Q171_Microservices_Advanced.md</li>
+                                <li>Q172_Q200_SQL_Database.md</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="small">
+                                <li>Q200_Q220_SQL_EF.md</li>
+                                <li>Q221_Q240_ASP_NET_Core.md</li>
+                                <li>Q241_Q460 series files</li>
+                                <li>Q461_Q480_Advanced_Testing_Leadership.md</li>
+                                <li>Q481_Q500_Security_OWASP.md</li>
+                                <li>Q501_Q520_Leadership_Team_Management.md</li>
+                                <li>Q521_Q540_System_Design_Scalability.md</li>
+                                <li>Q541_Q560 & Q561_Q571 Behavioral files</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-tools"></i> Actions</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="ImportQuestions" method="post" onsubmit="return confirmImport()">
+                        <button type="submit" class="btn btn-primary w-100 mb-3">
+                            <i class="fas fa-play"></i> Start Import
+                        </button>
+                    </form>
+
+                    <a asp-action="VerifyImport" class="btn btn-info w-100 mb-3">
+                        <i class="fas fa-check"></i> Verify Import
+                    </a>
+
+                    <form asp-action="ClearAllQuestions" method="post" onsubmit="return confirmClear()">
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="fas fa-trash"></i> Clear All Questions
+                        </button>
+                    </form>
+
+                    <hr />
+
+                    <a asp-action="Index" class="btn btn-secondary w-100">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-terminal"></i> CLI Option</h5>
+                </div>
+                <div class="card-body">
+                    <p class="small mb-2">You can also import via command line:</p>
+                    <pre class="bg-light p-2 small"><code>dotnet run --import-questions</code></pre>
+                    <p class="small mb-2">Verify import:</p>
+                    <pre class="bg-light p-2 small"><code>dotnet run --verify-import</code></pre>
+                    <p class="small mb-0">List questions & gaps:</p>
+                    <pre class="bg-light p-2 small"><code>dotnet run --list-questions</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmImport() {
+            return confirm('This will import all questions from markdown files. Duplicate questions will be skipped. Continue?');
+        }
+
+        function confirmClear() {
+            return confirm('?? WARNING: This will permanently delete ALL questions from the database. This action cannot be undone. Are you sure?');
+        }
+    </script>
+}

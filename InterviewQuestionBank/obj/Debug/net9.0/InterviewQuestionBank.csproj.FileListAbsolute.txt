@@ -250,8 +250,6 @@ C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\nezrqnk58p-muycvpuwrr.gz
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\v0zgfp0y55-87fc7y1x7t.gz
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\yfc7ypekbg-mlv21k5csn.gz
-C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\9w55fe1et8-yrpyvece3g.gz
-C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\cmyadlas60-ewcbpor6m1.gz
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\t25dexjr81-61n19gt1b8.gz
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\zs1o9kx7tw-gcqb5sxaq6.gz
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\153f0ynmyb-bqjiyaj88i.gz
@@ -319,7 +317,6 @@ C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\staticwebassets.development.json
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\staticwebassets.build.endpoints.json
-C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\Intervie.CD434C8F.Up2Date
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\InterviewQuestionBank.dll
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\refint\InterviewQuestionBank.dll
@@ -329,3 +326,6 @@ C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\bin\Debug\net9.
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\bin\Debug\net9.0\InterviewQuestionBank.pdb
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\InterviewQuestionBank.genruntimeconfig.cache
 C:\Users\lakshaman.rokade\source\repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\ref\InterviewQuestionBank.dll
+C:\Users\lakshaman.rokade\Source\Repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\9w55fe1et8-ow7mb49jil.gz
+C:\Users\lakshaman.rokade\Source\Repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\compressed\cmyadlas60-6m4ss8pwlv.gz
+C:\Users\lakshaman.rokade\Source\Repos\Q-A\InterviewQuestionBank\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

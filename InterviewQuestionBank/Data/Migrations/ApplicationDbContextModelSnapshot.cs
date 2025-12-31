@@ -63,7 +63,7 @@ namespace InterviewQuestionBank.Data.Migrations
                             Icon = "fa-code",
                             Name = "C# Fundamentals",
                             QuestionRangeEnd = 50,
-                            QuestionRangeStart = 21
+                            QuestionRangeStart = 1
                         },
                         new
                         {
@@ -130,6 +130,226 @@ namespace InterviewQuestionBank.Data.Migrations
                             Name = "SQL Server & Database",
                             QuestionRangeEnd = 200,
                             QuestionRangeStart = 172
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ColorCode = "#0891B2",
+                            Description = "Advanced SQL and EF Core",
+                            DisplayOrder = 8,
+                            Icon = "fa-database",
+                            Name = "SQL & Entity Framework",
+                            QuestionRangeEnd = 220,
+                            QuestionRangeStart = 201
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ColorCode = "#059669",
+                            Description = "Modern ASP.NET Core Development",
+                            DisplayOrder = 9,
+                            Icon = "fa-globe",
+                            Name = "ASP.NET Core",
+                            QuestionRangeEnd = 240,
+                            QuestionRangeStart = 221
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ColorCode = "#F59E0B",
+                            Description = "Software Design Patterns",
+                            DisplayOrder = 10,
+                            Icon = "fa-drafting-compass",
+                            Name = "Design Patterns",
+                            QuestionRangeEnd = 260,
+                            QuestionRangeStart = 241
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ColorCode = "#10B981",
+                            Description = "Testing Strategies and QA",
+                            DisplayOrder = 11,
+                            Icon = "fa-check-circle",
+                            Name = "Testing & Quality",
+                            QuestionRangeEnd = 280,
+                            QuestionRangeStart = 261
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ColorCode = "#EF4444",
+                            Description = "Application Security",
+                            DisplayOrder = 12,
+                            Icon = "fa-shield-alt",
+                            Name = "Security",
+                            QuestionRangeEnd = 300,
+                            QuestionRangeStart = 281
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ColorCode = "#8B5CF6",
+                            Description = "Performance and Optimization",
+                            DisplayOrder = 13,
+                            Icon = "fa-tachometer-alt",
+                            Name = "Performance Optimization",
+                            QuestionRangeEnd = 320,
+                            QuestionRangeStart = 301
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ColorCode = "#7C3AED",
+                            Description = "Microservices Design",
+                            DisplayOrder = 14,
+                            Icon = "fa-cubes",
+                            Name = "Microservices Architecture",
+                            QuestionRangeEnd = 340,
+                            QuestionRangeStart = 321
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ColorCode = "#2563EB",
+                            Description = "Cloud Technologies and DevOps",
+                            DisplayOrder = 15,
+                            Icon = "fa-cloud-upload-alt",
+                            Name = "Cloud & DevOps",
+                            QuestionRangeEnd = 360,
+                            QuestionRangeStart = 341
+                        },
+                        new
+                        {
+                            Id = 16,
+                            ColorCode = "#DC2626",
+                            Description = "Advanced .NET Concepts",
+                            DisplayOrder = 16,
+                            Icon = "fa-rocket",
+                            Name = "Advanced .NET Topics",
+                            QuestionRangeEnd = 380,
+                            QuestionRangeStart = 361
+                        },
+                        new
+                        {
+                            Id = 17,
+                            ColorCode = "#5B21B6",
+                            Description = "Software Architecture",
+                            DisplayOrder = 17,
+                            Icon = "fa-sitemap",
+                            Name = "Architecture & Design",
+                            QuestionRangeEnd = 400,
+                            QuestionRangeStart = 381
+                        },
+                        new
+                        {
+                            Id = 18,
+                            ColorCode = "#0891B2",
+                            Description = "Database Architecture and Design",
+                            DisplayOrder = 18,
+                            Icon = "fa-database",
+                            Name = "Database Design",
+                            QuestionRangeEnd = 420,
+                            QuestionRangeStart = 401
+                        },
+                        new
+                        {
+                            Id = 19,
+                            ColorCode = "#10B981",
+                            Description = "Testing Methodologies",
+                            DisplayOrder = 19,
+                            Icon = "fa-clipboard-check",
+                            Name = "Testing & QA Practices",
+                            QuestionRangeEnd = 440,
+                            QuestionRangeStart = 421
+                        },
+                        new
+                        {
+                            Id = 20,
+                            ColorCode = "#EA580C",
+                            Description = "Large Scale System Design",
+                            DisplayOrder = 20,
+                            Icon = "fa-project-diagram",
+                            Name = "System Design",
+                            QuestionRangeEnd = 460,
+                            QuestionRangeStart = 441
+                        },
+                        new
+                        {
+                            Id = 21,
+                            ColorCode = "#DD0031",
+                            Description = "Angular Development",
+                            DisplayOrder = 21,
+                            Icon = "fa-angular",
+                            Name = "Angular Framework",
+                            QuestionRangeEnd = 376,
+                            QuestionRangeStart = 352
+                        },
+                        new
+                        {
+                            Id = 24,
+                            ColorCode = "#8B5CF6",
+                            Description = "Advanced Testing Strategies and Team Leadership",
+                            DisplayOrder = 24,
+                            Icon = "fa-users-cog",
+                            Name = "Advanced Testing & Leadership",
+                            QuestionRangeEnd = 480,
+                            QuestionRangeStart = 461
+                        },
+                        new
+                        {
+                            Id = 25,
+                            ColorCode = "#EF4444",
+                            Description = "Application Security and OWASP Standards",
+                            DisplayOrder = 25,
+                            Icon = "fa-lock",
+                            Name = "Security & OWASP",
+                            QuestionRangeEnd = 500,
+                            QuestionRangeStart = 481
+                        },
+                        new
+                        {
+                            Id = 26,
+                            ColorCode = "#F59E0B",
+                            Description = "Technical Leadership and Team Management",
+                            DisplayOrder = 26,
+                            Icon = "fa-users",
+                            Name = "Leadership & Team Management",
+                            QuestionRangeEnd = 520,
+                            QuestionRangeStart = 501
+                        },
+                        new
+                        {
+                            Id = 27,
+                            ColorCode = "#7C3AED",
+                            Description = "Large-Scale System Design and Scalability",
+                            DisplayOrder = 27,
+                            Icon = "fa-network-wired",
+                            Name = "System Design & Scalability",
+                            QuestionRangeEnd = 540,
+                            QuestionRangeStart = 521
+                        },
+                        new
+                        {
+                            Id = 28,
+                            ColorCode = "#10B981",
+                            Description = "Core Behavioral Interview Questions",
+                            DisplayOrder = 28,
+                            Icon = "fa-comments",
+                            Name = "Behavioral Questions - Core",
+                            QuestionRangeEnd = 560,
+                            QuestionRangeStart = 541
+                        },
+                        new
+                        {
+                            Id = 29,
+                            ColorCode = "#2563EB",
+                            Description = "Advanced Behavioral and Situational Questions",
+                            DisplayOrder = 29,
+                            Icon = "fa-brain",
+                            Name = "Behavioral Questions - Advanced",
+                            QuestionRangeEnd = 571,
+                            QuestionRangeStart = 561
                         });
                 });
 

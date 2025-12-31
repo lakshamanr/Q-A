@@ -217,10 +217,9 @@ namespace InterviewQuestionBank.Services
             var fileMapping = new Dictionary<string, int>
             {
                 // Comprehensive file with Q1-Q53 (maps to C# Fundamentals for Q1-20, then appropriate categories)
-                // Note: This file will auto-assign to correct categories based on question numbers
                 { "Comprehensive_Interview_Answers.md", 1 },
 
-                // Category 1: C# Fundamentals (Q21-Q50)
+                // Category 1: C# Fundamentals (Q1-Q50)
                 { "Q21_Q25_C#.md", 1 },
                 { "Q26_Q30_C#.md", 1 },
                 { "Q31_Q34_C#.md", 1 },
@@ -252,17 +251,54 @@ namespace InterviewQuestionBank.Services
                 // Category 7: SQL Server & Database (Q172-Q200)
                 { "Q172_Q200_SQL_Database.md", 7 },
 
-                // NEW ADDITIONS - Q461-Q500 (Previous Session)
-                // Note: Categories 24-25 must be created first using Add_Q461_Q500_Questions.sql
+                // Category 8: SQL & Entity Framework (Q201-Q220)
+                { "Q200_Q220_SQL_EF.md", 8 },
+                { "Q206_Q220_SQL_Performance.md", 8 },
+
+                // Category 9: ASP.NET Core (Q221-Q240)
+                { "Q221_Q240_ASP_NET_Core.md", 9 },
+
+                // Category 10: Design Patterns (Q241-Q260)
+                { "Q241_Q260_Design_Patterns.md", 10 },
+
+                // Category 11: Testing & Quality (Q261-Q280)
+                { "Q261_Q280_Testing.md", 11 },
+
+                // Category 12: Security (Q281-Q300)
+                { "Q281_Q300_Security.md", 12 },
+
+                // Category 13: Performance Optimization (Q301-Q320)
+                { "Q301_Q320_Performance.md", 13 },
+
+                // Category 14: Microservices Architecture (Q321-Q340)
+                { "Q321_Q340_Microservices.md", 14 },
+
+                // Category 15: Cloud & DevOps (Q341-Q360)
+                { "Q341_Q360_Cloud_DevOps.md", 15 },
+
+                // Category 21: Angular Framework (Q352-Q376)
+                { "Q352_Q376_Angular_Complete.md", 21 },
+
+                // Category 16: Advanced .NET Topics (Q361-Q380)
+                { "Q361_Q380_Advanced_NET.md", 16 },
+
+                // Category 17: Architecture & Design (Q381-Q400)
+                { "Q381_Q400_Architecture_Design.md", 17 },
+
+                // Category 18: Database Design (Q401-Q420)
+                { "Q401_Q420_Database_Design.md", 18 },
+
+                // Category 19: Testing & QA Practices (Q421-Q440)
+                { "Q421_Q440_Testing_QA.md", 19 },
+
+                // Category 20: System Design (Q441-Q460)
+                { "Q441_Q460_System_Design.md", 20 },
 
                 // Category 24: Advanced Testing & Leadership (Q461-Q480)
                 { "Q461_Q480_Advanced_Testing_Leadership.md", 24 },
 
                 // Category 25: Security & OWASP (Q481-Q500)
                 { "Q481_Q500_Security_OWASP.md", 25 },
-
-                // NEW ADDITIONS - Q501-Q571 (Latest Session)
-                // Note: Categories 26-29 must be created first using Add_Q501_Q571_Questions.sql
 
                 // Category 26: Leadership & Team Management (Q501-Q520)
                 { "Q501_Q520_Leadership_Team_Management.md", 26 },

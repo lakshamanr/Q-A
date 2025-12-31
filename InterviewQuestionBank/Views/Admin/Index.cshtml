@@ -1,0 +1,118 @@
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-primary">@Model.TotalQuestions</h3>
+                    <p class="text-muted mb-0">Total Questions</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-success">@Model.PublishedQuestions</h3>
+                    <p class="text-muted mb-0">Published</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-info">@Model.TotalCategories</h3>
+                    <p class="text-muted mb-0">Categories</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-warning">@Model.TotalViews.ToString("N0")</h3>
+                    <p class="text-muted mb-0">Total Views</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Actions -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-cog"></i> Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex gap-2">
+                        <a asp-action="Import" class="btn btn-primary">
+                            <i class="fas fa-file-import"></i> Import Questions
+                        </a>
+                        <a asp-action="VerifyImport" class="btn btn-info">
+                            <i class="fas fa-check-circle"></i> Verify Import
+                        </a>
+                        <a asp-controller="Questions" asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-list"></i> Browse Questions
+                        </a>
+                        <a asp-controller="Questions" asp-action="Create" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Create Question
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Statistics -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-chart-bar"></i> Questions by Category</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Question Count</th>
+                            <th>Range</th>
+                            <th>Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var stat in Model.CategoryStats)
+                        {
+                            var expectedCount = stat.RangeEnd - stat.RangeStart + 1;
+                            var percentage = expectedCount > 0 ? (stat.QuestionCount * 100.0 / expectedCount) : 0;
+                            <tr>
+                                <td>@stat.CategoryName</td>
+                                <td>
+                                    <span class="badge bg-primary">@stat.QuestionCount</span>
+                                </td>
+                                <td>Q@stat.RangeStart - Q@stat.RangeEnd</td>
+                                <td>
+                                    <div class="progress" style="height: 25px;">
+                                        <div class="progress-bar @(percentage >= 100 ? "bg-success" : percentage >= 50 ? "bg-warning" : "bg-danger")" 
+                                             role="progressbar" 
+                                             style="width: @Math.Min(percentage, 100)%" 
+                                             aria-valuenow="@percentage" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="100">
+                                            @stat.QuestionCount / @expectedCount (@percentage.ToString("F1")%)
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

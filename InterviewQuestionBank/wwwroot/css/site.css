@@ -757,7 +757,7 @@ code:not(pre code) {
    ======================================== */
 @keyframes fadeIn {
     from {
-        opacity: 0;
+      
         transform: translateY(10px);
     }
     to {
@@ -768,7 +768,7 @@ code:not(pre code) {
 
 @keyframes slideIn {
     from {
-        opacity: 0;
+        
         transform: translateX(-20px);
     }
     to {
