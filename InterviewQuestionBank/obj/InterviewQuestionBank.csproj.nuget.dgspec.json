@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lakshaman.rokade\\source\\repos\\Q-A\\InterviewQuestionBank\\InterviewQuestionBank.csproj": {}
+    "C:\\Users\\lakshaman.rokade\\Source\\Repos\\Q-A\\InterviewQuestionBank\\InterviewQuestionBank.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lakshaman.rokade\\source\\repos\\Q-A\\InterviewQuestionBank\\InterviewQuestionBank.csproj": {
+    "C:\\Users\\lakshaman.rokade\\Source\\Repos\\Q-A\\InterviewQuestionBank\\InterviewQuestionBank.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lakshaman.rokade\\source\\repos\\Q-A\\InterviewQuestionBank\\InterviewQuestionBank.csproj",
+        "projectUniqueName": "C:\\Users\\lakshaman.rokade\\Source\\Repos\\Q-A\\InterviewQuestionBank\\InterviewQuestionBank.csproj",
         "projectName": "InterviewQuestionBank",
-        "projectPath": "C:\\Users\\lakshaman.rokade\\source\\repos\\Q-A\\InterviewQuestionBank\\InterviewQuestionBank.csproj",
+        "projectPath": "C:\\Users\\lakshaman.rokade\\Source\\Repos\\Q-A\\InterviewQuestionBank\\InterviewQuestionBank.csproj",
         "packagesPath": "C:\\Users\\lakshaman.rokade\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\lakshaman.rokade\\source\\repos\\Q-A\\InterviewQuestionBank\\obj\\",
         "projectStyle": "PackageReference",

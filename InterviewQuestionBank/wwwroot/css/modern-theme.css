@@ -669,7 +669,7 @@ footer a:hover {
    ======================================== */
 @keyframes fadeIn {
     from {
-        opacity: 0;
+       
         transform: translateY(20px);
     }
     to {
@@ -684,7 +684,7 @@ footer a:hover {
 
 @keyframes slideIn {
     from {
-        opacity: 0;
+     
         transform: translateX(-30px);
     }
     to {
