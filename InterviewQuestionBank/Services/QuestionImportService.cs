@@ -250,7 +250,31 @@ namespace InterviewQuestionBank.Services
                 { "Q141_Q171_Microservices_Advanced.md", 6 },
 
                 // Category 7: SQL Server & Database (Q172-Q200)
-                { "Q172_Q200_SQL_Database.md", 7 }
+                { "Q172_Q200_SQL_Database.md", 7 },
+
+                // NEW ADDITIONS - Q461-Q500 (Previous Session)
+                // Note: Categories 24-25 must be created first using Add_Q461_Q500_Questions.sql
+
+                // Category 24: Advanced Testing & Leadership (Q461-Q480)
+                { "Q461_Q480_Advanced_Testing_Leadership.md", 24 },
+
+                // Category 25: Security & OWASP (Q481-Q500)
+                { "Q481_Q500_Security_OWASP.md", 25 },
+
+                // NEW ADDITIONS - Q501-Q571 (Latest Session)
+                // Note: Categories 26-29 must be created first using Add_Q501_Q571_Questions.sql
+
+                // Category 26: Leadership & Team Management (Q501-Q520)
+                { "Q501_Q520_Leadership_Team_Management.md", 26 },
+
+                // Category 27: System Design & Scalability (Q521-Q540)
+                { "Q521_Q540_System_Design_Scalability.md", 27 },
+
+                // Category 28: Behavioral Questions - Core (Q541-Q560)
+                { "Q541_Q560_Behavioral_Questions.md", 28 },
+
+                // Category 29: Behavioral Questions - Advanced (Q561-Q571)
+                { "Q561_Q571_Final_Behavioral_Questions.md", 29 }
             };
 
             foreach (var mapping in fileMapping)
