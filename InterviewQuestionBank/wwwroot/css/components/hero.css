@@ -1,0 +1,56 @@
+/* ========================================
+   HERO COMPONENT
+   Clean hero section - Educative.io style
+   Solid color background, no gradients
+   ======================================== */
+
+.hero {
+  background-color: var(--hero-bg);
+  color: var(--hero-text);
+  border-radius: var(--radius-2xl);
+  padding: var(--hero-padding-y) var(--hero-padding-x);
+  margin-bottom: var(--space-8);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-title {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-4);
+  color: inherit;
+}
+
+.hero-subtitle {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  opacity: 0.95;
+  margin-bottom: var(--space-6);
+  color: inherit;
+}
+
+.hero-actions {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: var(--space-8) var(--space-6);
+    border-radius: var(--radius-xl);
+  }
+  .hero-title {
+    font-size: var(--font-size-3xl);
+  }
+  .hero-subtitle {
+    font-size: var(--font-size-base);
+  }
+}

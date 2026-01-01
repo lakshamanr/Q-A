@@ -1,0 +1,541 @@
+/* ========================================
+   CARD COMPONENT
+   Clean, minimal card styles
+   Educative.io inspired - subtle shadows, clean borders
+   ======================================== */
+
+/* ========================================
+   BASE CARD
+   ======================================== */
+
+.card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--card-border-color);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--card-shadow);
+  transition: all var(--transition-base);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card:hover {
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--border-default);
+}
+
+/* ========================================
+   CARD SECTIONS
+   ======================================== */
+
+.card-header {
+  padding: var(--card-padding);
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+}
+
+.card-header:first-child {
+  border-radius: calc(var(--card-border-radius) - 1px) calc(var(--card-border-radius) - 1px) 0 0;
+}
+
+.card-body {
+  padding: var(--card-padding);
+  flex: 1 1 auto;
+  color: var(--text-secondary);
+}
+
+.card-footer {
+  padding: var(--card-padding);
+  border-top: 1px solid var(--border-subtle);
+  background-color: var(--bg-muted);
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+}
+
+.card-footer:last-child {
+  border-radius: 0 0 calc(var(--card-border-radius) - 1px) calc(var(--card-border-radius) - 1px);
+}
+
+/* ========================================
+   CARD TITLE & TEXT
+   ======================================== */
+
+.card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-3);
+}
+
+.card-title:last-child {
+  margin-bottom: 0;
+}
+
+.card-subtitle {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+  margin-top: calc(var(--space-3) * -0.5);
+}
+
+.card-text {
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-4);
+}
+
+.card-text:last-child {
+  margin-bottom: 0;
+}
+
+/* ========================================
+   INTERACTIVE CARD (Clickable)
+   ======================================== */
+
+.card-interactive {
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--interactive-default);
+}
+
+.card-interactive:active {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ========================================
+   QUESTION CARD (Application-specific)
+   ======================================== */
+
+.question-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.question-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--interactive-default);
+  transform: translateY(-2px);
+}
+
+.question-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  gap: var(--space-3);
+}
+
+.question-card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+  line-height: var(--line-height-tight);
+  transition: color var(--transition-fast);
+}
+
+.question-card:hover .question-card-title {
+  color: var(--interactive-default);
+}
+
+.question-card-content {
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-4);
+  flex: 1;
+}
+
+.question-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+}
+
+/* Question number badge */
+.question-number-badge {
+  background-color: var(--interactive-default);
+  color: var(--text-inverse);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  box-shadow: var(--shadow-xs);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ========================================
+   STAT CARD (Dashboard statistics)
+   ======================================== */
+
+.stat-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  text-align: center;
+}
+
+.stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.stat-card-value {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-2);
+}
+
+.stat-card-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.stat-card-icon {
+  font-size: var(--font-size-3xl);
+  color: var(--interactive-default);
+  margin-bottom: var(--space-3);
+}
+
+/* Stat card with colored top border */
+.stat-card-primary {
+  border-top: 4px solid var(--color-primary-600);
+}
+
+.stat-card-success {
+  border-top: 4px solid var(--color-success-600);
+}
+
+.stat-card-warning {
+  border-top: 4px solid var(--color-warning-600);
+}
+
+.stat-card-info {
+  border-top: 4px solid var(--color-info-600);
+}
+
+/* ========================================
+   CATEGORY CARD
+   ======================================== */
+
+.category-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.category-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--interactive-default);
+  transform: translateY(-2px);
+}
+
+.category-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-2xl);
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-600);
+}
+
+.category-card-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.category-card-description {
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+  font-size: var(--font-size-sm);
+  flex: 1;
+}
+
+.category-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+}
+
+/* ========================================
+   FEATURE CARD
+   ======================================== */
+
+.feature-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--card-border-radius);
+  padding: var(--space-8) var(--card-padding);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  transition: all var(--transition-base);
+}
+
+.feature-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.feature-card-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--space-4);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-3xl);
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-600);
+}
+
+.feature-card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.feature-card-description {
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+  font-size: var(--font-size-sm);
+}
+
+/* ========================================
+   EMPTY STATE CARD
+   ======================================== */
+
+.empty-state-card {
+  background-color: var(--bg-surface);
+  border: 2px dashed var(--border-default);
+  border-radius: var(--card-border-radius);
+  padding: var(--space-12) var(--card-padding);
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: var(--font-size-5xl);
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-4);
+}
+
+.empty-state-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.empty-state-description {
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-6);
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========================================
+   CARD VARIANTS
+   ======================================== */
+
+/* Elevated card (more shadow) */
+.card-elevated {
+  box-shadow: var(--shadow-md);
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Flat card (no shadow) */
+.card-flat {
+  box-shadow: none;
+  border: 1px solid var(--border-default);
+}
+
+/* Outlined card (no background) */
+.card-outlined {
+  background-color: transparent;
+  border: 2px solid var(--border-default);
+  box-shadow: none;
+}
+
+/* Highlighted card (with colored left border) */
+.card-highlighted {
+  border-left: 4px solid var(--interactive-default);
+}
+
+.card-highlighted-success {
+  border-left: 4px solid var(--color-success-600);
+}
+
+.card-highlighted-warning {
+  border-left: 4px solid var(--color-warning-600);
+}
+
+.card-highlighted-danger {
+  border-left: 4px solid var(--color-danger-600);
+}
+
+/* ========================================
+   CARD IMAGE
+   ======================================== */
+
+.card-img-top {
+  width: 100%;
+  height: auto;
+  border-radius: calc(var(--card-border-radius) - 1px) calc(var(--card-border-radius) - 1px) 0 0;
+}
+
+.card-img-bottom {
+  width: 100%;
+  height: auto;
+  border-radius: 0 0 calc(var(--card-border-radius) - 1px) calc(var(--card-border-radius) - 1px);
+}
+
+.card-img-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: var(--card-padding);
+  border-radius: var(--card-border-radius);
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
+  color: var(--text-inverse);
+}
+
+/* ========================================
+   CARD GRID
+   ======================================== */
+
+.card-grid {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.card-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 992px) {
+  .card-grid-4,
+  .card-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .card-header,
+  .card-body,
+  .card-footer {
+    padding: var(--space-5);
+  }
+
+  .question-card {
+    padding: var(--space-5);
+  }
+
+  .stat-card-value {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+@media (max-width: 576px) {
+  .card-grid,
+  .card-grid-2,
+  .card-grid-3,
+  .card-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .card-header,
+  .card-body,
+  .card-footer {
+    padding: var(--space-4);
+  }
+
+  .question-card {
+    padding: var(--space-4);
+  }
+
+  .question-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stat-card-value {
+    font-size: var(--font-size-2xl);
+  }
+
+  .feature-card {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .empty-state-card {
+    padding: var(--space-8) var(--space-4);
+  }
+}

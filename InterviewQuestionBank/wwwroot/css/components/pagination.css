@@ -1,0 +1,46 @@
+/* ========================================
+   PAGINATION COMPONENT
+   Clean page navigation
+   ======================================== */
+
+.pagination {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: center;
+  margin-top: var(--space-8);
+  list-style: none;
+  padding: 0;
+}
+
+.page-item .page-link {
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-4);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.page-item .page-link:hover {
+  background: var(--interactive-default);
+  color: var(--text-inverse);
+  border-color: var(--interactive-default);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.page-item.active .page-link {
+  background: var(--interactive-default);
+  border-color: var(--interactive-default);
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-sm);
+}
+
+.page-item.disabled .page-link {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}

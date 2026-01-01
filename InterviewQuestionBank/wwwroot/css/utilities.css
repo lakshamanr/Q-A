@@ -1,0 +1,119 @@
+/* ========================================
+   UTILITY CLASSES
+   Helper classes for common styling needs
+   ======================================== */
+
+/* SPACING - Margin */
+.m-0 { margin: 0 !important; }
+.m-1 { margin: var(--space-1) !important; }
+.m-2 { margin: var(--space-2) !important; }
+.m-3 { margin: var(--space-3) !important; }
+.m-4 { margin: var(--space-4) !important; }
+.m-5 { margin: var(--space-5) !important; }
+.m-6 { margin: var(--space-6) !important; }
+.m-8 { margin: var(--space-8) !important; }
+.m-auto { margin: auto !important; }
+
+.mt-0 { margin-top: 0 !important; }
+.mt-1 { margin-top: var(--space-1) !important; }
+.mt-2 { margin-top: var(--space-2) !important; }
+.mt-3 { margin-top: var(--space-3) !important; }
+.mt-4 { margin-top: var(--space-4) !important; }
+.mt-6 { margin-top: var(--space-6) !important; }
+.mt-8 { margin-top: var(--space-8) !important; }
+
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: var(--space-1) !important; }
+.mb-2 { margin-bottom: var(--space-2) !important; }
+.mb-3 { margin-bottom: var(--space-3) !important; }
+.mb-4 { margin-bottom: var(--space-4) !important; }
+.mb-6 { margin-bottom: var(--space-6) !important; }
+.mb-8 { margin-bottom: var(--space-8) !important; }
+
+.ml-0, .ms-0 { margin-left: 0 !important; }
+.ml-1, .ms-1 { margin-left: var(--space-1) !important; }
+.ml-2, .ms-2 { margin-left: var(--space-2) !important; }
+.ml-3, .ms-3 { margin-left: var(--space-3) !important; }
+.ml-4, .ms-4 { margin-left: var(--space-4) !important; }
+.ml-auto, .ms-auto { margin-left: auto !important; }
+
+.mr-0, .me-0 { margin-right: 0 !important; }
+.mr-1, .me-1 { margin-right: var(--space-1) !important; }
+.mr-2, .me-2 { margin-right: var(--space-2) !important; }
+.mr-3, .me-3 { margin-right: var(--space-3) !important; }
+.mr-4, .me-4 { margin-right: var(--space-4) !important; }
+.mr-auto, .me-auto { margin-right: auto !important; }
+
+/* SPACING - Padding */
+.p-0 { padding: 0 !important; }
+.p-1 { padding: var(--space-1) !important; }
+.p-2 { padding: var(--space-2) !important; }
+.p-3 { padding: var(--space-3) !important; }
+.p-4 { padding: var(--space-4) !important; }
+.p-5 { padding: var(--space-5) !important; }
+.p-6 { padding: var(--space-6) !important; }
+.p-8 { padding: var(--space-8) !important; }
+
+.pt-0 { padding-top: 0 !important; }
+.pt-3 { padding-top: var(--space-3) !important; }
+.pt-4 { padding-top: var(--space-4) !important; }
+.pt-6 { padding-top: var(--space-6) !important; }
+
+.pb-0 { padding-bottom: 0 !important; }
+.pb-3 { padding-bottom: var(--space-3) !important; }
+.pb-4 { padding-bottom: var(--space-4) !important; }
+.pb-6 { padding-bottom: var(--space-6) !important; }
+
+.py-4 { padding-top: var(--space-4) !important; padding-bottom: var(--space-4) !important; }
+.py-6 { padding-top: var(--space-6) !important; padding-bottom: var(--space-6) !important; }
+
+.px-4 { padding-left: var(--space-4) !important; padding-right: var(--space-4) !important; }
+.px-6 { padding-left: var(--space-6) !important; padding-right: var(--space-6) !important; }
+
+/* BORDERS */
+.border { border: 1px solid var(--border-default) !important; }
+.border-0 { border: 0 !important; }
+.border-top { border-top: 1px solid var(--border-subtle) !important; }
+.border-bottom { border-bottom: 1px solid var(--border-subtle) !important; }
+
+/* BORDER RADIUS */
+.rounded { border-radius: var(--radius-md) !important; }
+.rounded-sm { border-radius: var(--radius-sm) !important; }
+.rounded-lg { border-radius: var(--radius-lg) !important; }
+.rounded-xl { border-radius: var(--radius-xl) !important; }
+.rounded-full { border-radius: var(--radius-full) !important; }
+.rounded-none { border-radius: 0 !important; }
+
+/* SHADOWS */
+.shadow-none { box-shadow: none !important; }
+.shadow-xs { box-shadow: var(--shadow-xs) !important; }
+.shadow-sm { box-shadow: var(--shadow-sm) !important; }
+.shadow-md { box-shadow: var(--shadow-md) !important; }
+.shadow-lg { box-shadow: var(--shadow-lg) !important; }
+.shadow-xl { box-shadow: var(--shadow-xl) !important; }
+
+/* OPACITY */
+.opacity-0 { opacity: 0 !important; }
+.opacity-50 { opacity: 0.5 !important; }
+.opacity-75 { opacity: 0.75 !important; }
+.opacity-100 { opacity: 1 !important; }
+
+/* CURSOR */
+.cursor-pointer { cursor: pointer !important; }
+.cursor-default { cursor: default !important; }
+.cursor-not-allowed { cursor: not-allowed !important; }
+
+/* USER SELECT */
+.select-none { user-select: none !important; }
+.select-text { user-select: text !important; }
+.select-all { user-select: all !important; }
+
+/* TRANSITIONS */
+.transition { transition: all var(--transition-base) !important; }
+.transition-fast { transition: all var(--transition-fast) !important; }
+.transition-slow { transition: all var(--transition-slow) !important; }
+.transition-none { transition: none !important; }
+
+/* POINTER EVENTS */
+.pointer-events-none { pointer-events: none !important; }
+.pointer-events-auto { pointer-events: auto !important; }

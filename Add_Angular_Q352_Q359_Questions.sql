@@ -7,8 +7,6 @@
 -- Date: 2025-12-31
 -- ============================================================================
 
-BEGIN TRANSACTION;
-
 -- ============================================================================
 -- STEP 1: INSERT CATEGORY
 -- ============================================================================
@@ -24,12 +22,10 @@ VALUES (
     376
 );
 
--- Get the category ID
-DECLARE @AngularCategoryId INT = (SELECT Id FROM Categories WHERE QuestionRangeStart = 352);
-
 -- ============================================================================
 -- STEP 2: INSERT QUESTIONS (Q352-Q359)
 -- ============================================================================
+-- Note: Using inline subquery for CategoryId since SQLite doesn't support DECLARE
 
 -- ----------------------------------------------------------------------------
 -- Q352: What is Angular? How is it different from AngularJS?
@@ -165,7 +161,7 @@ export class CustomerListComponent implements OnInit {
 - Tree-shaking for smaller bundle sizes',
     1,
     'Angular,AngularJS,TypeScript,Frontend,Framework',
-    @AngularCategoryId,
+    (SELECT Id FROM Categories WHERE QuestionRangeStart = 352),
     1
 );
 
@@ -359,7 +355,7 @@ export class ProductDetailComponent { }
 ```',
     2,
     'Angular,Architecture,Components,Modules,Services,Dependency Injection',
-    @AngularCategoryId,
+    (SELECT Id FROM Categories WHERE QuestionRangeStart = 352),
     1
 );
 
@@ -563,7 +559,7 @@ export class ProductListComponent {
 ```',
     2,
     'Angular,Components,Lifecycle Hooks,OnInit,OnDestroy,ViewChild',
-    @AngularCategoryId,
+    (SELECT Id FROM Categories WHERE QuestionRangeStart = 352),
     1
 );
 
@@ -729,7 +725,7 @@ Component Destroyed
 ```',
     2,
     'Angular,Lifecycle Hooks,ngOnInit,ngOnDestroy,ngOnChanges,Component Lifecycle',
-    @AngularCategoryId,
+    (SELECT Id FROM Categories WHERE QuestionRangeStart = 352),
     1
 );
 
@@ -969,7 +965,7 @@ export class ShoppingCartComponent {
 ```',
     2,
     'Angular,Data Binding,Interpolation,Property Binding,Event Binding,Two-Way Binding',
-    @AngularCategoryId,
+    (SELECT Id FROM Categories WHERE QuestionRangeStart = 352),
     1
 );
 
@@ -1153,7 +1149,7 @@ export class AppComponent {
 ```',
     1,
     'Angular,Data Binding,One-Way Binding,Two-Way Binding,ngModel',
-    @AngularCategoryId,
+    (SELECT Id FROM Categories WHERE QuestionRangeStart = 352),
     1
 );
 
@@ -1387,7 +1383,7 @@ export class ProductListComponent {
 ```',
     1,
     'Angular,ngModel,Two-Way Binding,Forms,FormsModule',
-    @AngularCategoryId,
+    (SELECT Id FROM Categories WHERE QuestionRangeStart = 352),
     1
 );
 
@@ -1678,15 +1674,9 @@ export class ClickTrackerDirective {
 ```',
     2,
     'Angular,Directives,Structural Directives,Attribute Directives,ngIf,ngFor,Custom Directives',
-    @AngularCategoryId,
+    (SELECT Id FROM Categories WHERE QuestionRangeStart = 352),
     1
 );
-
--- ============================================================================
--- COMMIT TRANSACTION
--- ============================================================================
-
-COMMIT;
 
 -- ============================================================================
 -- VERIFICATION QUERY

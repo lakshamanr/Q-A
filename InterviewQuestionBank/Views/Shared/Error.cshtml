@@ -1,25 +1,89 @@
-﻿@model ErrorViewModel
+@model ErrorViewModel
 @{
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="container py-12">
+    <div class="flex items-center justify-center min-h-screen" style="min-height: 60vh;">
+        <div class="card card-empty text-center max-w-2xl mx-auto">
+            <div class="card-body p-12">
+                <!-- Error Icon -->
+                <div class="flex items-center justify-center w-32 h-32 mx-auto mb-6 rounded-full" style="background: var(--gradient-accent);">
+                    <i class="fas fa-exclamation-triangle text-white" style="font-size: 4rem;"></i>
+                </div>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+                <!-- Error Title -->
+                <h1 class="text-4xl font-bold mb-4">Oops! Something Went Wrong</h1>
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+                <!-- Error Message -->
+                <p class="text-xl text-secondary mb-6">
+                    We encountered an unexpected error while processing your request. Our team has been notified and is looking into it.
+                </p>
+
+                @if (Model.ShowRequestId)
+                {
+                    <div class="card mb-6 p-4" style="background-color: var(--bg-muted); border-radius: var(--radius-lg);">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="badge badge-neutral">
+                                <i class="fas fa-fingerprint"></i>
+                                Request ID:
+                            </span>
+                            <code style="background-color: var(--color-neutral-200); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: var(--font-size-sm);">
+                                @Model.RequestId
+                            </code>
+                        </div>
+                        <p class="text-sm text-muted mt-2 mb-0">
+                            Please include this ID if you need to contact support.
+                        </p>
+                    </div>
+                }
+
+                <!-- Action Buttons -->
+                <div class="flex gap-4 justify-center flex-wrap mt-8">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-lg btn-primary">
+                        <i class="fas fa-home"></i>
+                        Go to Homepage
+                    </a>
+                    <a asp-controller="Questions" asp-action="Index" class="btn btn-lg btn-outline-primary">
+                        <i class="fas fa-book"></i>
+                        Browse Questions
+                    </a>
+                    <button onclick="history.back()" class="btn btn-lg btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i>
+                        Go Back
+                    </button>
+                </div>
+
+                <!-- Help Text -->
+                <div class="mt-12 p-6 rounded-lg" style="background-color: var(--color-info-50); border-left: 4px solid var(--color-info-600);">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-info-circle text-info" style="font-size: 1.5rem; margin-top: 0.125rem;"></i>
+                        <div class="flex-1 text-left">
+                            <h3 class="font-semibold mb-2">Need Help?</h3>
+                            <p class="text-sm text-secondary mb-3">
+                                If this error persists, please try the following:
+                            </p>
+                            <ul class="text-sm text-secondary text-left" style="list-style: disc; margin-left: 1.5rem;">
+                                <li>Clear your browser cache and cookies</li>
+                                <li>Try accessing the page in a different browser</li>
+                                <li>Check your internet connection</li>
+                                <li>Contact our support team if the issue continues</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-theme="dark"] .card-empty {
+        background-color: var(--color-dark-800);
+    }
+
+    [data-theme="dark"] code {
+        background-color: var(--color-dark-700);
+        color: var(--text-primary);
+    }
+</style>

@@ -5,119 +5,148 @@
 }
 
 <!-- Hero Section -->
-<div class="hero-section">
-    <div class="hero-content">
+<div class="hero hero-gradient-secondary hero-md hero-grid">
+    <div class="hero-content hero-centered">
         <h1 class="hero-title">
-            <i class="fas fa-graduation-cap me-3"></i>Interview Question Library
+            <i class="fas fa-graduation-cap"></i>
+            Interview Question Library
         </h1>
-        <p class="hero-subtitle">Master your .NET interviews with our comprehensive question bank. Search, practice, and track your progress.</p>
-        <div class="d-flex gap-3 align-items-center flex-wrap">
-            <div class="d-flex align-items-center gap-2 flex-wrap">
-                <div class="badge badge-primary badge-lg">
-                    <i class="fas fa-book"></i>
-                    @Model.Count Questions
-                </div>
-                <div class="badge badge-info badge-lg">
-                    <i class="fas fa-layer-group"></i>
-                    @(categories?.Count ?? 0) Categories
-                </div>
+
+        <p class="hero-subtitle">
+            Master your .NET interviews with our comprehensive question bank. Search, practice, and track your progress.
+        </p>
+
+        <div class="flex gap-3 items-center flex-wrap justify-center mt-6">
+            <div class="badge badge-white badge-lg">
+                <i class="fas fa-book"></i>
+                @Model.Count Questions
+            </div>
+            <div class="badge badge-white badge-lg">
+                <i class="fas fa-layer-group"></i>
+                @(categories?.Count ?? 0) Categories
             </div>
             @if (User.Identity?.IsAuthenticated == true)
             {
-                <a asp-action="Create" class="btn btn-lg" style="background: white; color: var(--brand-primary); box-shadow: var(--shadow-lg);">
-                    <i class="fas fa-plus-circle me-2"></i>Create Question
+                <a asp-action="Create" class="btn btn-lg btn-white">
+                    <i class="fas fa-plus-circle"></i>
+                    Create Question
                 </a>
             }
         </div>
     </div>
 </div>
 
-<div class="container py-4">
+<div class="container py-8">
     <!-- Search and Filter Section -->
-    <div class="search-container">
-        <form asp-action="Index" method="get">
-            <div class="row g-3">
-                <div class="col-md-5">
-                    <div class="search-wrapper">
-                        <i class="fas fa-search"></i>
-                        <input type="text" name="searchTerm" class="search-input" placeholder="Search questions by keyword..." value="@ViewBag.SearchTerm">
+    <div class="card mb-8">
+        <div class="card-body">
+            <form asp-action="Index" method="get">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                    <div class="md:col-span-5">
+                        <div class="form-group">
+                            <label for="searchTerm" class="form-label">
+                                <i class="fas fa-search"></i> Search Questions
+                            </label>
+                            <input type="text"
+                                   name="searchTerm"
+                                   id="searchTerm"
+                                   class="form-control form-control-icon-left"
+                                   placeholder="Search by keyword, topic, or technology..."
+                                   value="@ViewBag.SearchTerm">
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-3">
+                        <div class="form-group">
+                            <label for="categoryId" class="form-label">
+                                <i class="fas fa-folder"></i> Category
+                            </label>
+                            <select name="categoryId" id="categoryId" class="form-control">
+                                <option value="">All Categories</option>
+                                @if (categories != null)
+                                {
+                                    foreach (var cat in categories)
+                                    {
+                                        <option value="@cat.Id" selected="@(ViewBag.CategoryId == cat.Id)">@cat.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <div class="form-group">
+                            <label for="difficulty" class="form-label">
+                                <i class="fas fa-signal"></i> Difficulty
+                            </label>
+                            <select name="difficulty" id="difficulty" class="form-control">
+                                <option value="">All Levels</option>
+                                <option value="Beginner" selected="@(ViewBag.Difficulty == "Beginner")">Beginner</option>
+                                <option value="Intermediate" selected="@(ViewBag.Difficulty == "Intermediate")">Intermediate</option>
+                                <option value="Advanced" selected="@(ViewBag.Difficulty == "Advanced")">Advanced</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-2 flex items-end">
+                        <button type="submit" class="btn btn-primary w-full">
+                            <i class="fas fa-filter"></i>
+                            Filter
+                        </button>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <select name="categoryId" class="form-select">
-                        <option value="">📚 All Categories</option>
-                        @if (categories != null)
-                        {
-                            @foreach (var cat in categories)
-                            {
-                                <option value="@cat.Id" selected="@(ViewBag.CategoryId == cat.Id)">@cat.Name</option>
-                            }
-                        }
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <select name="difficulty" class="form-select">
-                        <option value="">📊 All Levels</option>
-                        <option value="Beginner" selected="@(ViewBag.Difficulty == "Beginner")">✅ Beginner</option>
-                        <option value="Intermediate" selected="@(ViewBag.Difficulty == "Intermediate")">⚡ Intermediate</option>
-                        <option value="Advanced" selected="@(ViewBag.Difficulty == "Advanced")">🔥 Advanced</option>
-                    </select>
-                </div>
-                <div class="col-md-2 d-flex gap-2">
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="fas fa-filter me-2"></i>Filter
-                    </button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
     <!-- Questions Grid -->
     @if (Model.Any())
     {
-        <div class="row g-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             @foreach (var question in Model)
             {
-                <div class="col-md-6 col-lg-4 fade-in">
-                    <div class="question-card" onclick="location.href='@Url.Action("Details", new { id = question.Id })'">
-                        <!-- Card Header -->
-                        <div class="question-card-header">
-                            @if (question.QuestionNumber.HasValue)
+                <div class="card card-question card-interactive" onclick="location.href='@Url.Action("Details", new { id = question.Id })'">
+                    <!-- Card Header -->
+                    <div class="card-header flex items-center justify-between">
+                        @if (question.QuestionNumber.HasValue)
+                        {
+                            <span class="badge badge-soft-primary">
+                                <i class="fas fa-hashtag"></i> Q@question.QuestionNumber
+                            </span>
+                        }
+                        <div class="flex gap-2">
+                            @if (User.Identity?.IsAuthenticated == true)
                             {
-                                <span class="question-number-badge">
-                                    <i class="fas fa-hashtag"></i> Question @question.QuestionNumber
-                                </span>
+                                <button type="button"
+                                        class="btn btn-icon btn-ghost-danger @(ViewBag.FavoriteQuestionIds != null && ((List<int>)ViewBag.FavoriteQuestionIds).Contains(question.Id) ? "active" : "")"
+                                        onclick="event.stopPropagation(); toggleFavorite(@question.Id, this)"
+                                        aria-label="Toggle favorite">
+                                    <i class="fas fa-heart"></i>
+                                </button>
                             }
-                            <div class="d-flex gap-2">
-                                @if (User.Identity?.IsAuthenticated == true)
-                                {
-                                    <button type="button" class="btn-icon btn-favorite @(ViewBag.FavoriteQuestionIds != null && ((List<int>)ViewBag.FavoriteQuestionIds).Contains(question.Id) ? "active" : "")"
-                                            onclick="event.stopPropagation(); toggleFavorite(@question.Id, this)">
-                                        <i class="fas fa-heart"></i>
-                                    </button>
-                                }
-                            </div>
                         </div>
+                    </div>
 
-                        <!-- Question Content -->
-                        <h3 class="question-title">@question.Title</h3>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <h3 class="card-title">@question.Title</h3>
 
                         <!-- Badges -->
-                        <div class="d-flex flex-wrap gap-2 mb-3">
+                        <div class="flex flex-wrap gap-2 mb-3">
                             @switch (question.Difficulty)
                             {
                                 case InterviewQuestionBank.Models.DifficultyLevel.Beginner:
-                                    <span class="badge badge-beginner">
+                                    <span class="badge badge-difficulty-beginner">
                                         <i class="fas fa-seedling"></i> Beginner
                                     </span>
                                     break;
                                 case InterviewQuestionBank.Models.DifficultyLevel.Intermediate:
-                                    <span class="badge badge-intermediate">
+                                    <span class="badge badge-difficulty-intermediate">
                                         <i class="fas fa-bolt"></i> Intermediate
                                     </span>
                                     break;
                                 case InterviewQuestionBank.Models.DifficultyLevel.Advanced:
-                                    <span class="badge badge-advanced">
+                                    <span class="badge badge-difficulty-advanced">
                                         <i class="fas fa-fire"></i> Advanced
                                     </span>
                                     break;
@@ -132,7 +161,7 @@
 
                             @if (ViewBag.CompletedQuestionIds != null && ((List<int>)ViewBag.CompletedQuestionIds).Contains(question.Id))
                             {
-                                <span class="badge badge-success">
+                                <span class="badge badge-completed">
                                     <i class="fas fa-check-circle"></i> Completed
                                 </span>
                             }
@@ -145,69 +174,105 @@
                                 @(question.Content.Length > 120 ? question.Content.Substring(0, 120) + "..." : question.Content)
                             </p>
                         }
+                    </div>
 
-                        <!-- View Details Link -->
-                        <div class="d-flex align-items-center justify-content-between mt-3 pt-3" style="border-top: 1px solid var(--border-color);">
-                            <span style="color: var(--brand-primary); font-weight: 600;">
-                                View Details <i class="fas fa-arrow-right ms-2"></i>
-                            </span>
-                            <small class="text-muted">
-                                <i class="far fa-clock me-1"></i>5 min read
-                            </small>
-                        </div>
+                    <!-- Card Footer -->
+                    <div class="card-footer flex items-center justify-between">
+                        <span class="text-primary font-semibold">
+                            View Details <i class="fas fa-arrow-right"></i>
+                        </span>
+                        <span class="badge badge-sm badge-neutral">
+                            <i class="far fa-clock"></i> 5 min
+                        </span>
                     </div>
                 </div>
             }
         </div>
 
         <!-- Pagination -->
-        <div class="d-flex justify-content-center mt-5">
-            <nav aria-label="Question pagination">
-                <ul class="pagination">
-                    @if (ViewBag.CurrentPage > 1)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="?page=@(ViewBag.CurrentPage - 1)&searchTerm=@ViewBag.SearchTerm&categoryId=@ViewBag.CategoryId&difficulty=@ViewBag.Difficulty">
-                                <i class="fas fa-chevron-left"></i> Previous
-                            </a>
-                        </li>
-                    }
+        @if (ViewBag.TotalPages > 1)
+        {
+            <div class="flex justify-center">
+                <nav aria-label="Question pagination">
+                    <ul class="pagination">
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="?page=@(ViewBag.CurrentPage - 1)&searchTerm=@ViewBag.SearchTerm&categoryId=@ViewBag.CategoryId&difficulty=@ViewBag.Difficulty">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                        }
 
-                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                    {
-                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                            <a class="page-link" href="?page=@i&searchTerm=@ViewBag.SearchTerm&categoryId=@ViewBag.CategoryId&difficulty=@ViewBag.Difficulty">
-                                @i
-                            </a>
-                        </li>
-                    }
+                        @{
+                            int startPage = Math.Max(1, ViewBag.CurrentPage - 2);
+                            int endPage = Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 2);
+                        }
 
-                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="?page=@(ViewBag.CurrentPage + 1)&searchTerm=@ViewBag.SearchTerm&categoryId=@ViewBag.CategoryId&difficulty=@ViewBag.Difficulty">
-                                Next <i class="fas fa-chevron-right"></i>
-                            </a>
-                        </li>
-                    }
-                </ul>
-            </nav>
-        </div>
+                        @if (startPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1&searchTerm=@ViewBag.SearchTerm&categoryId=@ViewBag.CategoryId&difficulty=@ViewBag.Difficulty">1</a>
+                            </li>
+                            @if (startPage > 2)
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
+                        }
+
+                        @for (int i = startPage; i <= endPage; i++)
+                        {
+                            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                <a class="page-link" href="?page=@i&searchTerm=@ViewBag.SearchTerm&categoryId=@ViewBag.CategoryId&difficulty=@ViewBag.Difficulty">
+                                    @i
+                                </a>
+                            </li>
+                        }
+
+                        @if (endPage < ViewBag.TotalPages)
+                        {
+                            @if (endPage < ViewBag.TotalPages - 1)
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
+                            <li class="page-item">
+                                <a class="page-link" href="?page=@ViewBag.TotalPages&searchTerm=@ViewBag.SearchTerm&categoryId=@ViewBag.CategoryId&difficulty=@ViewBag.Difficulty">@ViewBag.TotalPages</a>
+                            </li>
+                        }
+
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="?page=@(ViewBag.CurrentPage + 1)&searchTerm=@ViewBag.SearchTerm&categoryId=@ViewBag.CategoryId&difficulty=@ViewBag.Difficulty">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        }
     }
     else
     {
-        <div class="text-center py-5">
-            <div class="card" style="max-width: 600px; margin: 0 auto;">
-                <div class="card-body py-5">
-                    <i class="fas fa-search" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1.5rem;"></i>
-                    <h3 style="color: var(--text-primary); margin-bottom: 1rem;">No Questions Found</h3>
-                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
-                        Try adjusting your search criteria or filters to find what you're looking for.
-                    </p>
-                    <a href="@Url.Action("Index")" class="btn btn-primary">
-                        <i class="fas fa-redo me-2"></i>Reset Filters
-                    </a>
+        <!-- Empty State -->
+        <div class="card card-empty text-center py-12">
+            <div class="card-body">
+                <div class="flex items-center justify-center w-24 h-24 mx-auto mb-6 rounded-full bg-muted">
+                    <i class="fas fa-search text-muted" style="font-size: 3rem;"></i>
                 </div>
+                <h3 class="text-2xl font-semibold mb-3">No Questions Found</h3>
+                <p class="text-secondary mb-6 max-w-md mx-auto">
+                    Try adjusting your search criteria or filters to find what you're looking for.
+                </p>
+                <a href="@Url.Action("Index")" class="btn btn-primary">
+                    <i class="fas fa-redo"></i>
+                    Reset Filters
+                </a>
             </div>
         </div>
     }
@@ -216,11 +281,29 @@
 @section Scripts {
     <script src="~/js/site.js"></script>
     <script>
-        // Add fade-in animation to cards
+        // Favorite toggle function
+        function toggleFavorite(questionId, button) {
+            fetch('/Questions/ToggleFavorite/' + questionId, {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    button.classList.toggle('active');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Add animation delay to cards
         document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.question-card');
+            const cards = document.querySelectorAll('.card-question');
             cards.forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animationDelay = `${index * 0.05}s`;
+                card.classList.add('animate-fade-in-up');
             });
         });
     </script>

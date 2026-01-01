@@ -1,0 +1,495 @@
+/* ========================================
+   TYPOGRAPHY UTILITIES
+   Utility classes for text styling
+   Educative.io inspired clean typography
+   ======================================== */
+
+/* ========================================
+   DISPLAY TEXT (Large headings for hero sections)
+   ======================================== */
+
+.display-1 {
+  font-size: var(--font-size-6xl);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--text-primary);
+}
+
+.display-2 {
+  font-size: var(--font-size-5xl);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--text-primary);
+}
+
+.display-3 {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--text-primary);
+}
+
+.display-4 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--text-primary);
+}
+
+/* ========================================
+   FONT SIZES
+   ======================================== */
+
+.text-xs {
+  font-size: var(--font-size-xs);
+}
+
+.text-sm {
+  font-size: var(--font-size-sm);
+}
+
+.text-base {
+  font-size: var(--font-size-base);
+}
+
+.text-lg {
+  font-size: var(--font-size-lg);
+}
+
+.text-xl {
+  font-size: var(--font-size-xl);
+}
+
+.text-2xl {
+  font-size: var(--font-size-2xl);
+}
+
+.text-3xl {
+  font-size: var(--font-size-3xl);
+}
+
+.text-4xl {
+  font-size: var(--font-size-4xl);
+}
+
+.text-5xl {
+  font-size: var(--font-size-5xl);
+}
+
+/* ========================================
+   FONT WEIGHTS
+   ======================================== */
+
+.font-normal {
+  font-weight: var(--font-weight-normal);
+}
+
+.font-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.font-semibold {
+  font-weight: var(--font-weight-semibold);
+}
+
+.font-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+.font-extrabold {
+  font-weight: var(--font-weight-extrabold);
+}
+
+/* ========================================
+   LINE HEIGHTS
+   ======================================== */
+
+.leading-none {
+  line-height: var(--line-height-none);
+}
+
+.leading-tight {
+  line-height: var(--line-height-tight);
+}
+
+.leading-normal {
+  line-height: var(--line-height-normal);
+}
+
+.leading-relaxed {
+  line-height: var(--line-height-relaxed);
+}
+
+.leading-loose {
+  line-height: var(--line-height-loose);
+}
+
+/* ========================================
+   TEXT COLORS
+   ======================================== */
+
+.text-primary {
+  color: var(--text-primary) !important;
+}
+
+.text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.text-tertiary {
+  color: var(--text-tertiary) !important;
+}
+
+.text-inverse {
+  color: var(--text-inverse) !important;
+}
+
+.text-disabled {
+  color: var(--text-disabled) !important;
+}
+
+/* Brand & Interactive Colors */
+.text-brand {
+  color: var(--interactive-default) !important;
+}
+
+.text-brand-hover:hover {
+  color: var(--interactive-hover) !important;
+}
+
+/* Semantic Colors */
+.text-success {
+  color: var(--color-success-600) !important;
+}
+
+.text-warning {
+  color: var(--color-warning-600) !important;
+}
+
+.text-danger {
+  color: var(--color-danger-600) !important;
+}
+
+.text-info {
+  color: var(--color-info-600) !important;
+}
+
+/* Neutral Shades */
+.text-neutral-50 {
+  color: var(--color-neutral-50) !important;
+}
+
+.text-neutral-100 {
+  color: var(--color-neutral-100) !important;
+}
+
+.text-neutral-200 {
+  color: var(--color-neutral-200) !important;
+}
+
+.text-neutral-300 {
+  color: var(--color-neutral-300) !important;
+}
+
+.text-neutral-400 {
+  color: var(--color-neutral-400) !important;
+}
+
+.text-neutral-500 {
+  color: var(--color-neutral-500) !important;
+}
+
+.text-neutral-600 {
+  color: var(--color-neutral-600) !important;
+}
+
+.text-neutral-700 {
+  color: var(--color-neutral-700) !important;
+}
+
+.text-neutral-800 {
+  color: var(--color-neutral-800) !important;
+}
+
+.text-neutral-900 {
+  color: var(--color-neutral-900) !important;
+}
+
+/* ========================================
+   TEXT ALIGNMENT
+   ======================================== */
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-justify {
+  text-align: justify !important;
+}
+
+/* ========================================
+   TEXT TRANSFORM
+   ======================================== */
+
+.uppercase {
+  text-transform: uppercase !important;
+}
+
+.lowercase {
+  text-transform: lowercase !important;
+}
+
+.capitalize {
+  text-transform: capitalize !important;
+}
+
+.normal-case {
+  text-transform: none !important;
+}
+
+/* ========================================
+   TEXT DECORATION
+   ======================================== */
+
+.underline {
+  text-decoration: underline !important;
+}
+
+.line-through {
+  text-decoration: line-through !important;
+}
+
+.no-underline {
+  text-decoration: none !important;
+}
+
+/* ========================================
+   FONT STYLE
+   ======================================== */
+
+.italic {
+  font-style: italic !important;
+}
+
+.not-italic {
+  font-style: normal !important;
+}
+
+/* ========================================
+   LETTER SPACING
+   ======================================== */
+
+.tracking-tight {
+  letter-spacing: var(--letter-spacing-tight) !important;
+}
+
+.tracking-normal {
+  letter-spacing: var(--letter-spacing-normal) !important;
+}
+
+.tracking-wide {
+  letter-spacing: var(--letter-spacing-wide) !important;
+}
+
+/* ========================================
+   TEXT TRUNCATION
+   ======================================== */
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+/* ========================================
+   WHITESPACE
+   ======================================== */
+
+.whitespace-normal {
+  white-space: normal !important;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap !important;
+}
+
+.whitespace-pre {
+  white-space: pre !important;
+}
+
+.whitespace-pre-line {
+  white-space: pre-line !important;
+}
+
+.whitespace-pre-wrap {
+  white-space: pre-wrap !important;
+}
+
+/* ========================================
+   WORD BREAK
+   ======================================== */
+
+.break-normal {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.break-words {
+  overflow-wrap: break-word;
+}
+
+.break-all {
+  word-break: break-all;
+}
+
+/* ========================================
+   TYPOGRAPHY COMBINATIONS (Common patterns)
+   ======================================== */
+
+/* Page Title */
+.page-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--space-6);
+}
+
+/* Section Title */
+.section-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+}
+
+/* Card Title */
+.card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+/* Helper Text / Description */
+.helper-text {
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Label Text */
+.label-text {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+/* Body Text */
+.body-text {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Small Text */
+.small-text {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+}
+
+/* Meta Text (timestamps, counts, etc.) */
+.meta-text {
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+  font-weight: var(--font-weight-normal);
+}
+
+/* ========================================
+   RESPONSIVE TYPOGRAPHY
+   ======================================== */
+
+@media (max-width: 768px) {
+  .display-1 {
+    font-size: var(--font-size-4xl);
+  }
+
+  .display-2 {
+    font-size: var(--font-size-3xl);
+  }
+
+  .display-3 {
+    font-size: var(--font-size-2xl);
+  }
+
+  .page-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .section-title {
+    font-size: var(--font-size-xl);
+  }
+}
+
+@media (max-width: 576px) {
+  .display-1 {
+    font-size: var(--font-size-3xl);
+  }
+
+  .display-2 {
+    font-size: var(--font-size-2xl);
+  }
+
+  .display-3 {
+    font-size: var(--font-size-xl);
+  }
+
+  .page-title {
+    font-size: var(--font-size-xl);
+  }
+
+  .section-title {
+    font-size: var(--font-size-lg);
+  }
+}

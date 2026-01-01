@@ -1,76 +1,347 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Master your .NET interviews with 570+ comprehensive questions and answers covering .NET Core, ASP.NET, Azure, Microservices, and more." />
     <title>@ViewData["Title"] - .NET Interview Mastery</title>
+
+    <!-- Bootstrap 5 Foundation (Optional - can be removed if not needed) -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="~/css/modern-theme.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/admin-dashboard.css" asp-append-version="true" />
+
+    <!-- Design System V2 - Modern Professional Theme -->
+    <!-- Foundation Layer -->
+    <link rel="stylesheet" href="~/css/design-tokens-v2.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/base-v2.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/typography-v2.css" asp-append-version="true" />
+
+    <!-- Layout Layer -->
+    <link rel="stylesheet" href="~/css/layout-v2.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/utilities-v2.css" asp-append-version="true" />
+
+    <!-- Animation System -->
+    <link rel="stylesheet" href="~/css/animations.css" asp-append-version="true" />
+
+    <!-- Component Layer -->
+    <link rel="stylesheet" href="~/css/components/header.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/navigation-v2.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/buttons-v2.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/cards-v2.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/badges-v2.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/forms-v2.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/hero-v2.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/alerts.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/pagination.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/modals.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/toasts.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/loading.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/tables.css" asp-append-version="true" />
+
+    <!-- Theme System -->
+    <link rel="stylesheet" href="~/css/dark-mode.css" asp-append-version="true" />
+
+    <!-- Legacy Styles (Deprecated - commented out for migration) -->
+    <!-- <link rel="stylesheet" href="~/css/modern-theme.css" asp-append-version="true" /> -->
+    <!-- <link rel="stylesheet" href="~/css/admin-dashboard.css" asp-append-version="true" /> -->
     <link rel="stylesheet" href="~/InterviewQuestionBank.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg">
-            <div class="container">
-                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
-                    <i class="fas fa-code me-2"></i>.NET Interview Mastery
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Site Header -->
+    <header class="site-header" id="site-header">
+        <div class="header-container">
+            <!-- Brand & Mobile Menu Toggle -->
+            <div class="header-brand">
+                <button class="mobile-menu-toggle" type="button" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars"></i>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
+                <a class="brand-logo" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-code brand-icon" aria-hidden="true"></i>
+                    <span class="brand-text">.NET Interview Mastery</span>
+                </a>
+            </div>
+
+            <!-- Main Navigation (Desktop) -->
+            <nav class="header-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Questions" asp-action="Index">
+                            <i class="fas fa-list"></i>
+                            <span>Questions</span>
+                        </a>
+                    </li>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">
-                                <i class="fas fa-home me-1"></i>Home
+                            <a class="nav-link" asp-controller="Questions" asp-action="MyFavorites">
+                                <i class="fas fa-star"></i>
+                                <span>Favorites</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Questions" asp-action="Index">
-                                <i class="fas fa-list me-1"></i>All Questions
+                            <a class="nav-link" asp-controller="Questions" asp-action="MyProgress">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Progress</span>
                             </a>
                         </li>
-                        @if (User.Identity?.IsAuthenticated == true)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Questions" asp-action="MyFavorites">
-                                    <i class="fas fa-star me-1"></i>My Favorites
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Questions" asp-action="MyProgress">
-                                    <i class="fas fa-chart-line me-1"></i>My Progress
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-success fw-bold" asp-controller="Questions" asp-action="Create">
-                                    <i class="fas fa-plus-circle me-1"></i>Create Question
-                                </a>
-                            </li>
-                        }
                         <li class="nav-item">
-                            <a class="nav-link text-warning fw-bold" asp-controller="Admin" asp-action="Index">
-                                <i class="fas fa-cog me-1"></i>Admin
+                            <a class="nav-link" asp-controller="Questions" asp-action="Create">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Create</span>
                             </a>
                         </li>
-                    </ul>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Admin" asp-action="Index">
+                            <i class="fas fa-cog"></i>
+                            <span>Admin</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Header Actions -->
+                <div class="header-actions">
+                    <!-- Theme Toggle -->
+                    <button class="theme-toggle header-action-btn" id="theme-toggle" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon moon-icon"></i>
+                        <i class="fas fa-sun sun-icon"></i>
+                    </button>
+
+                    <!-- User Menu / Login -->
                     <partial name="_LoginPartial" />
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </div>
     </header>
 
-    <main class="container-fluid">
-        <div class="container py-4">
-            @RenderBody()
-        </div>
+    <!-- Mobile Navigation (Slide-out) -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+    <nav class="mobile-nav" id="mobile-nav">
+        <ul class="mobile-nav-menu">
+            <li>
+                <a class="mobile-nav-link" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a class="mobile-nav-link" asp-controller="Questions" asp-action="Index">
+                    <i class="fas fa-list"></i>
+                    <span>All Questions</span>
+                </a>
+            </li>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <li>
+                    <a class="mobile-nav-link" asp-controller="Questions" asp-action="MyFavorites">
+                        <i class="fas fa-star"></i>
+                        <span>My Favorites</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="mobile-nav-link" asp-controller="Questions" asp-action="MyProgress">
+                        <i class="fas fa-chart-line"></i>
+                        <span>My Progress</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="mobile-nav-link" asp-controller="Questions" asp-action="Create">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Create Question</span>
+                    </a>
+                </li>
+            }
+            <li>
+                <a class="mobile-nav-link" asp-controller="Admin" asp-action="Index">
+                    <i class="fas fa-cog"></i>
+                    <span>Admin</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        @RenderBody()
     </main>
 
+    <!-- Site Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <!-- Footer Grid -->
+            <div class="footer-grid">
+                <!-- About Section -->
+                <div class="footer-about">
+                    <h3>.NET Interview Mastery</h3>
+                    <p>Master your .NET interviews with 570+ comprehensive questions and answers covering .NET Core, ASP.NET, Azure, Microservices, and more.</p>
+                    <div class="footer-social">
+                        <a href="#" class="footer-social-link" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="footer-social-link" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="footer-social-link" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a asp-controller="Questions" asp-action="Index">All Questions</a></li>
+                        <li><a asp-controller="Home" asp-action="Index">Categories</a></li>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li><a asp-controller="Questions" asp-action="MyFavorites">My Favorites</a></li>
+                            <li><a asp-controller="Questions" asp-action="MyProgress">My Progress</a></li>
+                        }
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div class="footer-resources">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a asp-controller="Questions" asp-action="Create">Create Question</a></li>
+                        <li><a asp-controller="Admin" asp-action="Index">Admin Dashboard</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API Reference</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div class="footer-legal">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    &copy; @DateTime.Now.Year .NET Interview Mastery. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Theme Toggle & UI Enhancements Script -->
+    <script>
+        // Theme management
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        // Load saved theme or use system preference
+        const savedTheme = localStorage.getItem('theme') ||
+                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        html.setAttribute('data-theme', savedTheme);
+
+        // Theme toggle click handler
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        }
+
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileNav = document.getElementById('mobile-nav');
+        const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+
+        if (mobileMenuToggle && mobileNav && mobileNavOverlay) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileNav.classList.toggle('active');
+                mobileNavOverlay.classList.toggle('active');
+            });
+
+            mobileNavOverlay.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+                mobileNavOverlay.classList.remove('active');
+            });
+
+            // Close mobile nav on link click
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileNav.classList.remove('active');
+                    mobileNavOverlay.classList.remove('active');
+                });
+            });
+        }
+
+        // Header scroll elevation
+        const header = document.getElementById('site-header');
+        if (header) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // Back to top button
+        const backToTop = document.getElementById('back-to-top');
+        if (backToTop) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // Active nav link highlighting
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

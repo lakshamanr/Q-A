@@ -1,0 +1,523 @@
+/* ========================================
+   TYPOGRAPHY V2 - TYPE SCALE & UTILITIES
+   Modern typography system with utilities
+   ======================================== */
+
+/* ========================================
+   DISPLAY TEXT CLASSES
+   ======================================== */
+
+.display-1 {
+    font-size: var(--font-size-7xl);
+    font-weight: var(--font-weight-extrabold);
+    line-height: var(--line-height-none);
+    letter-spacing: var(--letter-spacing-tighter);
+}
+
+.display-2 {
+    font-size: var(--font-size-6xl);
+    font-weight: var(--font-weight-extrabold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+}
+
+.display-3 {
+    font-size: var(--font-size-5xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+}
+
+.display-4 {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-snug);
+}
+
+/* ========================================
+   FONT SIZE UTILITIES
+   ======================================== */
+
+.text-xs { font-size: var(--font-size-xs); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-base { font-size: var(--font-size-base); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+.text-2xl { font-size: var(--font-size-2xl); }
+.text-3xl { font-size: var(--font-size-3xl); }
+.text-4xl { font-size: var(--font-size-4xl); }
+.text-5xl { font-size: var(--font-size-5xl); }
+.text-6xl { font-size: var(--font-size-6xl); }
+.text-7xl { font-size: var(--font-size-7xl); }
+
+/* ========================================
+   FONT WEIGHT UTILITIES
+   ======================================== */
+
+.font-light { font-weight: var(--font-weight-light); }
+.font-normal { font-weight: var(--font-weight-normal); }
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-bold { font-weight: var(--font-weight-bold); }
+.font-extrabold { font-weight: var(--font-weight-extrabold); }
+.font-black { font-weight: var(--font-weight-black); }
+
+/* ========================================
+   LINE HEIGHT UTILITIES
+   ======================================== */
+
+.leading-none { line-height: var(--line-height-none); }
+.leading-tight { line-height: var(--line-height-tight); }
+.leading-snug { line-height: var(--line-height-snug); }
+.leading-normal { line-height: var(--line-height-normal); }
+.leading-relaxed { line-height: var(--line-height-relaxed); }
+.leading-loose { line-height: var(--line-height-loose); }
+
+/* ========================================
+   LETTER SPACING UTILITIES
+   ======================================== */
+
+.tracking-tighter { letter-spacing: var(--letter-spacing-tighter); }
+.tracking-tight { letter-spacing: var(--letter-spacing-tight); }
+.tracking-normal { letter-spacing: var(--letter-spacing-normal); }
+.tracking-wide { letter-spacing: var(--letter-spacing-wide); }
+.tracking-wider { letter-spacing: var(--letter-spacing-wider); }
+.tracking-widest { letter-spacing: var(--letter-spacing-widest); }
+
+/* ========================================
+   TEXT ALIGNMENT
+   ======================================== */
+
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
+
+/* ========================================
+   TEXT TRANSFORM
+   ======================================== */
+
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+.normal-case { text-transform: none; }
+
+/* ========================================
+   TEXT DECORATION
+   ======================================== */
+
+.underline { text-decoration: underline; }
+.line-through { text-decoration: line-through; }
+.no-underline { text-decoration: none; }
+
+/* Underline offset */
+.underline-offset-1 { text-underline-offset: 1px; }
+.underline-offset-2 { text-underline-offset: 2px; }
+.underline-offset-4 { text-underline-offset: 4px; }
+.underline-offset-8 { text-underline-offset: 8px; }
+
+/* ========================================
+   TEXT COLOR UTILITIES
+   ======================================== */
+
+/* Primary text colors */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-disabled { color: var(--text-disabled); }
+.text-inverse { color: var(--text-inverse); }
+
+/* Brand colors */
+.text-brand-primary { color: var(--color-primary-600); }
+.text-brand-secondary { color: var(--color-secondary-600); }
+.text-brand-accent { color: var(--color-accent-600); }
+
+/* Semantic colors */
+.text-success { color: var(--color-success-600); }
+.text-warning { color: var(--color-warning-600); }
+.text-error { color: var(--color-error-600); }
+.text-info { color: var(--color-info-600); }
+
+/* Neutral shades */
+.text-neutral-50 { color: var(--color-neutral-50); }
+.text-neutral-100 { color: var(--color-neutral-100); }
+.text-neutral-200 { color: var(--color-neutral-200); }
+.text-neutral-300 { color: var(--color-neutral-300); }
+.text-neutral-400 { color: var(--color-neutral-400); }
+.text-neutral-500 { color: var(--color-neutral-500); }
+.text-neutral-600 { color: var(--color-neutral-600); }
+.text-neutral-700 { color: var(--color-neutral-700); }
+.text-neutral-800 { color: var(--color-neutral-800); }
+.text-neutral-900 { color: var(--color-neutral-900); }
+
+/* White and black */
+.text-white { color: #FFFFFF; }
+.text-black { color: #000000; }
+
+/* ========================================
+   FONT STYLE
+   ======================================== */
+
+.italic { font-style: italic; }
+.not-italic { font-style: normal; }
+
+/* ========================================
+   TEXT OVERFLOW
+   ======================================== */
+
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.text-ellipsis {
+    text-overflow: ellipsis;
+}
+
+.text-clip {
+    text-overflow: clip;
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ========================================
+   WHITE SPACE
+   ======================================== */
+
+.whitespace-normal { white-space: normal; }
+.whitespace-nowrap { white-space: nowrap; }
+.whitespace-pre { white-space: pre; }
+.whitespace-pre-line { white-space: pre-line; }
+.whitespace-pre-wrap { white-space: pre-wrap; }
+
+/* ========================================
+   WORD BREAK
+   ======================================== */
+
+.break-normal {
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+.break-words {
+    overflow-wrap: break-word;
+}
+
+.break-all {
+    word-break: break-all;
+}
+
+/* ========================================
+   VERTICAL ALIGNMENT
+   ======================================== */
+
+.align-baseline { vertical-align: baseline; }
+.align-top { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+.align-text-top { vertical-align: text-top; }
+.align-text-bottom { vertical-align: text-bottom; }
+
+/* ========================================
+   LIST STYLES
+   ======================================== */
+
+.list-none { list-style-type: none; }
+.list-disc { list-style-type: disc; }
+.list-decimal { list-style-type: decimal; }
+
+.list-inside { list-style-position: inside; }
+.list-outside { list-style-position: outside; }
+
+/* ========================================
+   LEAD TEXT (INTRO PARAGRAPHS)
+   ======================================== */
+
+.lead {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-height-relaxed);
+    color: var(--text-secondary);
+    font-weight: var(--font-weight-normal);
+}
+
+/* ========================================
+   SMALL TEXT
+   ======================================== */
+
+.small,
+.text-small {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+}
+
+.text-tiny {
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-normal);
+}
+
+/* ========================================
+   MONOSPACE TEXT
+   ======================================== */
+
+.font-mono {
+    font-family: var(--font-mono);
+}
+
+/* ========================================
+   LINK STYLES
+   ======================================== */
+
+.link {
+    color: var(--text-link);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: var(--transition-colors);
+}
+
+.link:hover {
+    color: var(--text-link-hover);
+}
+
+.link-muted {
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+.link-muted:hover {
+    color: var(--text-primary);
+    text-decoration: underline;
+}
+
+/* ========================================
+   GRADIENT TEXT
+   ======================================== */
+
+.text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-secondary {
+    background: var(--gradient-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ========================================
+   TEXT SHADOW
+   ======================================== */
+
+.text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.text-shadow-md {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.text-shadow-none {
+    text-shadow: none;
+}
+
+/* ========================================
+   HEADING UTILITIES
+   ======================================== */
+
+.heading-1 {
+    font-size: var(--font-size-5xl);
+    font-weight: var(--font-weight-extrabold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+}
+
+.heading-2 {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+}
+
+.heading-3 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-snug);
+}
+
+.heading-4 {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-snug);
+}
+
+.heading-5 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-normal);
+}
+
+.heading-6 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-normal);
+}
+
+/* ========================================
+   RESPONSIVE TYPOGRAPHY
+   ======================================== */
+
+@media (max-width: 768px) {
+    .display-1 { font-size: var(--font-size-5xl); }
+    .display-2 { font-size: var(--font-size-4xl); }
+    .display-3 { font-size: var(--font-size-3xl); }
+    .display-4 { font-size: var(--font-size-2xl); }
+
+    .heading-1 { font-size: var(--font-size-3xl); }
+    .heading-2 { font-size: var(--font-size-2xl); }
+    .heading-3 { font-size: var(--font-size-xl); }
+
+    .lead { font-size: var(--font-size-lg); }
+}
+
+/* ========================================
+   PROSE (RICH TEXT CONTENT)
+   ======================================== */
+
+.prose {
+    color: var(--text-primary);
+    max-width: 65ch;
+}
+
+.prose h1 {
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-4);
+}
+
+.prose h2 {
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-3);
+}
+
+.prose h3 {
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-2);
+}
+
+.prose h4,
+.prose h5,
+.prose h6 {
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-2);
+}
+
+.prose p {
+    margin-bottom: var(--space-4);
+}
+
+.prose ul,
+.prose ol {
+    margin-bottom: var(--space-4);
+    padding-left: var(--space-6);
+}
+
+.prose li {
+    margin-bottom: var(--space-1);
+}
+
+.prose blockquote {
+    margin: var(--space-6) 0;
+    padding-left: var(--space-4);
+    border-left: 4px solid var(--color-primary-500);
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+.prose code {
+    background-color: var(--color-neutral-100);
+    color: var(--color-error-600);
+    padding: 0.125rem 0.375rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9em;
+}
+
+.prose pre {
+    margin: var(--space-4) 0;
+    padding: var(--space-4);
+    background-color: var(--color-dark-900);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+}
+
+.prose pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+}
+
+.prose img {
+    margin: var(--space-6) 0;
+    border-radius: var(--radius-lg);
+}
+
+.prose a {
+    color: var(--text-link);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.prose a:hover {
+    color: var(--text-link-hover);
+}
+
+.prose table {
+    margin: var(--space-6) 0;
+    width: 100%;
+}
+
+.prose hr {
+    margin: var(--space-8) 0;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Wider prose variant */
+.prose-wide {
+    max-width: 80ch;
+}
+
+/* Full width prose variant */
+.prose-full {
+    max-width: none;
+}

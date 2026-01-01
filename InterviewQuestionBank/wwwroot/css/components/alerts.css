@@ -1,0 +1,64 @@
+/* ========================================
+   ALERTS & TOASTS
+   Clean notification styles
+   ======================================== */
+
+.alert {
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid;
+  margin-bottom: var(--space-6);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.alert-success {
+  background-color: var(--color-success-50);
+  border-color: var(--color-success-600);
+  color: var(--color-success-900);
+}
+
+.alert-warning {
+  background-color: var(--color-warning-50);
+  border-color: var(--color-warning-500);
+  color: var(--color-warning-900);
+}
+
+.alert-danger {
+  background-color: var(--color-danger-50);
+  border-color: var(--color-danger-500);
+  color: var(--color-danger-900);
+}
+
+.alert-info {
+  background-color: var(--color-info-50);
+  border-color: var(--color-info-500);
+  color: var(--color-info-900);
+}
+
+.toast {
+  position: fixed;
+  top: var(--space-6);
+  right: var(--space-6);
+  min-width: 300px;
+  max-width: 400px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  padding: var(--space-4);
+  z-index: var(--z-tooltip);
+  animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

@@ -3,157 +3,169 @@
     ViewData["Title"] = $"{Model.Title}";
 }
 
-<div class="container py-4">
+<div class="container py-6">
     <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb" style="background: transparent; padding: 0;">
-            <li class="breadcrumb-item"><a asp-action="Index" style="color: var(--brand-primary);">All Questions</a></li>
-            <li class="breadcrumb-item active">@Model.Category.Name</li>
+    <nav aria-label="breadcrumb" class="mb-6">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">All Questions</a></li>
+            <li class="breadcrumb-item"><a asp-action="Category" asp-route-id="@Model.CategoryId">@Model.Category.Name</a></li>
+            <li class="breadcrumb-item active">Question @Model.QuestionNumber</li>
         </ol>
     </nav>
 
     <!-- Question Header Card -->
-    <div class="card mb-4" >
-        <div class="card-header" style="background: var(--gradient-brand); color: white; padding: 2rem;">
-            <div class="row align-items-center">
-                <div class="col-lg-8">
+    <div class="card mb-6 shadow-md" style="opacity: 1 !important; transform: none !important;">
+        <div class="card-gradient-primary" style="padding: var(--space-8);">
+            <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4" style="color: white;">
+                <div class="flex-1">
                     @if (Model.QuestionNumber.HasValue)
                     {
-                        <div class="mb-2">
-                            <span class="badge" style="background: rgba(255,255,255,0.2); color: white; font-size: 0.875rem;">
+                        <div class="mb-3">
+                            <span class="badge badge-white badge-lg">
                                 <i class="fas fa-hashtag"></i> Question @Model.QuestionNumber
                             </span>
                         </div>
                     }
-                    <h1 class="mb-3" style="font-size: 2rem; font-weight: 700; line-height: 1.3;">
-                        <i class="fas @Model.Category.Icon me-2"></i>@Model.Title
+                    <h1 class="text-4xl font-bold mb-4" style="color: white; line-height: 1.2;">
+                        <i class="fas @Model.Category.Icon"></i>
+                        @Model.Title
                     </h1>
-                    <div class="d-flex flex-wrap gap-2">
-                        <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">
-                            <i class="fas fa-folder me-1"></i>@Model.Category.Name
+                    <div class="flex flex-wrap gap-2">
+                        <span class="badge badge-white">
+                            <i class="fas fa-folder"></i> @Model.Category.Name
                         </span>
                         @switch (Model.Difficulty)
                         {
                             case InterviewQuestionBank.Models.DifficultyLevel.Beginner:
-                                <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">
-                                    <i class="fas fa-seedling me-1"></i>Beginner
+                                <span class="badge badge-white">
+                                    <i class="fas fa-seedling"></i> Beginner
                                 </span>
                                 break;
                             case InterviewQuestionBank.Models.DifficultyLevel.Intermediate:
-                                <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">
-                                    <i class="fas fa-bolt me-1"></i>Intermediate
+                                <span class="badge badge-white">
+                                    <i class="fas fa-bolt"></i> Intermediate
                                 </span>
                                 break;
                             case InterviewQuestionBank.Models.DifficultyLevel.Advanced:
-                                <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">
-                                    <i class="fas fa-fire me-1"></i>Advanced
+                                <span class="badge badge-white">
+                                    <i class="fas fa-fire"></i> Advanced
                                 </span>
                                 break;
                         }
-                        <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">
-                            <i class="far fa-clock me-1"></i>5 min read
+                        <span class="badge badge-white">
+                            <i class="far fa-clock"></i> 5 min read
                         </span>
                     </div>
                 </div>
+
                 @if (User.Identity?.IsAuthenticated == true)
                 {
-                    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                        <button type="button" class="btn btn-lg me-2 @(ViewBag.IsFavorite ? "active" : "")" 
-                                style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white;"
+                    <div class="flex flex-wrap gap-2 justify-end">
+                        <button type="button"
+                                class="btn btn-lg btn-white @(ViewBag.IsFavorite ? "active" : "")"
                                 onclick="toggleFavorite(@Model.Id)">
                             <i class="@(ViewBag.IsFavorite ? "fas" : "far") fa-heart" id="favoriteIcon"></i>
-                            <span id="favoriteText" class="ms-2">@(ViewBag.IsFavorite ? "Favorited" : "Favorite")</span>
+                            <span id="favoriteText" class="hidden md:inline">@(ViewBag.IsFavorite ? "Favorited" : "Favorite")</span>
                         </button>
-                        <button type="button" class="btn btn-lg @(ViewBag.IsCompleted ? "active" : "")"
-                                style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white;"
+                        <button type="button"
+                                class="btn btn-lg btn-white @(ViewBag.IsCompleted ? "active" : "")"
                                 onclick="toggleCompleted(@Model.Id)">
                             <i class="@(ViewBag.IsCompleted ? "fas" : "far") fa-check-circle" id="completedIcon"></i>
-                            <span id="completedText" class="ms-2">@(ViewBag.IsCompleted ? "Completed" : "Complete")</span>
+                            <span id="completedText" class="hidden md:inline">@(ViewBag.IsCompleted ? "Completed" : "Complete")</span>
                         </button>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-lg btn-warning" title="Edit Question">
+                            <i class="fas fa-edit"></i>
+                            <span class="hidden md:inline">Edit</span>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-lg btn-danger" title="Delete Question"
+                           onclick="return confirm('Are you sure you want to delete this question?')">
+                            <i class="fas fa-trash"></i>
+                            <span class="hidden md:inline">Delete</span>
+                        </a>
                     </div>
                 }
             </div>
         </div>
+
         <div class="card-body">
             <!-- Question Content (Markdown Rendered) -->
-            <div class="question-content">
+            <div class="question-content prose prose-lg max-w-none">
                 @if (!string.IsNullOrEmpty(Model.ContentHtml))
                 {
                     @Html.Raw(Model.ContentHtml)
                 }
                 else
                 {
-                    <p class="text-muted">No content available for this question.</p>
+                    <div class="card card-empty text-center py-12">
+                        <div class="card-body">
+                            <i class="fas fa-file-alt text-muted" style="font-size: 3rem;"></i>
+                            <p class="text-muted mt-4">No content available for this question.</p>
+                        </div>
+                    </div>
                 }
             </div>
         </div>
-        <div class="card-footer bg-light">
-            <div class="row">
-                <div class="col-md-6">
-                    <small class="text-muted">
-                        <i class="fas fa-calendar me-1"></i>
-                        Created: @Model.CreatedDate.ToString("MMMM dd, yyyy")
-                    </small>
+
+        <div class="card-footer">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="text-sm text-muted">
+                    <i class="fas fa-calendar"></i>
+                    Created: @Model.CreatedDate.ToString("MMMM dd, yyyy")
                 </div>
-                <div class="col-md-6 text-end">
-                    @if (!string.IsNullOrEmpty(Model.Tags))
-                    {
-                        <small class="text-muted">
-                            <i class="fas fa-tags me-1"></i>
-                            @foreach (var tag in Model.Tags.Split(','))
-                            {
-                                <span class="badge bg-secondary me-1">@tag.Trim()</span>
-                            }
-                        </small>
-                    }
-                </div>
+                @if (!string.IsNullOrEmpty(Model.Tags))
+                {
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-sm text-muted">
+                            <i class="fas fa-tags"></i> Tags:
+                        </span>
+                        @foreach (var tag in Model.Tags.Split(','))
+                        {
+                            <span class="badge badge-soft-secondary badge-sm">@tag.Trim()</span>
+                        }
+                    </div>
+                }
             </div>
         </div>
     </div>
 
     <!-- Navigation to Previous/Next Questions -->
-    <div class="d-flex justify-content-between mb-4">
-        <a asp-action="Details" asp-route-id="@(Model.Id - 1)" class="btn btn-outline-primary">
-            <i class="fas fa-chevron-left me-1"></i>Previous Question
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+        <a asp-action="Details" asp-route-id="@(Model.Id - 1)" class="btn btn-outline-primary w-full sm:w-auto">
+            <i class="fas fa-chevron-left"></i>
+            Previous Question
         </a>
-        <a asp-controller="Questions" asp-action="Category" asp-route-id="@Model.CategoryId" class="btn btn-outline-secondary">
-            <i class="fas fa-list me-1"></i>View All in Category
+        <a asp-controller="Questions" asp-action="Category" asp-route-id="@Model.CategoryId" class="btn btn-outline-secondary w-full sm:w-auto">
+            <i class="fas fa-list"></i>
+            View All in Category
         </a>
-        <a asp-action="Details" asp-route-id="@(Model.Id + 1)" class="btn btn-outline-primary">
-            Next Question<i class="fas fa-chevron-right ms-1"></i>
+        <a asp-action="Details" asp-route-id="@(Model.Id + 1)" class="btn btn-outline-primary w-full sm:w-auto">
+            Next Question
+            <i class="fas fa-chevron-right"></i>
         </a>
     </div>
 
     <!-- Related Questions -->
-    <div class="card shadow-sm">
-        <div class="card-header bg-light">
-            <h5 class="mb-0">
-                <i class="fas fa-layer-group me-2"></i>More Questions in @Model.Category.Name
-            </h5>
+    <div class="card card-feature">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-layer-group"></i>
+                More Questions in @Model.Category.Name
+            </h3>
         </div>
         <div class="card-body">
+            <p class="card-text mb-4">
+                Explore @Model.Category.Questions.Count more questions in the @Model.Category.Name category to deepen your understanding.
+            </p>
             <a asp-action="Category" asp-route-id="@Model.CategoryId" class="btn btn-primary">
-                <i class="fas fa-arrow-right me-1"></i>View All (@Model.Category.Questions.Count questions)
+                <i class="fas fa-arrow-right"></i>
+                View All (@Model.Category.Questions.Count questions)
             </a>
         </div>
     </div>
 </div>
 
-@functions {
-    string GetDifficultyBadgeClass(InterviewQuestionBank.Models.DifficultyLevel difficulty)
-    {
-        return difficulty switch
-        {
-            InterviewQuestionBank.Models.DifficultyLevel.Beginner => "bg-success",
-            InterviewQuestionBank.Models.DifficultyLevel.Intermediate => "bg-warning text-dark",
-            InterviewQuestionBank.Models.DifficultyLevel.Advanced => "bg-danger",
-            _ => "bg-secondary"
-        };
-    }
-}
-
 @section Scripts {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
@@ -245,76 +257,137 @@
 
     <style>
         .question-content {
-            line-height: 1.8;
-            font-size: 1.05rem;
+            line-height: var(--line-height-relaxed);
+            font-size: var(--font-size-base);
+            color: var(--text-primary);
         }
 
         .question-content h2 {
-            color: #2c3e50;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            margin-top: var(--space-8);
+            margin-bottom: var(--space-4);
+            padding-bottom: var(--space-2);
+            border-bottom: 2px solid var(--border-color);
         }
 
         .question-content h3 {
-            color: #34495e;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            margin-top: var(--space-6);
+            margin-bottom: var(--space-3);
+        }
+
+        .question-content h4 {
+            color: var(--text-primary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            margin-top: var(--space-4);
+            margin-bottom: var(--space-2);
+        }
+
+        .question-content p {
+            margin-bottom: var(--space-4);
         }
 
         .question-content pre {
-            background-color: #1e1e1e;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
+            background-color: #282c34;
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
             overflow-x: auto;
-            margin: 1rem 0;
+            margin: var(--space-4) 0;
+            box-shadow: var(--shadow-sm);
         }
 
         .question-content code {
-            background-color: #f8f9fa;
-            padding: 0.2rem 0.4rem;
-            border-radius: 0.25rem;
+            background-color: var(--color-neutral-100);
+            padding: 0.125rem 0.375rem;
+            border-radius: var(--radius-sm);
             font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: #e83e8c;
+            font-size: 0.9em;
+            color: var(--color-error-700);
+        }
+
+        [data-theme="dark"] .question-content code {
+            background-color: var(--color-dark-700);
+            color: var(--color-error-300);
         }
 
         .question-content pre code {
             background-color: transparent;
             padding: 0;
             color: #abb2bf;
+            font-size: var(--font-size-sm);
         }
 
         .question-content table {
             width: 100%;
-            margin: 1rem 0;
+            margin: var(--space-4) 0;
             border-collapse: collapse;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
         }
 
         .question-content table th,
         .question-content table td {
-            padding: 0.75rem;
-            border: 1px solid #dee2e6;
+            padding: var(--space-3);
+            border: 1px solid var(--border-color);
             text-align: left;
         }
 
         .question-content table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
+            background-color: var(--bg-muted);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
         }
 
-        .question-content ul, .question-content ol {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
+        .question-content ul,
+        .question-content ol {
+            margin-left: var(--space-6);
+            margin-bottom: var(--space-4);
+        }
+
+        .question-content li {
+            margin-bottom: var(--space-2);
         }
 
         .question-content blockquote {
-            border-left: 4px solid #0d6efd;
-            padding-left: 1rem;
+            border-left: 4px solid var(--color-primary-600);
+            padding-left: var(--space-4);
             margin-left: 0;
-            color: #6c757d;
+            margin: var(--space-4) 0;
+            color: var(--text-secondary);
             font-style: italic;
+            background-color: var(--bg-muted);
+            padding: var(--space-4);
+            border-radius: var(--radius-md);
+        }
+
+        .question-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-lg);
+            margin: var(--space-4) 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .question-content a {
+            color: var(--color-primary-600);
+            text-decoration: underline;
+            transition: var(--transition-colors);
+        }
+
+        .question-content a:hover {
+            color: var(--color-primary-700);
+        }
+
+        .question-content hr {
+            border: none;
+            border-top: 2px solid var(--border-color);
+            margin: var(--space-8) 0;
         }
     </style>
 }

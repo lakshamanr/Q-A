@@ -335,8 +335,173 @@ namespace InterviewQuestionBank.Controllers
 
             TempData["Success"] = "Question created successfully!";
             return RedirectToAction(nameof(Details), new { id = question.Id });
+
             ViewBag.Categories = await _context.Categories.OrderBy(c => c.DisplayOrder).ToListAsync();
             return View(question);
+        }
+
+        // GET: Questions/Edit/5
+        [Authorize]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var question = await _context.Questions
+                .Include(q => q.Category)
+                .FirstOrDefaultAsync(q => q.Id == id);
+
+            if (question == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.Categories = await _context.Categories.OrderBy(c => c.DisplayOrder).ToListAsync();
+            return View(question);
+        }
+
+        // POST: Questions/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id, Question question, string newCategoryName, string newCategoryIcon, string newCategoryColor)
+        {
+            if (id != question.Id)
+            {
+                return NotFound();
+            }
+
+            // Validate category selection
+            if (question.CategoryId == 0 && string.IsNullOrWhiteSpace(newCategoryName))
+            {
+                ModelState.AddModelError("CategoryId", "Please select a category or create a new one");
+            }
+
+            // Validate content
+            if (string.IsNullOrWhiteSpace(question.ContentHtml) && string.IsNullOrWhiteSpace(question.Content))
+            {
+                ModelState.AddModelError("Content", "Answer content is required");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Check if creating new category
+                    if (question.CategoryId == 0 && !string.IsNullOrWhiteSpace(newCategoryName))
+                    {
+                        // Check if category already exists
+                        var existingCategory = await _context.Categories
+                            .FirstOrDefaultAsync(c => c.Name.ToLower() == newCategoryName.ToLower());
+
+                        if (existingCategory != null)
+                        {
+                            question.CategoryId = existingCategory.Id;
+                        }
+                        else
+                        {
+                            // Create new category
+                            var maxDisplayOrder = await _context.Categories.MaxAsync(c => (int?)c.DisplayOrder) ?? 0;
+                            var maxRangeEnd = await _context.Categories.MaxAsync(c => (int?)c.QuestionRangeEnd) ?? 0;
+
+                            var newCategory = new Category
+                            {
+                                Name = newCategoryName.Trim(),
+                                Icon = string.IsNullOrWhiteSpace(newCategoryIcon) ? "fa-question-circle" : newCategoryIcon.Trim(),
+                                ColorCode = string.IsNullOrWhiteSpace(newCategoryColor) ? "#6c757d" : newCategoryColor.Trim(),
+                                DisplayOrder = maxDisplayOrder + 1,
+                                QuestionRangeStart = maxRangeEnd + 1,
+                                QuestionRangeEnd = maxRangeEnd + 100,
+                                Description = $"Questions related to {newCategoryName}"
+                            };
+
+                            _context.Categories.Add(newCategory);
+                            await _context.SaveChangesAsync();
+                            question.CategoryId = newCategory.Id;
+                        }
+                    }
+
+                    // Convert markdown to HTML if ContentHtml is not provided
+                    if (string.IsNullOrWhiteSpace(question.ContentHtml) && !string.IsNullOrWhiteSpace(question.Content))
+                    {
+                        var pipeline = new MarkdownPipelineBuilder()
+                            .UseAdvancedExtensions()
+                            .Build();
+                        question.ContentHtml = Markdown.ToHtml(question.Content, pipeline);
+                    }
+                    else if (!string.IsNullOrWhiteSpace(question.ContentHtml))
+                    {
+                        // If HTML is provided directly, use it as is
+                        question.Content = System.Text.RegularExpressions.Regex.Replace(question.ContentHtml, "<.*?>", string.Empty);
+                    }
+
+                    question.ModifiedDate = DateTime.UtcNow;
+                    _context.Update(question);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Success"] = "Question updated successfully!";
+                    return RedirectToAction(nameof(Details), new { id = question.Id });
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!QuestionExists(question.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            ViewBag.Categories = await _context.Categories.OrderBy(c => c.DisplayOrder).ToListAsync();
+            return View(question);
+        }
+
+        // GET: Questions/Delete/5
+        [Authorize]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var question = await _context.Questions
+                .Include(q => q.Category)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (question == null)
+            {
+                return NotFound();
+            }
+
+            return View(question);
+        }
+
+        // POST: Questions/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var question = await _context.Questions.FindAsync(id);
+            if (question != null)
+            {
+                _context.Questions.Remove(question);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "Question deleted successfully!";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool QuestionExists(int id)
+        {
+            return _context.Questions.Any(e => e.Id == id);
         }
     }
 }
