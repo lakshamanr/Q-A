@@ -16,7 +16,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InterviewQuestionBank")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ecd7a7dc73a40589a31600082b564a8c5f1ace79")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2ced17d3eb4e35e5f04add7b8ca4e0615a14089d")]
+>>>>>>> d252ee0041d8b1818a7c9714b5eb55532bf69054
 [assembly: System.Reflection.AssemblyProductAttribute("InterviewQuestionBank")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InterviewQuestionBank")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
